@@ -60,18 +60,11 @@ class Plugin_Name {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'PLUGIN_NAME_VERSION' ) ) {
-			$this->version = PLUGIN_NAME_VERSION;
-		} else {
-			$this->version = '1.0.0';
-		}
+		$this->version = PLUGIN_NAME_VERSION;
 		$this->plugin_name = 'plugin-name';
 
 		$this->load_dependencies();
 		$this->set_locale();
-		$this->define_admin_hooks();
-		$this->define_public_hooks();
-
 	}
 
 	/**
@@ -119,41 +112,39 @@ class Plugin_Name {
 	private function set_locale() {
 
 		$plugin_i18n = new Plugin_Name_i18n();
-
-		add_action( 'plugins_loaded', array( $plugin_i18n, 'load_plugin_textdomain' ) );
-
 	}
 
 	/**
-	 * Register all of the hooks related to the admin area functionality
-	 * of the plugin.
+	 * Register all the hooks of the plugin.
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_admin_hooks() {
+	private function define_hooks() {
 
-		$plugin_admin = new Plugin_Name_Admin( $this->get_plugin_name(), $this->get_version() );
+		/*
+		 * Admin hooks - Register all of the hooks related to the admin area functionality of the plugin.
+		 */
+		if (is_admin())
+		{
+			$plugin_admin = new Plugin_Name_Admin( $this->get_plugin_name(), $this->get_version() );
+			add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
+			add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
+		}
+		/*
+		 * Frontend hooks - Register all of the hooks related to the public-facing functionality of the plugin.
+		 */
+		else
+		{
+			$plugin_public = new Plugin_Name_Public( $this->get_plugin_name(), $this->get_version() );
+			add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_styles' ) );
+			add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_scripts' ) );			 
+		}
 
-		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
-
-	}
-
-	/**
-	 * Register all of the hooks related to the public-facing functionality
-	 * of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function define_public_hooks() {
-
-		$plugin_public = new Plugin_Name_Public( $this->get_plugin_name(), $this->get_version() );
-
-		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_styles' ) );
-		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_scripts' ) );
-
+		/*
+		 * Includes hooks - Register all of the hooks related both to the admin area and to the public-facing functionality of the plugin.
+		 */
+		 add_action( 'plugins_loaded', array( $plugin_i18n, 'load_plugin_textdomain' ) );		
 	}
 
 	/**
@@ -162,29 +153,7 @@ class Plugin_Name {
 	 * @since    1.0.0
 	 */
 	public function run() {
-		$this->define_admin_hooks();
-		$this->define_public_hooks();
+		$this->define_hooks();
 	}
-
-	/**
-	 * The name of the plugin used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
-	 *
-	 * @since     1.0.0
-	 * @return    string    The name of the plugin.
-	 */
-	public function get_plugin_name() {
-		return $this->plugin_name;
-	}
-
-	/**
-	 * Retrieve the version number of the plugin.
-	 *
-	 * @since     1.0.0
-	 * @return    string    The version number of the plugin.
-	 */
-	public function get_version() {
-		return $this->version;
-	}
-
+	
 }
