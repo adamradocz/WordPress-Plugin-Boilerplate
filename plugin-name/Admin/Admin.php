@@ -1,4 +1,5 @@
 <?php
+
 namespace PluginName\Admin;
 
 // If this file is called directly, abort.
@@ -18,16 +19,16 @@ if (!defined('ABSPATH')) exit;
  * @subpackage PluginName/Admin
  * @author     Your Name <email@example.com>
  */
-class Admin {
-
+class Admin
+{
 	/**
 	 * The ID of this plugin.
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var      string    $pluginSlug    The ID of this plugin.
 	 */
-	private $plugin_name;
+	private $pluginSlug;
 
 	/**
 	 * The version of this plugin.
@@ -42,14 +43,13 @@ class Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
+	 * @param      string    $pluginSlug       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
+	public function __construct($pluginSlug, $version)
+	{
+		$this->pluginSlug = $pluginSlug;
 		$this->version = $version;
-
 	}
 
 	/**
@@ -58,8 +58,8 @@ class Admin {
 	 * @since    1.0.0
 	 * @param   String  $hook    A screen id to filter the current admin page
 	 */
-	public function enqueueStyles($hook) {
-
+	public function enqueueStyles($hook)
+	{
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -76,8 +76,7 @@ class Admin {
 		 *	print_r($screen);
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-name-admin.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style( $this->pluginSlug, plugin_dir_url( __FILE__ ) . 'css/plugin-name-admin.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -86,8 +85,8 @@ class Admin {
 	 * @since    1.0.0
 	 * @param   String  $hook    A screen id to filter the current admin page
 	 */
-	public function enqueueScripts($hook) {
-
+	public function enqueueScripts($hook)
+	{
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -104,8 +103,7 @@ class Admin {
 		 *	print_r($screen);
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
-
+		wp_enqueue_script( $this->pluginSlug, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
 	}
 
 }

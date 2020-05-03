@@ -1,4 +1,5 @@
 <?php
+
 namespace PluginName\Includes;
 
 // If this file is called directly, abort.
@@ -15,8 +16,8 @@ if (!defined('ABSPATH')) exit;
  * @subpackage PluginName/Includes
  * @author     Your Name <email@example.com>
  */
-class Deactivator {
-
+class Deactivator
+{
 	/**
 	 * Short Description. (use period)
 	 *
@@ -24,8 +25,9 @@ class Deactivator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function deactivate() {
-
+	public static function deactivate()
+	{
+		
 	}
 
 }

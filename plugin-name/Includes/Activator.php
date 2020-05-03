@@ -1,4 +1,5 @@
 <?php
+
 namespace PluginName\Includes;
 
 // If this file is called directly, abort.
@@ -14,8 +15,8 @@ if (!defined('ABSPATH')) exit;
  * @subpackage PluginName/Includes
  * @author     Your Name <email@example.com>
  */
-class Activator {
-
+class Activator
+{
 	/**
 	 * Short Description. (use period)
 	 *
@@ -23,8 +24,9 @@ class Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate() {
-
+	public static function activate()
+	{
+		
 	}
 
 }

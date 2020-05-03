@@ -97,4 +97,27 @@ The homepage is based on a design as provided by [HTML5Up](http://html5up.net), 
 
 ## Documentation, FAQs, and More
 
-If you’re interested in writing any documentation or creating tutorials please [let me know](http://devinvinson.com/contact/) .
+### Coding standards
+
+Classes: `UpperCamelCase` You must not omit `public`, `protected`, or `private` modifiers.
+Functions: `camelCase`
+Variables: `camelCase`
+Constants: `ALL_UPPER_CASE_WITH_UNDERSCORE_SEPARATOR`
+Parentheses: Allman
+Comparison: You should use strict comparison (`===`, `!==`) whenever possible.
+Whitespaces: You must not add a whitespace before and after braces.
+```
+<?php
+namespace PluginName;
+
+public class User
+{ 
+	const DATE_REGISTERED = '2012-06-01';
+	
+	public function updateAddress($id, $newAddress)
+	{
+		// Do something
+	}
+	
+}
+```

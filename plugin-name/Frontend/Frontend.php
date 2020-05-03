@@ -1,4 +1,5 @@
 <?php
+
 namespace PluginName\Frontend;
 
 // If this file is called directly, abort.
@@ -17,16 +18,16 @@ if (!defined('ABSPATH')) exit;
  * @subpackage PluginName/Frontend
  * @author     Your Name <email@example.com>
  */
-class Frontend {
-
+class Frontend
+{
 	/**
 	 * The ID of this plugin.
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var      string    $pluginSlug    The ID of this plugin.
 	 */
-	private $plugin_name;
+	private $pluginSlug;
 
 	/**
 	 * The version of this plugin.
@@ -41,14 +42,13 @@ class Frontend {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
+	 * @param      string    $pluginSlug       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
+	public function __construct($pluginSlug, $version)
+	{
+		$this->pluginSlug = $pluginSlug;
 		$this->version = $version;
-
 	}
 
 	/**
@@ -56,8 +56,8 @@ class Frontend {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueueStyles() {
-
+	public function enqueueStyles()
+	{
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -70,8 +70,7 @@ class Frontend {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-name-public.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style( $this->pluginSlug, plugin_dir_url( __FILE__ ) . 'css/plugin-name-public.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -79,8 +78,8 @@ class Frontend {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueueScripts() {
-
+	public function enqueueScripts()
+	{
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -93,8 +92,7 @@ class Frontend {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-public.js', array( 'jquery' ), $this->version, false );
-
+		wp_enqueue_script( $this->pluginSlug, plugin_dir_url( __FILE__ ) . 'js/plugin-name-public.js', array( 'jquery' ), $this->version, false );
 	}
 
 }

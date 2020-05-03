@@ -42,13 +42,14 @@ require_once plugin_dir_path(__FILE__) . 'Autoloader.php';
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'PLUGIN_NAME_VERSION', '1.0.0' );
+define('PLUGIN_NAME_VERSION', '1.0.0');
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in Includes/Activator.php
  */
-function activatePlugin() {
+function activatePlugin()
+{
 	Activator::activate();
 }
 
@@ -56,12 +57,13 @@ function activatePlugin() {
  * The code that runs during plugin deactivation.
  * This action is documented in Includes/Deactivator.php
  */
-function deactivatePlugin() {
+function deactivatePlugin()
+{
 	Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'PluginName\activatePlugin' );
-register_deactivation_hook( __FILE__, 'PluginName\deactivatePlugin' );
+register_activation_hook(__FILE__, 'PluginName\activatePlugin');
+register_deactivation_hook(__FILE__, 'PluginName\deactivatePlugin');
 
 /**
  * Begins execution of the plugin.
@@ -72,8 +74,8 @@ register_deactivation_hook( __FILE__, 'PluginName\deactivatePlugin' );
  *
  * @since    1.0.0
  */
-function runPlugin() {
-
+function runPlugin()
+{
 	$plugin = new Main();
 	$plugin->run();
 }

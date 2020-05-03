@@ -1,4 +1,5 @@
 <?php
+
 namespace PluginName\Includes;
 
 use PluginName\Admin\Admin;
@@ -23,16 +24,16 @@ if (!defined('ABSPATH')) exit;
  * @subpackage PluginName/Includes
  * @author     Your Name <email@example.com>
  */
-class Main {
-
+class Main
+{
 	/**
 	 * The unique identifier of this plugin.
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 * @var      string    $pluginSlug    The string used to uniquely identify this plugin.
 	 */
-	protected $plugin_name;
+	protected $pluginSlug;
 
 	/**
 	 * The current version of the plugin.
@@ -52,9 +53,10 @@ class Main {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		$this->version = PLUGIN_NAME_VERSION;
-		$this->plugin_name = 'plugin-name';
+		$this->pluginSlug = 'plugin-name';
 	}
 
 	/**
@@ -63,25 +65,25 @@ class Main {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function defineHooks() {
-
+	private function defineHooks()
+	{
 		/*
 		 * Admin hooks - Register all of the hooks related to the admin area functionality of the plugin.
 		 */
 		if (is_admin())
 		{
-			$plugin_admin = new Admin( $this->plugin_name, $this->version );
-			add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueueStyles' ) );
-			add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueueScripts' ) );
+			$plugin_admin = new Admin($this->pluginSlug, $this->version);
+			add_action('admin_enqueue_scripts', array($plugin_admin, 'enqueueStyles'));
+			add_action('admin_enqueue_scripts', array($plugin_admin, 'enqueueScripts'));
 		}
 		/*
 		 * Frontend hooks - Register all of the hooks related to the public-facing functionality of the plugin.
 		 */
 		else
 		{
-			$plugin_frontend = new Frontend( $this->plugin_name, $this->version );
-			add_action( 'wp_enqueue_scripts', array( $plugin_frontend, 'enqueueStyles' ) );
-			add_action( 'wp_enqueue_scripts', array( $plugin_frontend, 'enqueueScripts' ) );			 
+			$plugin_frontend = new Frontend($this->pluginSlug, $this->version);
+			add_action('wp_enqueue_scripts', array($plugin_frontend, 'enqueueStyles'));
+			add_action('wp_enqueue_scripts', array($plugin_frontend, 'enqueueScripts'));			 
 		}
 
 		/*
@@ -89,8 +91,8 @@ class Main {
 		 */
 		 
 		 // Set the domain for this plugin for internationalization.
-		 $plugin_i18n = new i18n($this->plugin_name);
-		 add_action( 'plugins_loaded', array( $plugin_i18n, 'loadPluginTextdomain' ) );		
+		 $plugin_i18n = new i18n($this->pluginSlug);
+		 add_action('plugins_loaded', array($plugin_i18n, 'loadPluginTextdomain'));		
 	}
 
 	/**

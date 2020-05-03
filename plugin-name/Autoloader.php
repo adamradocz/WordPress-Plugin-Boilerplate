@@ -1,4 +1,5 @@
 <?php
+
 namespace PluginName;
 
 // If this file is called directly, abort.
@@ -18,37 +19,38 @@ if (!defined('ABSPATH')) exit;
  * @since             1.0.0
  * @package           PluginName
  *
- * @param string $class The fully-qualified class name.
+ * @param string $className The fully-qualified class name.
  * @return void
  */
-spl_autoload_register(function ($class){
+spl_autoload_register(function ($className)
+{
 
-	// project-specific namespace prefix
+	// Project-specific namespace prefix
 	$prefix = 'PluginName\\';
 
-	// base directory for the namespace prefix
-	$base_dir = __DIR__ . '/';
+	// Base directory for the namespace prefix
+	$baseDir = __DIR__ . '/';
 
-	// does the class use the namespace prefix?
+	// Does the class use the namespace prefix?
 	$len = strlen($prefix);
-	if (strncmp($prefix, $class, $len) !== 0) {
-		// no, move to the next registered autoloader
+	if (strncmp($prefix, $className, $len) !== 0) {
+		// No, move to the next registered autoloader
 		return;
 	}
 
-	// get the relative class name
-	$relative_class = substr($class, $len);
+	// Get the relative class name
+	$relativeClassName = substr($className, $len);
 
-	// replace the namespace prefix with the base directory, replace namespace
+	// Replace the namespace prefix with the base directory, replace namespace
 	// separators with directory separators in the relative class name, append
 	// with .php
-	$file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+	$filePath = $baseDir . str_replace('\\', '/', $relativeClassName) . '.php';
 
-	// if the file exists, require it
-	if (file_exists($file)) {
-		require_once $file;
+	// If the file exists, require it
+	if (file_exists($filePath)) {
+		require_once $filePath;
 	}
 	else {       
-	   exit(esc_html("The file $class.php could not be found!"));
+	   exit(esc_html("The file $className.php could not be found!"));
    }
 });
