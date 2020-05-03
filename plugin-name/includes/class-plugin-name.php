@@ -131,7 +131,7 @@ class Plugin_Name {
 		 */
 		 
 		 // Set the domain for this plugin for internationalization.
-		 $plugin_i18n = new Plugin_Name_i18n();
+		 $plugin_i18n = new Plugin_Name_i18n($this->plugin_name);
 		 add_action( 'plugins_loaded', array( $plugin_i18n, 'load_plugin_textdomain' ) );		
 	}
 
