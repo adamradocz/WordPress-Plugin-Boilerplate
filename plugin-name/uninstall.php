@@ -29,3 +29,7 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+// Delete the plugin's options from database
+$option_name = 'plugin-name-options';
+ delete_option($option_name);
