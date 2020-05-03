@@ -76,7 +76,7 @@ class Admin
 		 *	print_r($screen);
 		 */
 
-		wp_enqueue_style( $this->pluginSlug, plugin_dir_url( __FILE__ ) . 'css/plugin-name-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style($this->pluginSlug, plugin_dir_url(__FILE__) . 'css/plugin-name-admin.css', array(), $this->version, 'all');
 	}
 
 	/**
@@ -103,7 +103,7 @@ class Admin
 		 *	print_r($screen);
 		 */
 
-		wp_enqueue_script( $this->pluginSlug, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script($this->pluginSlug, plugin_dir_url(__FILE__) . 'js/plugin-name-admin.js', array('jquery'), $this->version, false);
 	}
 
 }
