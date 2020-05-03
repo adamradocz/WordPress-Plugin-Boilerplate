@@ -1,4 +1,5 @@
 <?php
+namespace PluginName\Includes;
 
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) exit;
@@ -11,11 +12,11 @@ if (!defined('ABSPATH')) exit;
  *
  * @link       http://example.com
  * @since      1.0.0
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
+ * @package    PluginName
+ * @subpackage PluginName/Includes
  * @author     Your Name <email@example.com>
  */
-class Plugin_Name_i18n {
+class i18n {
 
 	/**
 	 * Unique identifier for retrieving translated strings.
@@ -40,12 +41,12 @@ class Plugin_Name_i18n {
 	 *
 	 * @since    1.0.0
 	 */
-	public function load_plugin_textdomain() {
+	public function loadPluginTextdomain() {
 
 		load_plugin_textdomain(
 			$this->domain,
 			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/Languages/'
 		);
 
 	}

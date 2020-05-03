@@ -1,4 +1,5 @@
 <?php
+namespace PluginName\Frontend;
 
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) exit;
@@ -12,11 +13,11 @@ if (!defined('ABSPATH')) exit;
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/public
+ * @package    PluginName
+ * @subpackage PluginName/Frontend
  * @author     Your Name <email@example.com>
  */
-class Plugin_Name_Public {
+class Frontend {
 
 	/**
 	 * The ID of this plugin.
@@ -55,7 +56,7 @@ class Plugin_Name_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueueStyles() {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -78,7 +79,7 @@ class Plugin_Name_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
+	public function enqueueScripts() {
 
 		/**
 		 * This function is provided for demonstration purposes only.

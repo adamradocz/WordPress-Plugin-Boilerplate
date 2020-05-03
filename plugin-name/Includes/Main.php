@@ -1,4 +1,9 @@
 <?php
+namespace PluginName\Includes;
+
+use PluginName\Admin\Admin;
+use PluginName\Frontend\Frontend;
+use PluginName\Includes\i18n;
 
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) exit;
@@ -14,11 +19,11 @@ if (!defined('ABSPATH')) exit;
  *
  * @link       http://example.com
  * @since      1.0.0
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
+ * @package    PluginName
+ * @subpackage PluginName/Includes
  * @author     Your Name <email@example.com>
  */
-class Plugin_Name {
+class Main {
 
 	/**
 	 * The unique identifier of this plugin.
@@ -50,41 +55,6 @@ class Plugin_Name {
 	public function __construct() {
 		$this->version = PLUGIN_NAME_VERSION;
 		$this->plugin_name = 'plugin-name';
-
-		$this->load_dependencies();
-	}
-
-	/**
-	 * Load the required dependencies for this plugin.
-	 *
-	 * Include the following files that make up the plugin:
-	 *
-	 * - Plugin_Name_i18n. Defines internationalization functionality.
-	 * - Plugin_Name_Admin. Defines all hooks for the admin area.
-	 * - Plugin_Name_Public. Defines all hooks for the public side of the site.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function load_dependencies() {
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path( __DIR__ ) . 'includes/class-plugin-name-i18n.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
-		require_once plugin_dir_path( __DIR__ ) . 'admin/class-plugin-name-admin.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
-		require_once plugin_dir_path( __DIR__ ) . 'public/class-plugin-name-public.php';
-
 	}
 
 	/**
@@ -93,25 +63,25 @@ class Plugin_Name {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_hooks() {
+	private function defineHooks() {
 
 		/*
 		 * Admin hooks - Register all of the hooks related to the admin area functionality of the plugin.
 		 */
 		if (is_admin())
 		{
-			$plugin_admin = new Plugin_Name_Admin( $this->plugin_name, $this->version );
-			add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
-			add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
+			$plugin_admin = new Admin( $this->plugin_name, $this->version );
+			add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueueStyles' ) );
+			add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueueScripts' ) );
 		}
 		/*
 		 * Frontend hooks - Register all of the hooks related to the public-facing functionality of the plugin.
 		 */
 		else
 		{
-			$plugin_public = new Plugin_Name_Public( $this->plugin_name, $this->version );
-			add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_styles' ) );
-			add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_scripts' ) );			 
+			$plugin_frontend = new Frontend( $this->plugin_name, $this->version );
+			add_action( 'wp_enqueue_scripts', array( $plugin_frontend, 'enqueueStyles' ) );
+			add_action( 'wp_enqueue_scripts', array( $plugin_frontend, 'enqueueScripts' ) );			 
 		}
 
 		/*
@@ -119,8 +89,8 @@ class Plugin_Name {
 		 */
 		 
 		 // Set the domain for this plugin for internationalization.
-		 $plugin_i18n = new Plugin_Name_i18n($this->plugin_name);
-		 add_action( 'plugins_loaded', array( $plugin_i18n, 'load_plugin_textdomain' ) );		
+		 $plugin_i18n = new i18n($this->plugin_name);
+		 add_action( 'plugins_loaded', array( $plugin_i18n, 'loadPluginTextdomain' ) );		
 	}
 
 	/**
@@ -129,7 +99,7 @@ class Plugin_Name {
 	 * @since    1.0.0
 	 */
 	public function run() {
-		$this->define_hooks();
+		$this->defineHooks();
 	}
 	
 }

@@ -1,4 +1,5 @@
 <?php
+namespace PluginName\Admin;
 
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) exit;
@@ -13,11 +14,11 @@ if (!defined('ABSPATH')) exit;
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/admin
+ * @package    PluginName
+ * @subpackage PluginName/Admin
  * @author     Your Name <email@example.com>
  */
-class Plugin_Name_Admin {
+class Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -57,7 +58,7 @@ class Plugin_Name_Admin {
 	 * @since    1.0.0
 	 * @param   String  $hook    A screen id to filter the current admin page
 	 */
-	public function enqueue_styles($hook) {
+	public function enqueueStyles($hook) {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -85,7 +86,7 @@ class Plugin_Name_Admin {
 	 * @since    1.0.0
 	 * @param   String  $hook    A screen id to filter the current admin page
 	 */
-	public function enqueue_scripts($hook) {
+	public function enqueueScripts($hook) {
 
 		/**
 		 * This function is provided for demonstration purposes only.

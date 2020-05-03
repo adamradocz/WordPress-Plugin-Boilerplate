@@ -1,19 +1,21 @@
 <?php
+namespace PluginName\Includes;
 
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) exit;
 
 /**
- * Fired during plugin activation
- * This class defines all code necessary to run during the plugin's activation.
+ * Fired during plugin deactivation.
+ *
+ * This class defines all code necessary to run during the plugin's deactivation.
  *
  * @link       http://example.com
  * @since      1.0.0
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
+ * @package    PluginName
+ * @subpackage PluginName/Includes
  * @author     Your Name <email@example.com>
  */
-class Plugin_Name_Activator {
+class Deactivator {
 
 	/**
 	 * Short Description. (use period)
@@ -22,7 +24,7 @@ class Plugin_Name_Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate() {
+	public static function deactivate() {
 
 	}
 
