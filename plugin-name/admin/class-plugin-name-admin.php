@@ -69,6 +69,10 @@ class Plugin_Name_Admin {
 		 * You can use the $hook parameter to filter for a particular page,
 		 * for more information see the codex,
 		 * https://codex.wordpress.org/Plugin_API/Action_Reference/admin_enqueue_scripts
+		 *
+		 * If you are unsure what the $hook name of the current admin page of which you want to conditionally load your script is, add this to your page:
+		 *	$screen = get_current_screen(); 
+		 *	print_r($screen);
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-name-admin.css', array(), $this->version, 'all' );
@@ -93,6 +97,10 @@ class Plugin_Name_Admin {
 		 * You can use the $hook parameter to filter for a particular page,
 		 * for more information see the codex,
 		 * https://codex.wordpress.org/Plugin_API/Action_Reference/admin_enqueue_scripts
+		 *
+		 * If you are unsure what the $hook name of the current admin page of which you want to conditionally load your script is, add this to your page:
+		 *	$screen = get_current_screen(); 
+		 *	print_r($screen);
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
