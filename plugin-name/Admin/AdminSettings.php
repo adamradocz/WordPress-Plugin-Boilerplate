@@ -7,15 +7,21 @@ if (!defined('ABSPATH')) exit;
 
 /**
  * Settings of the admin area.
+ * Add the appropriate suffix constant for every field ID to take advantake the standardized sanitizer.
  *
  * @since      1.0.0
  *
  * @package    PluginName
  * @subpackage PluginName/Admin
- *
  */
 class AdminSettings
-{
+{			
+	const TEXT_SUFFIX = '-tx';
+	const TEXTAREA_SUFFIX = '-ta';
+	const CHECKBOX_SUFFIX = '-cb';
+	const RADIO_SUFFIX = '-rb';
+	const SELECT_SUFFIX = '-sl';
+	
 	/**
 	 * The ID of this plugin.
 	 *
@@ -24,7 +30,58 @@ class AdminSettings
 	 * @var      string    $pluginSlug    The ID of this plugin.
 	 */
 	private $pluginSlug;
+	
+	/**
+	 * The slug name for the menu.
+	 * Should be unique for this menu page and only include 
+	 * lowercase alphanumeric, dashes, and underscores characters to be compatible with sanitize_key().
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $menuSlug    Slug name.
+	 */
+	private $menuSlug;
+	
+	/**
+	 * General settings' group name.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $generalOptionGroup    The settings group name of the general settings.
+	 */
+	private $generalOptionGroup;
+	private $exampleOptionGroup;
+	
+	/**
+	 * General settings' section.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $generalSettingsSection    The slug-name of the section of the settings page in which to show the box.
+	 */
+	private $generalSettingsSection;
+	private $exampleSettingsSection;
+	
+	/**
+	 * General settings page.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $generalPage    The slug-name of the settings page on which to show the section.
+	 */
+	private $generalPage;
+	private $examplePage;
 
+	/**
+	 * Name of general options.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $generalOptionName    Option name. Expected to not be SQL-escaped.
+	 */
+	private $generalOptionName;
+	private $gexampleOptionName;
+	
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -34,6 +91,23 @@ class AdminSettings
 	public function __construct($pluginSlug)
 	{
 		$this->pluginSlug = $pluginSlug;
+		$this->menuSlug = $this->pluginSlug . '-options';
+		
+		/**
+		 * General
+		 */
+		$this->generalOptionGroup = $pluginSlug . '-general-option-group';
+		$this->generalSettingsSection = $pluginSlug . '-general-section';
+		$this->generalPage = $pluginSlug . '-general';
+		$this->generalOptionName = $pluginSlug . '-general-option';
+		
+		/**
+		 * Input example
+		 */
+		$this->exampleOptionGroup = $pluginSlug . '-example-option-group';
+		$this->exampleSettingsSection = $pluginSlug . '-example-section';
+		$this->examplePage = $pluginSlug . '-example';
+		$this->exampleOptionName = $pluginSlug . 'example-option';
 	}
 
 	/**
@@ -43,13 +117,13 @@ class AdminSettings
 	{
 		//Add the menu item to the Main menu
 		add_menu_page(
-			'Plugin Name Options',						// The title to be displayed in the browser window for this page.
-			'Plugin Name',								// The text to be displayed for this menu item
-			'manage_options',							// Which type of users can see this menu item
-			'plugin_name_options',						// The unique ID - that is, the slug - for this menu item
-			array($this, 'renderSettingsPageContent'),	// The name of the function to call when rendering this menu's page
+			'Plugin Name Options',						// Page title: The title to be displayed in the browser window for this page.
+			'Plugin Name',								// Menu title: The text to be used for the menu.
+			'manage_options',							// Capability: The capability required for this menu to be displayed to the user.
+			$this->menuSlug,							// Menu slug: The slug name to refer to this menu by. Should be unique for this menu page.
+			array($this, 'renderSettingsPageContent'),	// Callback: The name of the function to call when rendering this menu's page
 			'dashicons-smiley',							// Icon
-			81											// The position in the menu order this item should appear.
+			81											// Position: The position in the menu order this item should appear.
 		);
 	}
 
@@ -70,21 +144,21 @@ class AdminSettings
 			<?php $activeTab = isset($_GET['tab']) ? $_GET['tab'] : 'general_options'; ?>
 
 			<h2 class="nav-tab-wrapper">
-				<a href="?page=plugin_name_options&tab=general_options" class="nav-tab <?php echo $activeTab == 'general_options' ? 'nav-tab-active' : ''; ?>"><?php _e('General', 'plugin-name'); ?></a>
-				<a href="?page=plugin_name_options&tab=input_examples" class="nav-tab <?php echo $activeTab == 'input_examples' ? 'nav-tab-active' : ''; ?>"><?php _e('Input Examples', 'plugin-name'); ?></a>
+				<a href="?page=<?php echo $this->menuSlug; ?>&tab=general_options" class="nav-tab <?php echo $activeTab === 'general_options' ? 'nav-tab-active' : ''; ?>"><?php _e('General', 'plugin-name'); ?></a>
+				<a href="?page=<?php echo $this->menuSlug; ?>&tab=input_examples" class="nav-tab <?php echo $activeTab === 'input_examples' ? 'nav-tab-active' : ''; ?>"><?php _e('Input Examples', 'plugin-name'); ?></a>
 			</h2>
 
 			<form method="post" action="options.php">
 				<?php				
-				if($activeTab == 'general_options')
+				if($activeTab === 'general_options')
 				{
-					settings_fields('plugin_name_general_options');
-					do_settings_sections('plugin_name_general_options');
+					settings_fields($this->generalOptionGroup);
+					do_settings_sections($this->generalPage);
 				}
 				else
 				{
-					settings_fields('plugin_name_input_examples');
-					do_settings_sections('plugin_name_input_examples');
+					settings_fields($this->exampleOptionGroup);
+					do_settings_sections($this->examplePage);
 				}
 				
 				submit_button();
@@ -92,7 +166,7 @@ class AdminSettings
 			</form>
 
 		</div><!-- /.wrap -->
-	<?php
+		<?php
 	}
 
 #region GENERAL OPTIONS
@@ -105,33 +179,29 @@ class AdminSettings
 	public function initializeGeneralOptions()
 	{
 		// If the options don't exist, create them.
-		if (get_option('plugin_name_general_options') === false)
+		if (get_option($this->generalOptionName) === false)
 		{
-			update_option('plugin_name_general_options', $this->defaultGeneralOptions());
+			update_option($this->generalOptionName, $this->defaultGeneralOptions());
 		}
 
 		add_settings_section(
-			'general_settings_section',						// ID used to identify this section and with which to register options
-			__('General', 'plugin-name'),					// Title to be displayed on the administration page
-			array($this, 'generalOptionsCallback'),			// Callback used to render the description of the section
-			'plugin_name_general_options'					// Page on which to add this section of options
+			$this->generalSettingsSection,				// ID used to identify this section and with which to register options
+			__('General', 'plugin-name'),				// Title to be displayed on the administration page
+			array($this, 'generalOptionsCallback'),		// Callback used to render the description of the section
+			$this->generalPage							// Page on which to add this section of options
 		);
 		
 		// Next, we'll introduce the fields for toggling the visibility of content elements.
 		add_settings_field(
-			'debug',									// ID used to identify the field throughout the theme
+			'debug' . self::CHECKBOX_SUFFIX,			// ID used to identify the field throughout the theme
 			__('Debug', 'plugin-name'),					// The label to the left of the option interface element
 			array($this, 'debugCallback'),				// The name of the function responsible for rendering the option interface
-			'plugin_name_general_options',				// The page on which this option will be displayed
-			'general_settings_section'					// The name of the section to which this field belongs
+			$this->generalPage,							// The page on which this option will be displayed
+			$this->generalSettingsSection				// The name of the section to which this field belongs
 		);
 
 		// Finally, we register the fields with WordPress
-		register_setting(
-			'plugin_name_general_options',
-			'plugin_name_general_options',
-			array($this, 'sanitizeGeneralOptionsCallback')
-		);
+		register_setting($this->generalOptionGroup, $this->generalOptionName, array($this, 'sanitizeOptionsCallback'));
 	}
 	
 	/**
@@ -142,7 +212,7 @@ class AdminSettings
 	public function defaultGeneralOptions()
 	{
 		return array(
-			'debug' => false
+			'debug' . self::CHECKBOX_SUFFIX => false
 		);
 	}
 
@@ -154,59 +224,28 @@ class AdminSettings
 	 */
 	public function generalOptionsCallback()
 	{
-		$options = get_option('plugin_name_general_options');
-		//var_dump($options);
 		echo '<p>' . __('General options.', 'plugin-name') . '</p>';
 	}
 
 	public function debugCallback()
 	{
 		// First, we read the General Options collection
-		$options = get_option('plugin_name_general_options');		
+		$options = get_option($this->generalOptionName);
 
 		// Next, we update the name attribute to access this element's ID in the context of the display options array
 		// We also access the show_header element of the options collection in the call to the checked() helper function
-		$html = '<input type="checkbox" id="debug" name="plugin_name_general_options[debug]" value="1"' . checked(1, $options['debug'], false) . '/>';
+		$html = '<input type="checkbox" id="debug' . self::CHECKBOX_SUFFIX . '" name="' . $this->generalOptionName . '[debug' . self::CHECKBOX_SUFFIX . ']" value="1"' . checked($options['debug' . self::CHECKBOX_SUFFIX], true, false) . '/>';
 		$html .= '&nbsp;';
 		
 		// Here, we'll take the first argument of the array and add it to a label next to the checkbox
-		$html .= '<label for="debug">This is an example of a checkbox</label>';
+		$html .= '<label for="debug' . self::CHECKBOX_SUFFIX . '">This is an example of a checkbox</label>';
 
 		echo $html;
-	}
-	
-	/**
-	 * Sanitization callback for the General Options. Since each of the General Options are text inputs,
-	 * this function loops through the incoming option and strips all tags and slashes from the value
-	 * before serializing it.
-	 *
-	 * @params	$input	The unsanitized collection of options.
-	 *
-	 * @returns			The collection of sanitized values.
-	 */
-	public function sanitizeGeneralOptionsCallback($input)
-	{
-		// Define the array for the sanitized options
-		$output = array();
-
-		// Loop through each of the incoming options
-		foreach($input as $key => $val)
-		{
-			// Check to see if the current option has a value. If so, process it.
-			if(isset($input[$key]))
-			{
-				// Strip all HTML and PHP tags and properly handle quoted strings
-				$output[$key] = strip_tags(stripslashes($input[$key]));
-			}
-		}
-
-		// Return the sanitized collection
-		return $output;
-	}
+	}	
 	
 #endregion
 	
-#region EXAMPLES OPTIONS
+#region INPUT EXAMPLES OPTIONS
 	
 	/**
 	 * Initializes the plugins's input example by registering the Sections, Fields, and Settings.
@@ -216,63 +255,24 @@ class AdminSettings
 	 */
 	public function initializeInputExamples()
 	{
-		if (get_option('plugin_name_input_examples') === false)
+		if (get_option($this->exampleOptionName) === false)
 		{
-			update_option('plugin_name_input_examples', $this->defaultInputOptions());
+			update_option($this->exampleOptionName, $this->defaultInputOptions());
 		}
 
-		add_settings_section(
-			'input_examples_section',
-			__('Input Examples', 'plugin-name'),
-			array($this, 'inputExamplesCallback'),
-			'plugin_name_input_examples'
-		);
+		add_settings_section($this->exampleSettingsSection, __('Input Examples', 'plugin-name'), array($this, 'inputExamplesCallback'), $this->examplePage);
 
-		add_settings_field(
-			'Input Element',
-			__('Input Element', 'plugin-name'),
-			array($this, 'inputElementCallback'),
-			'plugin_name_input_examples',
-			'input_examples_section'
-		);
+		add_settings_field('text_example' . self::TEXT_SUFFIX, __('Input Element', 'plugin-name'), array($this, 'inputElementCallback'), $this->examplePage, $this->exampleSettingsSection);
+		
+		add_settings_field('textarea_example' . self::TEXTAREA_SUFFIX, __('Textarea Element', 'plugin-name'), array($this, 'textareaElementCallback'), $this->examplePage, $this->exampleSettingsSection);
+		
+		add_settings_field('checkbox_example' . self::CHECKBOX_SUFFIX, __('Checkbox Element', 'plugin-name'), array($this, 'checkboxElementCallback'), $this->examplePage, $this->exampleSettingsSection);
+		
+		add_settings_field('radio_example' . self::RADIO_SUFFIX, __('Radio Button Elements', 'plugin-name'),array($this, 'radioElementCallback'), $this->examplePage, $this->exampleSettingsSection);
+		
+		add_settings_field('select_example' . self::SELECT_SUFFIX, __('Select Element', 'plugin-name'), array($this, 'selectElementCallback'), $this->examplePage, $this->exampleSettingsSection);
 
-		add_settings_field(
-			'Textarea Element',
-			__('Textarea Element', 'plugin-name'),
-			array($this, 'textareaElementCallback'),
-			'plugin_name_input_examples',
-			'input_examples_section'
-		);
-
-		add_settings_field(
-			'Checkbox Element',
-			__('Checkbox Element', 'plugin-name'),
-			array($this, 'checkboxElementCallback'),
-			'plugin_name_input_examples',
-			'input_examples_section'
-		);
-
-		add_settings_field(
-			'Radio Button Elements',
-			__('Radio Button Elements', 'plugin-name'),
-			array($this, 'radioElementCallback'),
-			'plugin_name_input_examples',
-			'input_examples_section'
-		);
-
-		add_settings_field(
-			'Select Element',
-			__('Select Element', 'plugin-name'),
-			array($this, 'selectElementCallback'),
-			'plugin_name_input_examples',
-			'input_examples_section'
-		);
-
-		register_setting(
-			'plugin_name_input_examples',
-			'plugin_name_input_examples',
-			array($this, 'sanitizeInputExamplesOptionsCallback')
-		);
+		register_setting($this->exampleOptionGroup,	$this->exampleOptionName, array($this, 'sanitizeOptionsCallback'));
 	}
 
 	/**
@@ -283,12 +283,12 @@ class AdminSettings
 	public function defaultInputOptions()
 	{
 		return array(
-			'input_example'		=>	'default input example',
-			'textarea_example'	=>	'',
-			'checkbox_example'	=>	'',
-			'radio_example'		=>	'2',
-			'time_options'		=>	'default'
-		);
+			'text_example' . self::TEXT_SUFFIX			=>	'default input example',
+			'textarea_example' . self::TEXTAREA_SUFFIX	=>	'',
+			'checkbox_example' . self::CHECKBOX_SUFFIX	=>	'',
+			'radio_example' . self::RADIO_SUFFIX		=>	'2',
+			'select_example' . self::SELECT_SUFFIX		=>	'default'
+		);		
 	}
 
 	/**
@@ -296,25 +296,27 @@ class AdminSettings
 	 */
 	public function inputExamplesCallback()
 	{
-		$options = get_option('plugin_name_input_examples');
-		//var_dump($options);
+		// Display the settings data for easier examination. Delete it, if you don't need it.
+		echo '<p>Display the settings as stored in the database:</p>';
+		var_dump(get_option($this->exampleOptionName));
+		
 		echo '<p>' . __('Provides examples of the five basic element types.', 'plugin-name') . '</p>';
 	}
 
 	public function inputElementCallback()
 	{
-		$options = get_option('plugin_name_input_examples');
+		$options = get_option($this->exampleOptionName);
 
 		// Render the output
-		echo '<input type="text" id="input_example" name="plugin_name_input_examples[input_example]" value="' . $options['input_example'] . '" />';
+		echo '<input type="text" id="text_example' . self::TEXT_SUFFIX . '" name="' . $this->exampleOptionName . '[text_example' . self::TEXT_SUFFIX . ']" value="' . $options['text_example' . self::TEXT_SUFFIX] . '" />';
 	}
 
 	public function textareaElementCallback()
 	{
-		$options = get_option('plugin_name_input_examples');
+		$options = get_option($this->exampleOptionName);
 
 		// Render the output
-		echo '<textarea id="textarea_example" name="plugin_name_input_examples[textarea_example]" rows="5" cols="50">' . $options['textarea_example'] . '</textarea>';
+		echo '<textarea id="textarea_example' . self::TEXTAREA_SUFFIX . '" name="' . $this->exampleOptionName . '[textarea_example' . self::TEXTAREA_SUFFIX . ']" rows="5" cols="50">' . $options['textarea_example' . self::TEXTAREA_SUFFIX] . '</textarea>';
 	}
 
 	/**
@@ -326,28 +328,28 @@ class AdminSettings
 	public function checkboxElementCallback()
 	{
 		// First, we read the options collection
-		$options = get_option('plugin_name_input_examples');
+		$options = get_option($this->exampleOptionName);
 
 		// Next, we update the name attribute to access this element's ID in the context of the display options array
 		// We also access the show_header element of the options collection in the call to the checked() helper function
-		$html = '<input type="checkbox" id="checkbox_example" name="plugin_name_input_examples[checkbox_example]" value="1"' . checked(1, $options['checkbox_example'], false) . '/>';
+		$html = '<input type="checkbox" id="checkbox_example' . self::CHECKBOX_SUFFIX . '" name="' . $this->exampleOptionName . '[checkbox_example' . self::CHECKBOX_SUFFIX . ']" value="1"' . checked($options['checkbox_example' . self::CHECKBOX_SUFFIX], true, false) . '/>';
 		$html .= '&nbsp;';
 		
 		// Here, we'll take the first argument of the array and add it to a label next to the checkbox
-		$html .= '<label for="checkbox_example">This is an example of a checkbox</label>';
+		$html .= '<label for="checkbox_example' . self::CHECKBOX_SUFFIX . '">This is an example of a checkbox</label>';
 
 		echo $html;
 	}
 
 	public function radioElementCallback()
 	{
-		$options = get_option('plugin_name_input_examples');
+		$options = get_option($this->exampleOptionName);
 
-		$html = '<input type="radio" id="radio_example_one" name="plugin_name_input_examples[radio_example]" value="1"' . checked(1, $options['radio_example'], false) . '/>';
+		$html = '<input type="radio" id="radio_example_one" name="' . $this->exampleOptionName . '[radio_example' . self::RADIO_SUFFIX . ']" value="1"' . checked($options['radio_example' . self::RADIO_SUFFIX], 1, false) . '/>';
 		$html .= '&nbsp;';
 		$html .= '<label for="radio_example_one">Option One</label>';
 		$html .= '&nbsp;';
-		$html .= '<input type="radio" id="radio_example_two" name="plugin_name_input_examples[radio_example]" value="2"' . checked(2, $options['radio_example'], false) . '/>';
+		$html .= '<input type="radio" id="radio_example_two" name="' . $this->exampleOptionName . '[radio_example' . self::RADIO_SUFFIX . ']" value="2"' . checked($options['radio_example' . self::RADIO_SUFFIX], 2, false) . '/>';
 		$html .= '&nbsp;';
 		$html .= '<label for="radio_example_two">Option Two</label>';
 
@@ -356,18 +358,29 @@ class AdminSettings
 
 	public function selectElementCallback()
 	{
-		$options = get_option('plugin_name_input_examples');
+		$options = get_option($this->exampleOptionName);
 
-		$html = '<select id="time_options" name="plugin_name_input_examples[time_options]">';
+		$html = '<select id="select_example . ' . self::SELECT_SUFFIX . '" name="' . $this->exampleOptionName . '[select_example' . self::SELECT_SUFFIX . ']">';
 		$html .= '<option value="default">' . __('Select a time option...', 'plugin-name') . '</option>';
-		$html .= '<option value="never"' . selected($options['time_options'], 'never', false) . '>' . __('Never', 'plugin-name') . '</option>';
-		$html .= '<option value="sometimes"' . selected($options['time_options'], 'sometimes', false) . '>' . __('Sometimes', 'plugin-name') . '</option>';
-		$html .= '<option value="always"' . selected($options['time_options'], 'always', false) . '>' . __('Always', 'plugin-name') . '</option>';	$html .= '</select>';
+		$html .= '<option value="never"' . selected($options['select_example' . self::SELECT_SUFFIX], 'never', false) . '>' . __('Never', 'plugin-name') . '</option>';
+		$html .= '<option value="sometimes"' . selected($options['select_example' . self::SELECT_SUFFIX], 'sometimes', false) . '>' . __('Sometimes', 'plugin-name') . '</option>';
+		$html .= '<option value="always"' . selected($options['select_example' . self::SELECT_SUFFIX], 'always', false) . '>' . __('Always', 'plugin-name') . '</option>';	$html .= '</select>';
 
 		echo $html;
-	}
+	}	
 
-	public function sanitizeInputExamplesOptionsCallback($input)
+#endregion
+
+	/**
+	 * Sanitizes the option's value.
+	 *
+	 * @since             1.0.0
+	 * @package           PluginName
+	 *
+	 * @param string $input		The unsanitized collection of options.
+	 * @return $output			The collection of sanitized values.
+	 */
+	public function sanitizeOptionsCallback($input)
 	{
 		// Define the array for the sanitized options
 		$output = array();
@@ -375,18 +388,63 @@ class AdminSettings
 		// Loop through each of the incoming options
 		foreach($input as $key => $value)
 		{
-			// Check to see if the current option has a value. If so, process it.
-			if(isset($input[$key]))
+			// Sanitize Checkbox. Input must be boolean.
+			if($this->endsWith($key, self::CHECKBOX_SUFFIX))
 			{
-				// Strip all HTML and PHP tags and properly handle quoted strings
-				$output[$key] = strip_tags(stripslashes($input[$key]));
+				$output[$key] = isset($input[$key]) ? true : false;
+			}
+			// Sanitize Radio button. Input must be a slug: [a-z,-,_].
+			else if($this->endsWith($key, self::RADIO_SUFFIX))
+			{
+				$output[$key] = isset($input[$key]) ? sanitize_key($input[$key]) : '';
+			}
+			// Sanitize Select aka Dropdown. Input must be a slug: [a-z,-,_].	
+			else if($this->endsWith($key, self::SELECT_SUFFIX))
+			{
+				$output[$key] = isset($input[$key]) ? sanitize_key($input[$key]) : '';
+			}
+			// Sanitize Text
+			else if($this->endsWith($key, self::TEXT_SUFFIX))
+			{
+				$output[$key] = isset($input[$key]) ? sanitize_text_field($input[$key]) : '';
+			}
+			// Sanitize Textarea
+			else if($this->endsWith($key, self::TEXTAREA_SUFFIX))
+			{
+				$output[$key] = isset($input[$key]) ? sanitize_textarea_field($input[$key]) : '';
+			}
+			// Edge cases, fallback to default. Input must be Text.
+			else
+			{
+				$output[$key] = isset($input[$key]) ? sanitize_text_field($input[$key]) : '';
 			}
 		}
 
 		// Return the array processing any additional functions filtered by this action
 		return $output;
 	}
-
-#endregion
-
+	
+	/**
+	 * Determine if a string ends with another string.
+	 *
+	 * @since             1.0.0
+	 * @package           PluginName
+	 *
+	 * @param string $haystack		Base string.
+	 * @param string $needle		The searched value.
+	 * @return 						Boolean
+	 */
+	private function endsWith($haystack, $needle)
+	{
+		$haystackLenght = strlen($haystack);
+		$needleLenght = strlen($needle);
+		
+		if ($needleLenght > $haystackLenght)
+		{
+			return false;
+		}
+		
+		return substr_compare($haystack, $needle, -$needleLenght, $needleLenght) === 0;
+	}
+	
 }
