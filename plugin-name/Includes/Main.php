@@ -3,6 +3,7 @@
 namespace PluginName\Includes;
 
 use PluginName\Admin\Admin;
+use PluginName\Admin\AdminSettings;
 use PluginName\Frontend\Frontend;
 use PluginName\Includes\i18n;
 
@@ -72,18 +73,23 @@ class Main
 		 */
 		if (is_admin())
 		{
-			$plugin_admin = new Admin($this->pluginSlug, $this->version);
-			add_action('admin_enqueue_scripts', array($plugin_admin, 'enqueueStyles'));
-			add_action('admin_enqueue_scripts', array($plugin_admin, 'enqueueScripts'));
+			$pluginAdmin = new Admin($this->pluginSlug, $this->version);
+			add_action('admin_enqueue_scripts', array($pluginAdmin, 'enqueueStyles'));
+			add_action('admin_enqueue_scripts', array($pluginAdmin, 'enqueueScripts'));
+			
+			$pluginSettings = new AdminSettings($this->pluginSlug);
+			add_action('admin_menu', array($pluginSettings, 'setupSettingsMenu'));
+			add_action('admin_init', array($pluginSettings, 'initializeGeneralOptions'));
+			add_action('admin_init', array($pluginSettings, 'initializeInputExamples'));
 		}
 		/*
 		 * Frontend hooks - Register all of the hooks related to the public-facing functionality of the plugin.
 		 */
 		else
 		{
-			$plugin_frontend = new Frontend($this->pluginSlug, $this->version);
-			add_action('wp_enqueue_scripts', array($plugin_frontend, 'enqueueStyles'));
-			add_action('wp_enqueue_scripts', array($plugin_frontend, 'enqueueScripts'));			 
+			$pluginFrontend = new Frontend($this->pluginSlug, $this->version);
+			add_action('wp_enqueue_scripts', array($pluginFrontend, 'enqueueStyles'));
+			add_action('wp_enqueue_scripts', array($pluginFrontend, 'enqueueScripts'));			 
 		}
 
 		/*
@@ -91,8 +97,8 @@ class Main
 		 */
 		 
 		 // Set the domain for this plugin for internationalization.
-		 $plugin_i18n = new i18n($this->pluginSlug);
-		 add_action('plugins_loaded', array($plugin_i18n, 'loadPluginTextdomain'));		
+		 $plugini18n = new i18n($this->pluginSlug);
+		 add_action('plugins_loaded', array($plugini18n, 'loadPluginTextdomain'));		
 	}
 
 	/**
