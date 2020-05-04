@@ -24,7 +24,6 @@ if (!defined('ABSPATH')) exit;
  */
 spl_autoload_register(function ($className)
 {
-
 	// Project-specific namespace prefix
 	$prefix = 'PluginName\\';
 
@@ -32,14 +31,15 @@ spl_autoload_register(function ($className)
 	$baseDir = __DIR__ . '/';
 
 	// Does the class use the namespace prefix?
-	$len = strlen($prefix);
-	if (strncmp($prefix, $className, $len) !== 0) {
+	$prefixLength = strlen($prefix);
+	if (strncmp($prefix, $className, $prefixLength) !== 0)
+	{
 		// No, move to the next registered autoloader
 		return;
 	}
 
 	// Get the relative class name
-	$relativeClassName = substr($className, $len);
+	$relativeClassName = substr($className, $prefixLength);
 
 	// Replace the namespace prefix with the base directory, replace namespace
 	// separators with directory separators in the relative class name, append
@@ -47,10 +47,12 @@ spl_autoload_register(function ($className)
 	$filePath = $baseDir . str_replace('\\', '/', $relativeClassName) . '.php';
 
 	// If the file exists, require it
-	if (file_exists($filePath)) {
+	if (file_exists($filePath))
+	{
 		require_once $filePath;
 	}
-	else {       
+	else
+	{       
 	   exit(esc_html("The file $className.php could not be found!"));
-   }
+	}
 });
