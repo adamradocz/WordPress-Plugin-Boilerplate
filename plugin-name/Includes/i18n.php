@@ -45,7 +45,10 @@ class i18n
 	 */
 	public function loadPluginTextdomain()
 	{
-		load_plugin_textdomain($this->domain, false, dirname(dirname(plugin_basename(__FILE__ ))) . '/Languages/');
+		if (load_plugin_textdomain($this->domain, false, dirname(dirname(plugin_basename(__FILE__ ))) . '/Languages/') === false)
+		{
+			exit('Textdomain failed to load.');
+		}
 	}
 	
 }
