@@ -83,6 +83,16 @@ class AdminSettings
 	private $gexampleOptionName;
 	
 	/**
+	 * Collection of options.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      array    $generalOptions    Options.
+	 */
+	private $generalOptions;
+	private $exampleOptions;
+	
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -178,10 +188,14 @@ class AdminSettings
 	 */
 	public function initializeGeneralOptions()
 	{
+		// Get the current option values.
+		$this->generalOptions = get_option($this->generalOptionName);
+		
 		// If the options don't exist, create them.
-		if (get_option($this->generalOptionName) === false)
+		if ($this->generalOptions === false)
 		{
-			update_option($this->generalOptionName, $this->defaultGeneralOptions());
+			$this->generalOptions = $this->defaultGeneralOptions();
+			update_option($this->generalOptionName, $this->generalOptions);
 		}
 
 		add_settings_section(
@@ -229,15 +243,8 @@ class AdminSettings
 
 	public function debugCallback()
 	{
-		// First, we read the General Options collection
-		$options = get_option($this->generalOptionName);
-
-		// Next, we update the name attribute to access this element's ID in the context of the display options array
-		// We also access the show_header element of the options collection in the call to the checked() helper function
-		$html = '<input type="checkbox" id="debug' . self::CHECKBOX_SUFFIX . '" name="' . $this->generalOptionName . '[debug' . self::CHECKBOX_SUFFIX . ']" value="1"' . checked($options['debug' . self::CHECKBOX_SUFFIX], true, false) . '/>';
-		$html .= '&nbsp;';
-		
-		// Here, we'll take the first argument of the array and add it to a label next to the checkbox
+		$html = '<input type="checkbox" id="debug' . self::CHECKBOX_SUFFIX . '" name="' . $this->generalOptionName . '[debug' . self::CHECKBOX_SUFFIX . ']" value="1"' . checked($this->generalOptions['debug' . self::CHECKBOX_SUFFIX], true, false) . '/>';
+		$html .= '&nbsp;';		
 		$html .= '<label for="debug' . self::CHECKBOX_SUFFIX . '">This is an example of a checkbox</label>';
 
 		echo $html;
