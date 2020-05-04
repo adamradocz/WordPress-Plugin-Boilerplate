@@ -214,7 +214,7 @@ class AdminSettings
 			$this->generalSettingsSection				// The name of the section to which this field belongs
 		);
 
-		// Finally, we register the fields with WordPress
+		// Finally, we register the fields with WordPress.
 		register_setting($this->generalOptionGroup, $this->generalOptionName, array($this, 'sanitizeOptionsCallback'));
 	}
 	
@@ -262,13 +262,19 @@ class AdminSettings
 	 */
 	public function initializeInputExamples()
 	{
-		if (get_option($this->exampleOptionName) === false)
+		// Get the current option values.
+		$this->exampleOptions = get_option($this->exampleOptionName);
+		
+		// If the options don't exist, create them.
+		if ($this->exampleOptions === false)
 		{
-			update_option($this->exampleOptionName, $this->defaultInputOptions());
+			$this->exampleOptions = $this->defaultInputOptions();
+			update_option($this->exampleOptionName, $this->exampleOptions);
 		}
 
 		add_settings_section($this->exampleSettingsSection, __('Input Examples', 'plugin-name'), array($this, 'inputExamplesCallback'), $this->examplePage);
 
+		// Next, we'll introduce the fields for toggling the visibility of content elements.
 		add_settings_field('text-example' . self::TEXT_SUFFIX, __('Input Element', 'plugin-name'), array($this, 'inputElementCallback'), $this->examplePage, $this->exampleSettingsSection);
 		
 		add_settings_field('textarea-example' . self::TEXTAREA_SUFFIX, __('Textarea Element', 'plugin-name'), array($this, 'textareaElementCallback'), $this->examplePage, $this->exampleSettingsSection);
@@ -279,6 +285,7 @@ class AdminSettings
 		
 		add_settings_field('select-example' . self::SELECT_SUFFIX, __('Select Element', 'plugin-name'), array($this, 'selectElementCallback'), $this->examplePage, $this->exampleSettingsSection);
 
+		// Finally, we register the fields with WordPress.
 		register_setting($this->exampleOptionGroup,	$this->exampleOptionName, array($this, 'sanitizeOptionsCallback'));
 	}
 
@@ -305,25 +312,21 @@ class AdminSettings
 	{
 		// Display the settings data for easier examination. Delete it, if you don't need it.
 		echo '<p>Display the settings as stored in the database:</p>';
-		var_dump(get_option($this->exampleOptionName));
+		var_dump($this->exampleOptions);
 		
 		echo '<p>' . __('Provides examples of the five basic element types.', 'plugin-name') . '</p>';
 	}
 
 	public function inputElementCallback()
 	{
-		$options = get_option($this->exampleOptionName);
-
 		// Render the output
-		echo '<input type="text" id="text-example' . self::TEXT_SUFFIX . '" name="' . $this->exampleOptionName . '[text-example' . self::TEXT_SUFFIX . ']" value="' . $options['text-example' . self::TEXT_SUFFIX] . '" />';
+		echo '<input type="text" id="text-example' . self::TEXT_SUFFIX . '" name="' . $this->exampleOptionName . '[text-example' . self::TEXT_SUFFIX . ']" value="' . $this->exampleOptions['text-example' . self::TEXT_SUFFIX] . '" />';
 	}
 
 	public function textareaElementCallback()
 	{
-		$options = get_option($this->exampleOptionName);
-
 		// Render the output
-		echo '<textarea id="textarea-example' . self::TEXTAREA_SUFFIX . '" name="' . $this->exampleOptionName . '[textarea-example' . self::TEXTAREA_SUFFIX . ']" rows="5" cols="50">' . $options['textarea-example' . self::TEXTAREA_SUFFIX] . '</textarea>';
+		echo '<textarea id="textarea-example' . self::TEXTAREA_SUFFIX . '" name="' . $this->exampleOptionName . '[textarea-example' . self::TEXTAREA_SUFFIX . ']" rows="5" cols="50">' . $this->exampleOptions['textarea-example' . self::TEXTAREA_SUFFIX] . '</textarea>';
 	}
 
 	/**
@@ -334,12 +337,9 @@ class AdminSettings
 	 */
 	public function checkboxElementCallback()
 	{
-		// First, we read the options collection
-		$options = get_option($this->exampleOptionName);
-
-		// Next, we update the name attribute to access this element's ID in the context of the display options array
-		// We also access the show_header element of the options collection in the call to the checked() helper function
-		$html = '<input type="checkbox" id="checkbox-example' . self::CHECKBOX_SUFFIX . '" name="' . $this->exampleOptionName . '[checkbox-example' . self::CHECKBOX_SUFFIX . ']" value="1"' . checked($options['checkbox-example' . self::CHECKBOX_SUFFIX], true, false) . '/>';
+		// We update the name attribute to access this element's ID in the context of the display options array.
+		// We also access the show_header element of the options collection in the call to the checked() helper function.
+		$html = '<input type="checkbox" id="checkbox-example' . self::CHECKBOX_SUFFIX . '" name="' . $this->exampleOptionName . '[checkbox-example' . self::CHECKBOX_SUFFIX . ']" value="1"' . checked($this->exampleOptions['checkbox-example' . self::CHECKBOX_SUFFIX], true, false) . '/>';
 		$html .= '&nbsp;';
 		
 		// Here, we'll take the first argument of the array and add it to a label next to the checkbox
@@ -350,13 +350,11 @@ class AdminSettings
 
 	public function radioElementCallback()
 	{
-		$options = get_option($this->exampleOptionName);
-
-		$html = '<input type="radio" id="radio-example-one" name="' . $this->exampleOptionName . '[radio-example' . self::RADIO_SUFFIX . ']" value="1"' . checked($options['radio-example' . self::RADIO_SUFFIX], 1, false) . '/>';
+		$html = '<input type="radio" id="radio-example-one" name="' . $this->exampleOptionName . '[radio-example' . self::RADIO_SUFFIX . ']" value="1"' . checked($this->exampleOptions['radio-example' . self::RADIO_SUFFIX], 1, false) . '/>';
 		$html .= '&nbsp;';
 		$html .= '<label for="radio-example-one">Option One</label>';
 		$html .= '&nbsp;';
-		$html .= '<input type="radio" id="radio-example-two" name="' . $this->exampleOptionName . '[radio-example' . self::RADIO_SUFFIX . ']" value="2"' . checked($options['radio-example' . self::RADIO_SUFFIX], 2, false) . '/>';
+		$html .= '<input type="radio" id="radio-example-two" name="' . $this->exampleOptionName . '[radio-example' . self::RADIO_SUFFIX . ']" value="2"' . checked($this->exampleOptions['radio-example' . self::RADIO_SUFFIX], 2, false) . '/>';
 		$html .= '&nbsp;';
 		$html .= '<label for="radio-example-two">Option Two</label>';
 
@@ -365,13 +363,11 @@ class AdminSettings
 
 	public function selectElementCallback()
 	{
-		$options = get_option($this->exampleOptionName);
-
 		$html = '<select id="select-example . ' . self::SELECT_SUFFIX . '" name="' . $this->exampleOptionName . '[select-example' . self::SELECT_SUFFIX . ']">';
 		$html .= '<option value="default">' . __('Select a time option...', 'plugin-name') . '</option>';
-		$html .= '<option value="never"' . selected($options['select-example' . self::SELECT_SUFFIX], 'never', false) . '>' . __('Never', 'plugin-name') . '</option>';
-		$html .= '<option value="sometimes"' . selected($options['select-example' . self::SELECT_SUFFIX], 'sometimes', false) . '>' . __('Sometimes', 'plugin-name') . '</option>';
-		$html .= '<option value="always"' . selected($options['select-example' . self::SELECT_SUFFIX], 'always', false) . '>' . __('Always', 'plugin-name') . '</option>';	$html .= '</select>';
+		$html .= '<option value="never"' . selected($this->exampleOptions['select-example' . self::SELECT_SUFFIX], 'never', false) . '>' . __('Never', 'plugin-name') . '</option>';
+		$html .= '<option value="sometimes"' . selected($this->exampleOptions['select-example' . self::SELECT_SUFFIX], 'sometimes', false) . '>' . __('Sometimes', 'plugin-name') . '</option>';
+		$html .= '<option value="always"' . selected($this->exampleOptions['select-example' . self::SELECT_SUFFIX], 'always', false) . '>' . __('Always', 'plugin-name') . '</option>';	$html .= '</select>';
 
 		echo $html;
 	}	
