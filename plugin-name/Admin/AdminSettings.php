@@ -377,6 +377,9 @@ class AdminSettings
 	/**
 	 * Sanitizes the option's value.
 	 *
+	 * Based on:
+	 * @link https://divpusher.com/blog/wordpress-customizer-sanitization-examples/
+	 *
 	 * @since             1.0.0
 	 * @package           PluginName
 	 *
