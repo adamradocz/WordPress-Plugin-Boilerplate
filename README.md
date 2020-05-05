@@ -93,14 +93,22 @@ The plugin is based on the [WordPress Plugin Boilerplate](DevinVinson/WordPress-
 ### Coding standards
 
 Classes: `UpperCamelCase` You must not omit `public`, `protected`, or `private` modifiers.
+
 Functions: `camelCase`
+
 Variables: `camelCase`
+
 Constants: `ALL_UPPER_CASE_WITH_UNDERSCORE_SEPARATOR`
+
 Parentheses: Allman
+
 Comparison: You should use strict comparison (`===`, `!==`) whenever possible.
+
 Whitespaces: You must not add a whitespace before and after braces.
-```
+
+```php
 <?php
+
 namespace PluginName;
 
 public class User
