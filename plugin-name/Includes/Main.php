@@ -44,6 +44,15 @@ class Main
 	 * @var      string    $version    The current version of the plugin.
 	 */
 	protected $version;
+	
+	/**
+	 * Collection of options.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      array    $generalOptions    Options.
+	 */
+	private $generalOptions;
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -96,9 +105,9 @@ class Main
 		 * Includes hooks - Register all of the hooks related both to the admin area and to the public-facing functionality of the plugin.
 		 */
 		 
-		 // Set the domain for this plugin for internationalization.
-		 $plugini18n = new i18n($this->pluginSlug);
-		 add_action('plugins_loaded', array($plugini18n, 'loadPluginTextdomain'));		
+		// Set the domain for this plugin for internationalization.
+		$plugini18n = new i18n($this->pluginSlug);
+		add_action('plugins_loaded', array($plugini18n, 'loadPluginTextdomain'));		
 	}
 
 	/**
@@ -106,7 +115,8 @@ class Main
 	 *
 	 * @since    1.0.0
 	 */
-	public function run() {
+	public function run()
+	{
 		$this->defineHooks();
 	}
 	

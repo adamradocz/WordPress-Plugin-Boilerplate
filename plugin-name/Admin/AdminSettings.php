@@ -238,15 +238,14 @@ class AdminSettings
 	 */
 	public function generalOptionsCallback()
 	{
+		var_dump($this->generalOptions);
 		echo '<p>' . __('General options.', 'plugin-name') . '</p>';
 	}
 
 	public function debugCallback()
 	{
 		$html = '<input type="checkbox" id="debug' . self::CHECKBOX_SUFFIX . '" name="' . $this->generalOptionName . '[debug' . self::CHECKBOX_SUFFIX . ']" value="1"' . checked($this->generalOptions['debug' . self::CHECKBOX_SUFFIX], true, false) . '/>';
-		$html .= '&nbsp;';		
-		$html .= '<label for="debug' . self::CHECKBOX_SUFFIX . '">This is an example of a checkbox</label>';
-
+		
 		echo $html;
 	}	
 	

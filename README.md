@@ -16,7 +16,7 @@ The WordPress Plugin Boilerplate includes the following files:
 * The Boilerplate is based on the [Plugin API](http://codex.wordpress.org/Plugin_API), and [Documentation Standards](https://make.wordpress.org/core/handbook/best-practices/inline-documentation-standards/php/).
 * All classes, functions, and variables are documented so that you know what you need to change.
 * The Boilerplate uses a strict file organization scheme that similar to the WordPress Plugin Repository structure, and that makes it easy to organize the files that compose the plugin.
-* The project includes a `.pot` file as a starting point for internationalization.
+* The project includes [a `.pot` file](https://github.com/fxbenard/Blank-WordPress-Pot) as a starting point for internationalization.
 
 ## Installation
 
@@ -32,9 +32,6 @@ The Boilerplate can be installed directly into your plugins folder "as-is". You 
 
 It's safe to activate the plugin at this point. Because the Boilerplate has no real functionality there will be no menu items, meta boxes, or custom post types added until you write the code.
 
-## WordPress.org Preparation
-
-The original launch of this version of the boilerplate included the folder structure needed for using your plugin on WordPress.org. That folder structure has been moved to its own repo here: https://github.com/DevinVinson/Plugin-Directory-Boilerplate
 
 ## Recommended Tools
 
