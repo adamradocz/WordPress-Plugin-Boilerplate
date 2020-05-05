@@ -92,9 +92,9 @@ The plugin is based on the [WordPress Plugin Boilerplate](DevinVinson/WordPress-
 
 ### Coding standards
 
-Classes: `UpperCamelCase` You must not omit `public`, `protected`, or `private` modifiers.
+Classes: `UpperCamelCase`
 
-Functions: `camelCase`
+Functions: `camelCase`. You must not omit `public`, `protected`, or `private` modifiers.
 
 Variables: `camelCase`
 
@@ -111,7 +111,7 @@ Whitespaces: You must not add a whitespace before and after braces.
 
 namespace PluginName;
 
-public class User
+class User
 { 
 	const DATE_REGISTERED = '2012-06-01';
 	
