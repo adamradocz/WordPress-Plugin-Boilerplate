@@ -13,9 +13,9 @@ The WordPress Plugin Boilerplate includes the following files:
 
 ## Features
 
-* The Boilerplate is based on the [Plugin API](http://codex.wordpress.org/Plugin_API), [Coding Standards](http://codex.wordpress.org/WordPress_Coding_Standards), and [Documentation Standards](https://make.wordpress.org/core/handbook/best-practices/inline-documentation-standards/php/).
+* The Boilerplate is based on the [Plugin API](http://codex.wordpress.org/Plugin_API), and [Documentation Standards](https://make.wordpress.org/core/handbook/best-practices/inline-documentation-standards/php/).
 * All classes, functions, and variables are documented so that you know what you need to change.
-* The Boilerplate uses a strict file organization scheme that corresponds both to the WordPress Plugin Repository structure, and that makes it easy to organize the files that compose the plugin.
+* The Boilerplate uses a strict file organization scheme that similar to the WordPress Plugin Repository structure, and that makes it easy to organize the files that compose the plugin.
 * The project includes a `.pot` file as a starting point for internationalization.
 
 ## Installation
