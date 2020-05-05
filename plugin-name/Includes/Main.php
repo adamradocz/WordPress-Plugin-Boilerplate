@@ -3,7 +3,7 @@
 namespace PluginName\Includes;
 
 use PluginName\Admin\Admin;
-use PluginName\Admin\AdminSettings;
+use PluginName\Admin\Settings;
 use PluginName\Frontend\Frontend;
 use PluginName\Includes\i18n;
 
@@ -86,7 +86,7 @@ class Main
 			add_action('admin_enqueue_scripts', array($pluginAdmin, 'enqueueStyles'));
 			add_action('admin_enqueue_scripts', array($pluginAdmin, 'enqueueScripts'));
 			
-			$pluginSettings = new AdminSettings($this->pluginSlug);
+			$pluginSettings = new Settings($this->pluginSlug);
 			add_action('admin_menu', array($pluginSettings, 'setupSettingsMenu'));
 			add_action('admin_init', array($pluginSettings, 'initializeGeneralOptions'));
 			add_action('admin_init', array($pluginSettings, 'initializeInputExamples'));
