@@ -95,7 +95,10 @@ class Admin
 		 *	print_r($screen);
 		 */
 
-		wp_enqueue_script($this->pluginSlug, plugin_dir_url(__FILE__) . 'js/plugin-name-admin.js', array('jquery'), $this->version, false);
+		if(wp_enqueue_script($this->pluginSlug, plugin_dir_url(__FILE__) . 'js/plugin-name-admin.js', array('jquery'), $this->version, false) === false)
+		{
+			exit(__('Script could not be registered: ', 'plugin-name') . plugin_dir_url(__FILE__) . 'js/plugin-name-admin.js');
+		}
 	}
 
 }

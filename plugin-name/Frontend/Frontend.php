@@ -6,10 +6,10 @@ namespace PluginName\Frontend;
 if (!defined('ABSPATH')) exit;
 
 /**
- * The public-facing functionality of the plugin.
+ * The frontend functionality of the plugin.
  *
  * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the public-facing stylesheet and JavaScript.
+ * enqueue the frontend stylesheet and JavaScript.
  *
  * @link       http://example.com
  * @since      1.0.0
@@ -52,7 +52,7 @@ class Frontend
 	}
 
 	/**
-	 * Register the stylesheets for the public-facing side of the site.
+	 * Register the stylesheets for the frontend side of the site.
 	 *
 	 * @since    1.0.0
 	 */
@@ -62,11 +62,11 @@ class Frontend
 		 * This function is provided for demonstration purposes only.
 		 */
 
-		wp_enqueue_style($this->pluginSlug, plugin_dir_url(__FILE__) . 'css/plugin-name-public.css', array(), $this->version, 'all');
+		wp_enqueue_style($this->pluginSlug, plugin_dir_url(__FILE__) . 'css/plugin-name-frontend.css', array(), $this->version, 'all');
 	}
 
 	/**
-	 * Register the JavaScript for the public-facing side of the site.
+	 * Register the JavaScript for the frontend side of the site.
 	 *
 	 * @since    1.0.0
 	 */
@@ -76,7 +76,10 @@ class Frontend
 		 * This function is provided for demonstration purposes only.		 
 		 */
 
-		wp_enqueue_script($this->pluginSlug, plugin_dir_url(__FILE__) . 'js/plugin-name-public.js', array('jquery'), $this->version, false);
+		if(wp_enqueue_script($this->pluginSlug, plugin_dir_url(__FILE__) . 'js/plugin-name-frontend.js', array('jquery'), $this->version, false) === false)
+		{
+			exit(__('Script could not be registered: ', 'plugin-name') . plugin_dir_url(__FILE__) . 'js/plugin-name-frontend.js');
+		}
 	}
 
 }

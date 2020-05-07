@@ -398,12 +398,12 @@ class Settings
 			{
 				$output[$key] = isset($input[$key]) ? true : false;
 			}
-			// Sanitize Radio button. Input must be a slug: [a-z,-,_].
+			// Sanitize Radio button. Input must be a slug: [a-z,0-9,-,_].
 			else if($this->endsWith($key, self::RADIO_SUFFIX))
 			{
 				$output[$key] = isset($input[$key]) ? sanitize_key($input[$key]) : '';
 			}
-			// Sanitize Select aka Dropdown. Input must be a slug: [a-z,-,_].	
+			// Sanitize Select aka Dropdown. Input must be a slug: [a-z,0-9,-,_].	
 			else if($this->endsWith($key, self::SELECT_SUFFIX))
 			{
 				$output[$key] = isset($input[$key]) ? sanitize_key($input[$key]) : '';
