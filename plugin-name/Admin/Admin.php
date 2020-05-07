@@ -63,10 +63,6 @@ class Admin
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Main class as all of the hooks are defined
-		 * in that particular class.
-		 *
 		 * You can use the $hook parameter to filter for a particular page,
 		 * for more information see the codex,
 		 * https://codex.wordpress.org/Plugin_API/Action_Reference/admin_enqueue_scripts
@@ -89,10 +85,6 @@ class Admin
 	{
 		/**
 		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Main class as all of the hooks are defined
-		 * in that particular class.
 		 *
 		 * You can use the $hook parameter to filter for a particular page,
 		 * for more information see the codex,
