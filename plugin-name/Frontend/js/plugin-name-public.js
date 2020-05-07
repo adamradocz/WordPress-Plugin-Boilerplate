@@ -1,4 +1,4 @@
-(function( $ )
+(function($)
 {
 	'use strict';
 
@@ -12,13 +12,15 @@
 	 *
 	 * This enables you to define handlers, for when the DOM is ready:
 	 *
-	 * $(function() {
+	 * $(function()
+	 * {
 	 *
 	 * });
 	 *
 	 * When the window is loaded:
 	 *
-	 * $( window ).on('load',function() {
+	 * $(window).on('load', function()
+	 * {
 	 *
 	 * });
 	 *
