@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PluginName\Includes;
 
 use PluginName\Admin\Admin;

@@ -68,13 +68,15 @@ These tools are not part of the core of this Boilerplate, as I see them as being
 
 The same is true of using tools like Grunt, Composer, etc. These are all fantastic tools, but not everyone uses them. In order to  keep the core Boilerplate as light as possible, these features have been removed and will be introduced in other editions, and will be listed and maintained on the project homepage.
 
-# Credits
+# Documentation, FAQs, and More
 
-The plugin is based on the [WordPress Plugin Boilerplate](DevinVinson/WordPress-Plugin-Boilerplate).
+## Coding standards
 
-## Documentation, FAQs, and More
+- Every functions MUST declare [**parameter type**](https://www.php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration) and [**return type**](https://www.php.net/manual/en/functions.returning-values.php#functions.returning-values.type-declaration).
+- Every PHP files MUST have [**strict type mode**](https://www.php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration.strict) enabled by starting with `declare(strict_types=1);`.
+- Every PHP files MUST contain `if (!defined('ABSPATH')) exit;` right after the `namespace` declaration.
 
-### Coding standards
+### Coding style
 
 Classes: `UpperCamelCase`
 
@@ -93,7 +95,11 @@ Whitespaces: You must not add a whitespace before and after braces.
 ```php
 <?php
 
+declare(strict_types=1);
+
 namespace PluginName;
+
+if (!defined('ABSPATH')) exit;
 
 class User
 { 
@@ -106,3 +112,7 @@ class User
 	
 }
 ```
+
+# Credits
+
+The plugin is based on the [WordPress Plugin Boilerplate](DevinVinson/WordPress-Plugin-Boilerplate).

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PluginName\Includes;
 
 // If this file is called directly, abort.
@@ -32,8 +34,9 @@ class i18n
 	 * Initialize the text domain for i18n.
 	 *
 	 * @since    1.0.0
+	 * @param	$domain		Textdomain ID.
 	 */
-	public function __construct($domain)
+	public function __construct(string $domain)
 	{
 		$this->domain = $domain;
 	}

@@ -1,5 +1,7 @@
 <?php 
 
+declare(strict_types=1);
+
 namespace PluginName\Admin;
 
 // If this file is called directly, abort.
@@ -96,9 +98,9 @@ class Settings
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param    string    $pluginSlug       The name of this plugin.
+	 * @param    $pluginSlug       The name of this plugin.
 	 */
-	public function __construct($pluginSlug)
+	public function __construct(string $pluginSlug)
 	{
 		$this->pluginSlug = $pluginSlug;
 		$this->menuSlug = $this->pluginSlug . '-options';
@@ -140,10 +142,10 @@ class Settings
 	/**
 	 * Renders the Settings page to display for the Settings menu defined above.
 	 *
-	 * @since    1.0.0
-	 * @param    string    $activeTab       The name of the active tab.
+	 * @since	1.0.0
+	 * @param	activeTab       The name of the active tab.
 	 */
-	public function renderSettingsPageContent($activeTab = '')
+	public function renderSettingsPageContent(string $activeTab = '')
 	{
 		?>
 		<!-- Create a header in the default WordPress 'wrap' container -->
@@ -382,10 +384,10 @@ class Settings
 	 * @since             1.0.0
 	 * @package           PluginName
 	 *
-	 * @param string $input		The unsanitized collection of options.
-	 * @return $output			The collection of sanitized values.
+	 * @param	$input		The unsanitized collection of options.
+	 * @return	$output		The collection of sanitized values.
 	 */
-	public function sanitizeOptionsCallback($input)
+	public function sanitizeOptionsCallback(array $input = NULL): array
 	{
 		// Define the array for the sanitized options
 		$output = array();
@@ -435,11 +437,11 @@ class Settings
 	 * @since             1.0.0
 	 * @package           PluginName
 	 *
-	 * @param string $haystack		Base string.
-	 * @param string $needle		The searched value.
-	 * @return 						Boolean
+	 * @param	$haystack		Base string.
+	 * @param	$needle			The searched value.
+	 * @return If the string ends with the another string reruen true, otherwise false
 	 */
-	private function endsWith($haystack, $needle)
+	private function endsWith(string $haystack, string $needle): bool
 	{
 		$haystackLenght = strlen($haystack);
 		$needleLenght = strlen($needle);

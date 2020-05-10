@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PluginName;
 
 // If this file is called directly, abort.
@@ -19,10 +21,10 @@ if (!defined('ABSPATH')) exit;
  * @since             1.0.0
  * @package           PluginName
  *
- * @param string $className The fully-qualified class name.
+ * @param	$className The fully-qualified class name.
  * @return void
  */
-spl_autoload_register(function ($className)
+spl_autoload_register(function (string $className)
 {
 	// Project-specific namespace prefix
 	$prefix = 'PluginName\\';

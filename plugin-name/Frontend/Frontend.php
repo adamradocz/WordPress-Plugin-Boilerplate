@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PluginName\Frontend;
 
 // If this file is called directly, abort.
@@ -41,11 +43,11 @@ class Frontend
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
-	 * @param      string    $pluginSlug       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @since	1.0.0
+	 * @param	$pluginSlug		The name of the plugin.
+	 * @param	$version		The version of this plugin.
 	 */
-	public function __construct($pluginSlug, $version)
+	public function __construct(string $pluginSlug, string $version)
 	{
 		$this->pluginSlug = $pluginSlug;
 		$this->version = $version;

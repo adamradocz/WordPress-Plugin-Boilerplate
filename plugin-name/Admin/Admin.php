@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PluginName\Admin;
 
 // If this file is called directly, abort.
@@ -42,11 +44,11 @@ class Admin
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
-	 * @param      string    $pluginSlug       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @since	1.0.0
+	 * @param	$pluginSlug		The name of this plugin.
+	 * @param	$version		The version of this plugin.
 	 */
-	public function __construct($pluginSlug, $version)
+	public function __construct(string $pluginSlug, string $version)
 	{
 		$this->pluginSlug = $pluginSlug;
 		$this->version = $version;
@@ -55,10 +57,10 @@ class Admin
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
-	 * @since    1.0.0
-	 * @param   String  $hook    A screen id to filter the current admin page
+	 * @since	1.0.0
+	 * @param	$hook    A screen id to filter the current admin page
 	 */
-	public function enqueueStyles($hook)
+	public function enqueueStyles(string $hook)
 	{
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -78,10 +80,10 @@ class Admin
 	/**
 	 * Register the JavaScript for the admin area.
 	 *
-	 * @since    1.0.0
-	 * @param   String  $hook    A screen id to filter the current admin page
+	 * @since	1.0.0
+	 * @param	$hook    A screen id to filter the current admin page
 	 */
-	public function enqueueScripts($hook)
+	public function enqueueScripts(string $hook)
 	{
 		/**
 		 * This function is provided for demonstration purposes only.

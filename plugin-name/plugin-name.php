@@ -25,6 +25,9 @@
  * Domain Path:       /Languages
  */
 
+// In strict mode, only a variable of exact type of the type declaration will be accepted.
+declare(strict_types=1);
+
 namespace PluginName;
 
 use PluginName\Includes\Activator;
