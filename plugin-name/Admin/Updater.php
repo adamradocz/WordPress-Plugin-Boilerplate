@@ -77,8 +77,10 @@ class Updater
     private static function updateRoutine1()
     {
 		/**
-		 * This function is provided for demonstration purposes only.
-		 *
+		 * Usefull tool to consider:
+		 *  - array_merge()
+		 *  - dbDelta()
+		 *  - wpdb Class
 		 */
 		 
     }
