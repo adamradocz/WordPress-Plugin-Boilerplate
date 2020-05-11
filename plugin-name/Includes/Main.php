@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace PluginName\Includes;
 
+use PluginName\Includes\i18n;
 use PluginName\Admin\Admin;
+use PluginName\Admin\Updater;
 use PluginName\Admin\Settings;
 use PluginName\Frontend\Frontend;
-use PluginName\Includes\i18n;
 
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) exit;
@@ -48,6 +49,24 @@ class Main
 	protected $version;
 	
 	/**
+	 * The current version of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      string    $version    The current version of the plugin's database.
+	 */
+	private $databaseVersion;
+	
+	/**
+	 * The ID for the configuration options in the database.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      array    $configurationOptionName   Slug of configuration.
+	 */
+	private $configurationOptionName;
+
+	/**
 	 * Collection of options.
 	 *
 	 * @since    1.0.0
@@ -64,11 +83,16 @@ class Main
 	 * the public-facing side of the site.
 	 *
 	 * @since    1.0.0
+	 * @param	$pluginSlug					The unique identifier of this plugin.
+	 * @param	$configurationOptionName	The ID for the configuration options in the database.
+	 * @param	$configuration				Configuration data. Contains the current version and database version.
 	 */
-	public function __construct()
+	public function __construct(string $pluginSlug, string $configurationOptionName, array $configuration)
 	{
-		$this->version = PLUGIN_NAME_VERSION;
-		$this->pluginSlug = 'plugin-name';
+		$this->pluginSlug = $pluginSlug;
+		$this->configurationOptionName = $configurationOptionName;
+		$this->version = $configuration['version'];
+		$this->databaseVersion = $configuration['db-version'];
 	}
 
 	/**
@@ -79,37 +103,52 @@ class Main
 	 */
 	private function defineHooks()
 	{
-		/*
+		$defaultHookPriority = 10;
+		
+		/**
+		 * Includes hooks - Register all of the hooks related both to the admin area and to the public-facing functionality of the plugin.
+		 */
+		
+		// Set the domain for this plugin for internationalization.
+		$i18n = new i18n($this->pluginSlug);
+		add_action('plugins_loaded', array($i18n, 'loadPluginTextdomain'), $defaultHookPriority);
+		
+		/**
 		 * Admin hooks - Register all of the hooks related to the admin area functionality of the plugin.
 		 */
 		if (is_admin())
-		{
-			$pluginAdmin = new Admin($this->pluginSlug, $this->version);
-			add_action('admin_enqueue_scripts', array($pluginAdmin, 'enqueueStyles'));
-			add_action('admin_enqueue_scripts', array($pluginAdmin, 'enqueueScripts'));
+		{			
+			// Update the plugin
+			$databaseVersion = $this->databaseVersion;
+			$configurationOptionName = $this->configurationOptionName;
+			add_action(
+				'plugins_loaded',
+				function() use ($databaseVersion, $configurationOptionName) {Updater::update($databaseVersion, $configurationOptionName);},
+				$defaultHookPriority - 1
+			);
 			
-			$pluginSettings = new Settings($this->pluginSlug);
-			add_action('admin_menu', array($pluginSettings, 'setupSettingsMenu'));
-			add_action('admin_init', array($pluginSettings, 'initializeGeneralOptions'));
-			add_action('admin_init', array($pluginSettings, 'initializeInputExamples'));
+			// Admin
+			$admin = new Admin($this->pluginSlug, $this->version);
+			add_action('admin_enqueue_scripts', array($admin, 'enqueueStyles'), $defaultHookPriority);
+			add_action('admin_enqueue_scripts', array($admin, 'enqueueScripts'), $defaultHookPriority);
+			
+			// Settings
+			$settings = new Settings($this->pluginSlug);
+			add_action('admin_menu', array($settings, 'setupSettingsMenu'), $defaultHookPriority);
+			add_action('admin_init', array($settings, 'initializeGeneralOptions'), $defaultHookPriority);
+			add_action('admin_init', array($settings, 'initializeInputExamples'), $defaultHookPriority);
 		}
-		/*
+		/**
 		 * Frontend hooks - Register all of the hooks related to the public-facing functionality of the plugin.
 		 */
 		else
 		{
-			$pluginFrontend = new Frontend($this->pluginSlug, $this->version);
-			add_action('wp_enqueue_scripts', array($pluginFrontend, 'enqueueStyles'));
-			add_action('wp_enqueue_scripts', array($pluginFrontend, 'enqueueScripts'));			 
+			// Frontend
+			$frontend = new Frontend($this->pluginSlug, $this->version);
+			add_action('wp_enqueue_scripts', array($frontend, 'enqueueStyles'), $defaultHookPriority);
+			add_action('wp_enqueue_scripts', array($frontend, 'enqueueScripts'), $defaultHookPriority);			 
 		}
 
-		/*
-		 * Includes hooks - Register all of the hooks related both to the admin area and to the public-facing functionality of the plugin.
-		 */
-		 
-		// Set the domain for this plugin for internationalization.
-		$plugini18n = new i18n($this->pluginSlug);
-		add_action('plugins_loaded', array($plugini18n, 'loadPluginTextdomain'));		
 	}
 
 	/**

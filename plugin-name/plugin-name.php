@@ -48,25 +48,36 @@ require_once plugin_dir_path(__FILE__) . 'Autoloader.php';
 define('PLUGIN_NAME_VERSION', '1.0.0');
 
 /**
+ * Configuration data
+ *  - db-version:	Start with 0 and increment by 1. It should not be updated with every plugin update,
+ *					only when database update is required.
+ */
+$configuration = array(
+	'version'		=> PLUGIN_NAME_VERSION,
+	'db-version'	=> 0
+);
+
+/**
+ * The string used to uniquely identify this plugin.
+ */
+$pluginSlug = 'plugin-name';
+
+/**
+ * The ID for the configuration options in the database.
+ */
+$configurationOptionName = $pluginSlug . '-configuration';
+	
+/**
  * The code that runs during plugin activation.
  * This action is documented in Includes/Activator.php
  */
-function activatePlugin()
-{
-	Activator::activate();
-}
+register_activation_hook(__FILE__, function() use($configuration, $configurationOptionName) {Activator::activate($configuration, $configurationOptionName);});
 
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in Includes/Deactivator.php
  */
-function deactivatePlugin()
-{
-	Deactivator::deactivate();
-}
-
-register_activation_hook(__FILE__, 'PluginName\activatePlugin');
-register_deactivation_hook(__FILE__, 'PluginName\deactivatePlugin');
+register_deactivation_hook(__FILE__, function() {Deactivator::deactivate();});
 
 /**
  * Begins execution of the plugin.
@@ -77,9 +88,9 @@ register_deactivation_hook(__FILE__, 'PluginName\deactivatePlugin');
  *
  * @since    1.0.0
  */
-function runPlugin()
+function runPlugin(string $pluginSlug, string $configurationOptionName, array $configuration)
 {
-	$plugin = new Main();
+	$plugin = new Main($pluginSlug, $configurationOptionName, $configuration);
 	$plugin->run();
 }
-runPlugin();
+runPlugin($pluginSlug, $configurationOptionName, $configuration);

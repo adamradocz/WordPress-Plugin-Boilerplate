@@ -111,7 +111,7 @@ class Settings
 		$this->generalOptionGroup = $pluginSlug . '-general-option-group';
 		$this->generalSettingsSection = $pluginSlug . '-general-section';
 		$this->generalPage = $pluginSlug . '-general';
-		$this->generalOptionName = $pluginSlug . '-general-options';
+		$this->generalOptionName = $pluginSlug . '-general';
 		
 		/**
 		 * Input example
@@ -119,7 +119,7 @@ class Settings
 		$this->exampleOptionGroup = $pluginSlug . '-example-option-group';
 		$this->exampleSettingsSection = $pluginSlug . '-example-section';
 		$this->examplePage = $pluginSlug . '-example';
-		$this->exampleOptionName = $pluginSlug . '-example-options';
+		$this->exampleOptionName = $pluginSlug . '-example';
 	}
 
 	/**
