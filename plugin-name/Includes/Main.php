@@ -117,7 +117,7 @@ class Main
 		 * Admin hooks - Register all of the hooks related to the admin area functionality of the plugin.
 		 */
 		if (is_admin())
-		{			
+		{
 			// Update the plugin
 			$databaseVersion = $this->databaseVersion;
 			$configurationOptionName = $this->configurationOptionName;
