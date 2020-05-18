@@ -103,7 +103,7 @@ class Settings
 	public function __construct(string $pluginSlug)
 	{
 		$this->pluginSlug = $pluginSlug;
-		$this->menuSlug = $this->pluginSlug . '-options';
+		$this->menuSlug = $this->pluginSlug;
 		
 		/**
 		 * General
@@ -225,7 +225,7 @@ class Settings
 	 *
 	 * @return array
 	 */
-	public function defaultGeneralOptions()
+	public function defaultGeneralOptions(): array
 	{
 		return array(
 			'debug' . self::CHECKBOX_SUFFIX => false
@@ -246,9 +246,8 @@ class Settings
 
 	public function debugCallback()
 	{
-		$html = '<input type="checkbox" id="debug' . self::CHECKBOX_SUFFIX . '" name="' . $this->generalOptionName . '[debug' . self::CHECKBOX_SUFFIX . ']" value="1"' . checked($this->generalOptions['debug' . self::CHECKBOX_SUFFIX], true, false) . '/>';
-		
-		echo $html;
+		$id = 'debug' . self::CHECKBOX_SUFFIX;
+		echo sprintf('<input type="checkbox" id="%s" name="%s[%s]" value="1" %s />', $id, $this->generalOptionName, $id, checked($this->generalOptions[$id], true, false));
 	}	
 	
 #endregion
@@ -295,7 +294,7 @@ class Settings
 	 *
 	 * @return array
 	 */
-	public function defaultInputOptions()
+	public function defaultInputOptions(): array
 	{
 		return array(
 			'text-example' . self::TEXT_SUFFIX			=>	'default input example',
@@ -321,13 +320,15 @@ class Settings
 	public function inputElementCallback()
 	{
 		// Render the output
-		echo '<input type="text" id="text-example' . self::TEXT_SUFFIX . '" name="' . $this->exampleOptionName . '[text-example' . self::TEXT_SUFFIX . ']" value="' . $this->exampleOptions['text-example' . self::TEXT_SUFFIX] . '" />';
+		$id = 'text-example' . self::TEXT_SUFFIX;
+		echo sprintf('<input type="text" id="%s" name="%s[%s]" value="%s" />', $id, $this->exampleOptionName, $id, $this->exampleOptions[$id]);
 	}
 
 	public function textareaElementCallback()
 	{
 		// Render the output
-		echo '<textarea id="textarea-example' . self::TEXTAREA_SUFFIX . '" name="' . $this->exampleOptionName . '[textarea-example' . self::TEXTAREA_SUFFIX . ']" rows="5" cols="50">' . $this->exampleOptions['textarea-example' . self::TEXTAREA_SUFFIX] . '</textarea>';
+		$id = 'textarea-example' . self::TEXTAREA_SUFFIX ;
+		echo sprintf('<textarea id="%s" name="%s[%s]" rows="5" cols="50">%s</textarea>', $id, $this->exampleOptionName, $id, $this->exampleOptions[$id]);
 	}
 
 	/**
@@ -340,22 +341,24 @@ class Settings
 	{
 		// We update the name attribute to access this element's ID in the context of the display options array.
 		// We also access the show_header element of the options collection in the call to the checked() helper function.
-		$html = '<input type="checkbox" id="checkbox-example' . self::CHECKBOX_SUFFIX . '" name="' . $this->exampleOptionName . '[checkbox-example' . self::CHECKBOX_SUFFIX . ']" value="1"' . checked($this->exampleOptions['checkbox-example' . self::CHECKBOX_SUFFIX], true, false) . '/>';
+		$id = 'checkbox-example' . self::CHECKBOX_SUFFIX;
+		$html = sprintf('<input type="checkbox" id="%s" name="%s[%s]" value="1" %s />', $id, $this->exampleOptionName, $id, checked($this->exampleOptions[$id], true, false));
 		$html .= '&nbsp;';
 		
 		// Here, we'll take the first argument of the array and add it to a label next to the checkbox
-		$html .= '<label for="checkbox-example' . self::CHECKBOX_SUFFIX . '">This is an example of a checkbox</label>';
+		$html .= sprintf('<label for="%s">This is an example of a checkbox</label>', $id);
 
 		echo $html;
 	}
-
+	
 	public function radioElementCallback()
 	{
-		$html = '<input type="radio" id="radio-example-one" name="' . $this->exampleOptionName . '[radio-example' . self::RADIO_SUFFIX . ']" value="1"' . checked($this->exampleOptions['radio-example' . self::RADIO_SUFFIX], 1, false) . '/>';
+		$id = 'radio-example' . self::RADIO_SUFFIX;
+		$html = sprintf('<input type="radio" id="radio-example-one" name="%s[%s]" value="1" %s />', $this->exampleOptionName, $id, checked($this->exampleOptions[$id], 1, false));
 		$html .= '&nbsp;';
 		$html .= '<label for="radio-example-one">Option One</label>';
 		$html .= '&nbsp;';
-		$html .= '<input type="radio" id="radio-example-two" name="' . $this->exampleOptionName . '[radio-example' . self::RADIO_SUFFIX . ']" value="2"' . checked($this->exampleOptions['radio-example' . self::RADIO_SUFFIX], 2, false) . '/>';
+		$html .= sprintf('<input type="radio" id="radio-example-two" name="%s[%s]" value="2" %s />', $this->exampleOptionName, $id, checked($this->exampleOptions[$id], 2, false));
 		$html .= '&nbsp;';
 		$html .= '<label for="radio-example-two">Option Two</label>';
 
@@ -364,14 +367,16 @@ class Settings
 
 	public function selectElementCallback()
 	{
-		$html = '<select id="select-example . ' . self::SELECT_SUFFIX . '" name="' . $this->exampleOptionName . '[select-example' . self::SELECT_SUFFIX . ']">';
+		$id = 'select-example . ' . self::SELECT_SUFFIX;
+		$html = sprintf('<select id="%s" name="%s[%s]">', $id, $this->exampleOptionName, $id);
 		$html .= '<option value="default">' . __('Select a time option...', 'plugin-name') . '</option>';
-		$html .= '<option value="never"' . selected($this->exampleOptions['select-example' . self::SELECT_SUFFIX], 'never', false) . '>' . __('Never', 'plugin-name') . '</option>';
-		$html .= '<option value="sometimes"' . selected($this->exampleOptions['select-example' . self::SELECT_SUFFIX], 'sometimes', false) . '>' . __('Sometimes', 'plugin-name') . '</option>';
-		$html .= '<option value="always"' . selected($this->exampleOptions['select-example' . self::SELECT_SUFFIX], 'always', false) . '>' . __('Always', 'plugin-name') . '</option>';	$html .= '</select>';
+		$html .= sprintf('<option value="never" %s >%s</option>', selected($this->exampleOptions[$id], 'never', false), __('Never', 'plugin-name'));
+		$html .= sprintf('<option value="sometimes" %s >%s</option>', selected($this->exampleOptions[$id], 'sometimes', false), __('Sometimes', 'plugin-name'));
+		$html .= sprintf('<option value="always" %s >%s</option>', selected($this->exampleOptions[$id], 'always', false), __('Always', 'plugin-name'));
+		$html .= '</select>';
 
 		echo $html;
-	}	
+	}
 
 #endregion
 
