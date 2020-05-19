@@ -421,7 +421,7 @@ class Settings
 			$this->exampleOptions = $this->getExampleOptions();
 		}
 		
-		return $options['text-example' . self::TEXT_SUFFIX];
+		return $this->exampleOptions['text-example' . self::TEXT_SUFFIX];
 	}
 
 	/**
