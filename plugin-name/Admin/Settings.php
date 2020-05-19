@@ -260,6 +260,15 @@ class Settings
 		echo sprintf('<input type="checkbox" id="%s" name="%s[%s]" value="1" %s />', $id, $this->generalOptionName, $id, checked($this->generalOptions[$id], true, false));
 	}	
 	
+	/**
+	 * Get Debug option.
+	 */
+	public function getDebug(): bool
+	{
+		$options = $this->getGeneralOptions();
+		return $option['debug' . self::CHECKBOX_SUFFIX];
+	}
+	
 #endregion
 	
 #region INPUT EXAMPLES OPTIONS
@@ -396,6 +405,51 @@ class Settings
 		$html .= '</select>';
 
 		echo $html;
+	}	
+	
+	/**
+	 * Get Text Example option.
+	 */
+	public function getTextExample(): string
+	{
+		$options = $this->getExampleOptions();
+		return $option['text-example' . self::TEXT_SUFFIX];
+	}
+
+	/**
+	 * Get Textarea Example option.
+	 */
+	public function getTextareaExample(): string
+	{
+		$options = $this->getExampleOptions();
+		return $option['textarea-example' . self::TEXTAREA_SUFFIX];
+	}
+
+	/**
+	 * Get Checkbox Example option.
+	 */
+	public function getCheckboxExample(): string
+	{
+		$options = $this->getExampleOptions();
+		return $option['checkbox-example' . self::CHECKBOX_SUFFIX];
+	}
+
+	/**
+	 * Get Radio Example option.
+	 */
+	public function getRadioExample(): string
+	{
+		$options = $this->getExampleOptions();
+		return $option['radio-example' . self::RADIO_SUFFIX];
+	}
+
+	/**
+	 * Get Select Example option.
+	 */
+	public function getSelectExample(): string
+	{
+		$options = $this->getExampleOptions();
+		return $option['select-example' . self::SELECT_SUFFIX];
 	}
 
 #endregion
