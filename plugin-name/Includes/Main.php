@@ -49,24 +49,6 @@ class Main
 	protected $version;
 	
 	/**
-	 * The current version of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the plugin's database.
-	 */
-	private $databaseVersion;
-	
-	/**
-	 * The ID for the configuration options in the database.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      array    $configurationOptionName   Slug of configuration.
-	 */
-	private $configurationOptionName;
-
-	/**
 	 * Collection of options.
 	 *
 	 * @since    1.0.0
@@ -83,16 +65,11 @@ class Main
 	 * the public-facing side of the site.
 	 *
 	 * @since    1.0.0
-	 * @param	$pluginSlug					The unique identifier of this plugin.
-	 * @param	$configurationOptionName	The ID for the configuration options in the database.
-	 * @param	$configuration				Configuration data. Contains the current version and database version.
 	 */
-	public function __construct(string $pluginSlug, string $configurationOptionName, array $configuration)
+	public function __construct()
 	{
-		$this->pluginSlug = $pluginSlug;
-		$this->configurationOptionName = $configurationOptionName;
-		$this->version = $configuration['version'];
-		$this->databaseVersion = $configuration['db-version'];
+		$this->version = PLUGIN_NAME_VERSION;
+		$this->pluginSlug = PLUGIN_NAME_SLUG;
 	}
 
 	/**
@@ -118,15 +95,6 @@ class Main
 		 */
 		if (is_admin())
 		{
-			// Update the plugin
-			$databaseVersion = $this->databaseVersion;
-			$configurationOptionName = $this->configurationOptionName;
-			add_action(
-				'plugins_loaded',
-				function() use ($databaseVersion, $configurationOptionName) {Updater::update($databaseVersion, $configurationOptionName);},
-				$defaultHookPriority - 1
-			);
-			
 			// Admin
 			$admin = new Admin($this->pluginSlug, $this->version);
 			add_action('admin_enqueue_scripts', array($admin, 'enqueueStyles'), $defaultHookPriority);

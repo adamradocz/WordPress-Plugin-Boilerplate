@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PluginName\Admin;
+namespace PluginName\Includes;
 
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) exit;
@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) exit;
  * @link       http://example.com
  * @since      1.0.0
  * @package    PluginName
- * @subpackage PluginName/Admin
+ * @subpackage PluginName/Includes
  * @author     Your Name <email@example.com>
  */
 class Updater
@@ -77,7 +77,7 @@ class Updater
     private static function updateRoutine1()
     {
 		/**
-		 * Usefull tool to consider:
+		 * Usefull tools to consider:
 		 *  - array_merge()
 		 *  - dbDelta()
 		 *  - wpdb Class
