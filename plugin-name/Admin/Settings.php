@@ -191,14 +191,7 @@ class Settings
 	public function initializeGeneralOptions()
 	{
 		// Get the current option values.
-		$this->generalOptions = get_option($this->generalOptionName);
-		
-		// If the options don't exist, create them.
-		if ($this->generalOptions === false)
-		{
-			$this->generalOptions = $this->defaultGeneralOptions();
-			update_option($this->generalOptionName, $this->generalOptions);
-		}
+		$this->generalOptions = $this->getGeneralOptions();
 
 		add_settings_section(
 			$this->generalSettingsSection,				// ID used to identify this section and with which to register options
@@ -218,14 +211,31 @@ class Settings
 
 		// Finally, we register the fields with WordPress.
 		register_setting($this->generalOptionGroup, $this->generalOptionName, array($this, 'sanitizeOptionsCallback'));
-	}
+	}	
+	
+	/**
+	 * Return the General options.
+	 */
+	public function getGeneralOptions(): array
+	{
+		$options = get_option($this->generalOptionName);
+		
+		// If the options don't exist, create them.
+		if ($options === false)
+		{
+			$options = $this->defaultGeneralOptions();
+			update_option($this->generalOptionName, $options);
+		}
+		
+		return $options;
+	}	
 	
 	/**
 	 * Provide default values for the General Options.
 	 *
 	 * @return array
 	 */
-	public function defaultGeneralOptions(): array
+	private function defaultGeneralOptions(): array
 	{
 		return array(
 			'debug' . self::CHECKBOX_SUFFIX => false
@@ -263,14 +273,7 @@ class Settings
 	public function initializeInputExamples()
 	{
 		// Get the current option values.
-		$this->exampleOptions = get_option($this->exampleOptionName);
-		
-		// If the options don't exist, create them.
-		if ($this->exampleOptions === false)
-		{
-			$this->exampleOptions = $this->defaultInputOptions();
-			update_option($this->exampleOptionName, $this->exampleOptions);
-		}
+		$this->exampleOptions = $this->getExampleOptions();
 
 		add_settings_section($this->exampleSettingsSection, __('Input Examples', 'plugin-name'), array($this, 'inputExamplesCallback'), $this->examplePage);
 
@@ -288,13 +291,30 @@ class Settings
 		// Finally, we register the fields with WordPress.
 		register_setting($this->exampleOptionGroup,	$this->exampleOptionName, array($this, 'sanitizeOptionsCallback'));
 	}
+	
+	/**
+	 * Return the Example options.
+	 */
+	public function getExampleOptions(): array
+	{
+		$options = get_option($this->exampleOptionName);
+		
+		// If the options don't exist, create them.
+		if ($options === false)
+		{
+			$options = $this->defaultInputOptions();
+			update_option($this->exampleOptionName, $options);
+		}
+		
+		return $options;
+	}
 
 	/**
 	 * Provides default values for the Input Options.
 	 *
 	 * @return array
 	 */
-	public function defaultInputOptions(): array
+	private function defaultInputOptions(): array
 	{
 		return array(
 			'text-example' . self::TEXT_SUFFIX			=>	'default input example',
