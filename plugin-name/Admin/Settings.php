@@ -266,7 +266,7 @@ class Settings
 	public function getDebug(): bool
 	{
 		$options = $this->getGeneralOptions();
-		return $option['debug' . self::CHECKBOX_SUFFIX];
+		return $options['debug' . self::CHECKBOX_SUFFIX];
 	}
 	
 #endregion
@@ -413,7 +413,7 @@ class Settings
 	public function getTextExample(): string
 	{
 		$options = $this->getExampleOptions();
-		return $option['text-example' . self::TEXT_SUFFIX];
+		return $options['text-example' . self::TEXT_SUFFIX];
 	}
 
 	/**
@@ -422,7 +422,7 @@ class Settings
 	public function getTextareaExample(): string
 	{
 		$options = $this->getExampleOptions();
-		return $option['textarea-example' . self::TEXTAREA_SUFFIX];
+		return $options['textarea-example' . self::TEXTAREA_SUFFIX];
 	}
 
 	/**
@@ -431,7 +431,7 @@ class Settings
 	public function getCheckboxExample(): string
 	{
 		$options = $this->getExampleOptions();
-		return $option['checkbox-example' . self::CHECKBOX_SUFFIX];
+		return $options['checkbox-example' . self::CHECKBOX_SUFFIX];
 	}
 
 	/**
@@ -440,7 +440,7 @@ class Settings
 	public function getRadioExample(): string
 	{
 		$options = $this->getExampleOptions();
-		return $option['radio-example' . self::RADIO_SUFFIX];
+		return $options['radio-example' . self::RADIO_SUFFIX];
 	}
 
 	/**
@@ -449,7 +449,7 @@ class Settings
 	public function getSelectExample(): string
 	{
 		$options = $this->getExampleOptions();
-		return $option['select-example' . self::SELECT_SUFFIX];
+		return $options['select-example' . self::SELECT_SUFFIX];
 	}
 
 #endregion
