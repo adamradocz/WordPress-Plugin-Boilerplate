@@ -265,8 +265,12 @@ class Settings
 	 */
 	public function getDebug(): bool
 	{
-		$options = $this->getGeneralOptions();
-		return $options['debug' . self::CHECKBOX_SUFFIX];
+		if(!isset($this->generalOptions))
+		{
+			$this->generalOptions = $this->getGeneralOptions();
+		}
+		
+		return $this->generalOptions['debug' . self::CHECKBOX_SUFFIX];
 	}
 	
 #endregion
@@ -412,7 +416,11 @@ class Settings
 	 */
 	public function getTextExample(): string
 	{
-		$options = $this->getExampleOptions();
+		if(!isset($this->exampleOptions))
+		{
+			$this->exampleOptions = $this->getExampleOptions();
+		}
+		
 		return $options['text-example' . self::TEXT_SUFFIX];
 	}
 
@@ -421,8 +429,12 @@ class Settings
 	 */
 	public function getTextareaExample(): string
 	{
-		$options = $this->getExampleOptions();
-		return $options['textarea-example' . self::TEXTAREA_SUFFIX];
+		if(!isset($this->exampleOptions))
+		{
+			$this->exampleOptions = $this->getExampleOptions();
+		}
+		
+		return $this->exampleOptions['textarea-example' . self::TEXTAREA_SUFFIX];
 	}
 
 	/**
@@ -430,8 +442,12 @@ class Settings
 	 */
 	public function getCheckboxExample(): string
 	{
-		$options = $this->getExampleOptions();
-		return $options['checkbox-example' . self::CHECKBOX_SUFFIX];
+		if(!isset($this->exampleOptions))
+		{
+			$this->exampleOptions = $this->getExampleOptions();
+		}
+		
+		return $this->exampleOptions['checkbox-example' . self::CHECKBOX_SUFFIX];
 	}
 
 	/**
@@ -439,8 +455,12 @@ class Settings
 	 */
 	public function getRadioExample(): string
 	{
-		$options = $this->getExampleOptions();
-		return $options['radio-example' . self::RADIO_SUFFIX];
+		if(!isset($this->exampleOptions))
+		{
+			$this->exampleOptions = $this->getExampleOptions();
+		}
+		
+		return $this->exampleOptions['radio-example' . self::RADIO_SUFFIX];
 	}
 
 	/**
@@ -448,8 +468,12 @@ class Settings
 	 */
 	public function getSelectExample(): string
 	{
-		$options = $this->getExampleOptions();
-		return $options['select-example' . self::SELECT_SUFFIX];
+		if(!isset($this->exampleOptions))
+		{
+			$this->exampleOptions = $this->getExampleOptions();
+		}
+		
+		return $this->exampleOptions['select-example' . self::SELECT_SUFFIX];
 	}
 
 #endregion
