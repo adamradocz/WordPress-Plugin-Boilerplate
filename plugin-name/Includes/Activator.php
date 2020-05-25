@@ -31,7 +31,7 @@ class Activator
 	 * @param	$configurationOptionName	The ID for the configuration options in the database.
 	 * @since    1.0.0
 	 */
-	public static function activate(array $configuration, string $configurationOptionName)
+	public static function activate(array $configuration, string $configurationOptionName): void
 	{		
 		self::ensureCreateOptions($configurationOptionName, $configuration);
 	}
@@ -43,7 +43,7 @@ class Activator
 	 * @param	$configuration				The plugin's configuration data.
      * @since      1.0.0
      */
-    private static function ensureCreateOptions(string $configurationOptionName, array $configuration)
+    private static function ensureCreateOptions(string $configurationOptionName, array $configuration): void
     {
 		// Save the configuration data if not exist.
 		if(get_option($configurationOptionName) === false)

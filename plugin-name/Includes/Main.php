@@ -78,7 +78,7 @@ class Main
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function defineHooks()
+	private function defineHooks(): void
 	{
 		$defaultHookPriority = 10;
 		
@@ -124,7 +124,7 @@ class Main
 	 *
 	 * @since    1.0.0
 	 */
-	public function run()
+	public function run(): void
 	{
 		$this->defineHooks();
 	}

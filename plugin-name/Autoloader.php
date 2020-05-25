@@ -24,7 +24,7 @@ if (!defined('ABSPATH')) exit;
  * @param	$className The fully-qualified class name.
  * @return void
  */
-spl_autoload_register(function (string $className)
+spl_autoload_register(function (string $className): void
 {
 	// Project-specific namespace prefix
 	$prefix = 'PluginName\\';

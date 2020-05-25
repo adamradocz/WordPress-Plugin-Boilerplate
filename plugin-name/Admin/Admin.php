@@ -60,7 +60,7 @@ class Admin
 	 * @since	1.0.0
 	 * @param	$hook    A screen id to filter the current admin page
 	 */
-	public function enqueueStyles(string $hook)
+	public function enqueueStyles(string $hook): void
 	{
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -97,7 +97,7 @@ class Admin
 	 * @since	1.0.0
 	 * @param	$hook    A screen id to filter the current admin page
 	 */
-	public function enqueueScripts(string $hook)
+	public function enqueueScripts(string $hook): void
 	{
 		/**
 		 * This function is provided for demonstration purposes only.

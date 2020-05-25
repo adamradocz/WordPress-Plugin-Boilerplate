@@ -30,7 +30,7 @@ class Updater
 	 * @param	$configurationOptionName	The ID for the configuration options in the database.
 	 * @since    1.0.0
 	 */
-	public static function update(int $currentDatabaseVersion, string $configurationOptionName)
+	public static function update(int $currentDatabaseVersion, string $configurationOptionName): void
 	{
 		$configuration = get_option($configurationOptionName);
 		$installedDatabaseVersion = $configuration['db-version'];
@@ -74,7 +74,7 @@ class Updater
 	 * 
 	 * @since    1.0.0
      */
-    private static function updateRoutine1()
+    private static function updateRoutine1(): void
     {
 		/**
 		 * Usefull tools to consider:

@@ -95,7 +95,7 @@ add_action('plugins_loaded', function() use ($configuration, $configurationOptio
  *
  * @since    1.0.0
  */
-function runPlugin()
+function runPlugin(): void
 {
 	$plugin = new Main();
 	$plugin->run();

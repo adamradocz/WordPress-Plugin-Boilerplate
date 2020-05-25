@@ -125,7 +125,7 @@ class Settings
 	/**
 	 * This function introduces the plugin options into the Main menu.
 	 */
-	public function setupSettingsMenu()
+	public function setupSettingsMenu(): void
 	{
 		//Add the menu item to the Main menu
 		add_menu_page(
@@ -145,7 +145,7 @@ class Settings
 	 * @since	1.0.0
 	 * @param	activeTab       The name of the active tab.
 	 */
-	public function renderSettingsPageContent(string $activeTab = '')
+	public function renderSettingsPageContent(string $activeTab = ''): void
 	{
 		?>
 		<!-- Create a header in the default WordPress 'wrap' container -->
@@ -188,7 +188,7 @@ class Settings
 	 *
 	 * This function is registered with the 'admin_init' hook.
 	 */
-	public function initializeGeneralOptions()
+	public function initializeGeneralOptions(): void
 	{
 		// Get the current option values.
 		$this->generalOptions = $this->getGeneralOptions();
@@ -248,13 +248,13 @@ class Settings
 	 * It's called from the initializeGeneralOptions function by being passed as a parameter
 	 * in the add_settings_section function.
 	 */
-	public function generalOptionsCallback()
+	public function generalOptionsCallback(): void
 	{
 		var_dump($this->generalOptions);
 		echo '<p>' . __('General options.', 'plugin-name') . '</p>';
 	}
 
-	public function debugCallback()
+	public function debugCallback(): void
 	{
 		$id = 'debug' . self::CHECKBOX_SUFFIX;
 		echo sprintf('<input type="checkbox" id="%s" name="%s[%s]" value="1" %s />', $id, $this->generalOptionName, $id, checked($this->generalOptions[$id], true, false));
@@ -283,7 +283,7 @@ class Settings
 	 *
 	 * This function is registered with the 'admin_init' hook.
 	 */
-	public function initializeInputExamples()
+	public function initializeInputExamples(): void
 	{
 		// Get the current option values.
 		$this->exampleOptions = $this->getExampleOptions();
@@ -341,7 +341,7 @@ class Settings
 	/**
 	 * This function provides a simple description for the Input Examples page.
 	 */
-	public function inputExamplesCallback()
+	public function inputExamplesCallback(): void
 	{
 		// Display the settings data for easier examination. Delete it, if you don't need it.
 		echo '<p>Display the settings as stored in the database:</p>';
@@ -350,14 +350,14 @@ class Settings
 		echo '<p>' . __('Provides examples of the five basic element types.', 'plugin-name') . '</p>';
 	}
 
-	public function inputElementCallback()
+	public function inputElementCallback(): void
 	{
 		// Render the output
 		$id = 'text-example' . self::TEXT_SUFFIX;
 		echo sprintf('<input type="text" id="%s" name="%s[%s]" value="%s" />', $id, $this->exampleOptionName, $id, $this->exampleOptions[$id]);
 	}
 
-	public function textareaElementCallback()
+	public function textareaElementCallback(): void
 	{
 		// Render the output
 		$id = 'textarea-example' . self::TEXTAREA_SUFFIX ;
@@ -370,7 +370,7 @@ class Settings
 	 * It accepts an array or arguments and expects the first element in the array to be the description
 	 * to be displayed next to the checkbox.
 	 */
-	public function checkboxElementCallback()
+	public function checkboxElementCallback(): void
 	{
 		// We update the name attribute to access this element's ID in the context of the display options array.
 		// We also access the show_header element of the options collection in the call to the checked() helper function.
@@ -384,7 +384,7 @@ class Settings
 		echo $html;
 	}
 	
-	public function radioElementCallback()
+	public function radioElementCallback(): void
 	{
 		$id = 'radio-example' . self::RADIO_SUFFIX;
 		$html = sprintf('<input type="radio" id="radio-example-one" name="%s[%s]" value="1" %s />', $this->exampleOptionName, $id, checked($this->exampleOptions[$id], 1, false));
@@ -398,7 +398,7 @@ class Settings
 		echo $html;
 	}
 
-	public function selectElementCallback()
+	public function selectElementCallback(): void
 	{
 		$id = 'select-example . ' . self::SELECT_SUFFIX;
 		$html = sprintf('<select id="%s" name="%s[%s]">', $id, $this->exampleOptionName, $id);

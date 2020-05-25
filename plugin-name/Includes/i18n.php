@@ -46,7 +46,7 @@ class i18n
 	 *
 	 * @since    1.0.0
 	 */
-	public function loadPluginTextdomain()
+	public function loadPluginTextdomain(): void
 	{
 		if (load_plugin_textdomain($this->domain, false, dirname(dirname(plugin_basename(__FILE__ ))) . '/Languages/') === false)
 		{			
