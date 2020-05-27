@@ -21,37 +21,37 @@ if (!defined('ABSPATH')) exit;
  */
 class i18n
 {
-	/**
-	 * Unique identifier for retrieving translated strings.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $domain    Unique identifier for retrieving translated strings.
-	 */
-	protected $domain;
+    /**
+     * Unique identifier for retrieving translated strings.
+     *
+     * @since    1.0.0
+     * @access   protected
+     * @var      string    $domain    Unique identifier for retrieving translated strings.
+     */
+    protected $domain;
 
-	/**
-	 * Initialize the text domain for i18n.
-	 *
-	 * @since    1.0.0
-	 * @param	$domain		Textdomain ID.
-	 */
-	public function __construct(string $domain)
-	{
-		$this->domain = $domain;
-	}
+    /**
+     * Initialize the text domain for i18n.
+     *
+     * @since    1.0.0
+     * @param   $domain     Textdomain ID.
+     */
+    public function __construct(string $domain)
+    {
+        $this->domain = $domain;
+    }
 
-	/**
-	 * Load the plugin text domain for translation.
-	 *
-	 * @since    1.0.0
-	 */
-	public function loadPluginTextdomain(): void
-	{
-		if (load_plugin_textdomain($this->domain, false, dirname(dirname(plugin_basename(__FILE__ ))) . '/Languages/') === false)
-		{			
-			//exit('Textdomain could not be loaded from: ' . dirname(dirname(plugin_basename(__FILE__ ))) . '/Languages/');
-		}
-	}
-	
+    /**
+     * Load the plugin text domain for translation.
+     *
+     * @since    1.0.0
+     */
+    public function loadPluginTextdomain(): void
+    {
+        if (load_plugin_textdomain($this->domain, false, dirname(dirname(plugin_basename(__FILE__ ))) . '/Languages/') === false)
+        {           
+            //exit('Textdomain could not be loaded from: ' . dirname(dirname(plugin_basename(__FILE__ ))) . '/Languages/');
+        }
+    }
+    
 }

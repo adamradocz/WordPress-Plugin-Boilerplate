@@ -22,34 +22,34 @@ if (!defined('ABSPATH')) exit;
  */
 class Activator
 {
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @param	$configuration				The plugin's configuration data.
-	 * @param	$configurationOptionName	The ID for the configuration options in the database.
-	 * @since    1.0.0
-	 */
-	public static function activate(array $configuration, string $configurationOptionName): void
-	{		
-		self::ensureCreateOptions($configurationOptionName, $configuration);
-	}
+    /**
+     * Short Description. (use period)
+     *
+     * Long Description.
+     *
+     * @param   $configuration              The plugin's configuration data.
+     * @param   $configurationOptionName    The ID for the configuration options in the database.
+     * @since    1.0.0
+     */
+    public static function activate(array $configuration, string $configurationOptionName): void
+    {       
+        self::ensureCreateOptions($configurationOptionName, $configuration);
+    }
 
     /**
      * Initialize default option values
      *
-	 * @param	$configurationOptionName	The ID for getting and setting the configuration options from the database.
-	 * @param	$configuration				The plugin's configuration data.
+     * @param   $configurationOptionName    The ID for getting and setting the configuration options from the database.
+     * @param   $configuration              The plugin's configuration data.
      * @since      1.0.0
      */
     private static function ensureCreateOptions(string $configurationOptionName, array $configuration): void
     {
-		// Save the configuration data if not exist.
-		if(get_option($configurationOptionName) === false)
-		{
-			update_option($configurationOptionName, $configuration);
-		}
+        // Save the configuration data if not exist.
+        if(get_option($configurationOptionName) === false)
+        {
+            update_option($configurationOptionName, $configuration);
+        }
     }
-	
+    
 }
