@@ -117,5 +117,4 @@ class Frontend
          */
         wp_enqueue_script($scriptId);
     }
-
 }

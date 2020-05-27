@@ -128,5 +128,4 @@ class Main
     {
         $this->defineHooks();
     }
-    
 }

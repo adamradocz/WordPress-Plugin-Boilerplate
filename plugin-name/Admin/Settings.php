@@ -542,5 +542,4 @@ class Settings
         
         return substr_compare($haystack, $needle, -$needleLenght, $needleLenght) === 0;
     }
-    
 }

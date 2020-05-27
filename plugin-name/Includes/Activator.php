@@ -51,5 +51,4 @@ class Activator
             update_option($configurationOptionName, $configuration);
         }
     }
-    
 }

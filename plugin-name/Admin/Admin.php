@@ -128,5 +128,4 @@ class Admin
          */
         wp_enqueue_script($scriptId);
     }
-
 }
