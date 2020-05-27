@@ -54,7 +54,7 @@ class Updater
                     call_user_func(array(self, $updateRoutineFunctionName));
                     
                     // Update the configuration option in the database,
-                    // so that this process can always pick up where it left off                     
+                    // so that this process can always pick up where it left off
                     $configuration['db-version'] = $installedDatabaseVersion;
                     update_option($configurationOptionName, $configuration);
                 }
