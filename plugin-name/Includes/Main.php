@@ -116,7 +116,6 @@ class Main
             add_action('wp_enqueue_scripts', array($frontend, 'enqueueStyles'), $defaultHookPriority);
             add_action('wp_enqueue_scripts', array($frontend, 'enqueueScripts'), $defaultHookPriority);          
         }
-
     }
 
     /**

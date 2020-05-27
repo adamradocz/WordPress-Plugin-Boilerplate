@@ -81,7 +81,6 @@ class Updater
          *  - array_merge()
          *  - dbDelta()
          *  - wpdb Class
-         */
-         
+         */         
     }
 }
