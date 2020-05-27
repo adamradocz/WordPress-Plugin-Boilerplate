@@ -71,7 +71,7 @@ class Updater
     
     /**
      * Update routine for the upcomming database version called by 'update' function
-     * 
+     *
      * @since    1.0.0
      */
     private static function updateRoutine1(): void
