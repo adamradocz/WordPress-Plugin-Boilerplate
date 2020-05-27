@@ -218,16 +218,21 @@ class Settings
 	 */
 	public function getGeneralOptions(): array
 	{
-		$options = get_option($this->generalOptionName);
-		
-		// If the options don't exist, create them.
-		if ($options === false)
+		if(isset($this->generalOptions))
 		{
-			$options = $this->defaultGeneralOptions();
-			update_option($this->generalOptionName, $options);
+			return $this->generalOptions;
 		}
 		
-		return $options;
+		$this->generalOptions = get_option($this->generalOptionName);
+		
+		// If options don't exist, create them.
+		if ($this->generalOptions === false)
+		{
+			$this->generalOptions = $this->defaultGeneralOptions();
+			update_option($this->generalOptionName, $this->generalOptions);
+		}
+		
+		return $this->generalOptions;
 	}	
 	
 	/**
@@ -265,11 +270,7 @@ class Settings
 	 */
 	public function getDebug(): bool
 	{
-		if(!isset($this->generalOptions))
-		{
-			$this->generalOptions = $this->getGeneralOptions();
-		}
-		
+		$this->generalOptions = $this->getGeneralOptions();		
 		return $this->generalOptions['debug' . self::CHECKBOX_SUFFIX];
 	}
 	
@@ -310,16 +311,21 @@ class Settings
 	 */
 	public function getExampleOptions(): array
 	{
-		$options = get_option($this->exampleOptionName);
-		
-		// If the options don't exist, create them.
-		if ($options === false)
+		if(isset($this->exampleOptions))
 		{
-			$options = $this->defaultInputOptions();
-			update_option($this->exampleOptionName, $options);
+			return $this->exampleOptions;
 		}
 		
-		return $options;
+		$this->exampleOptions = get_option($this->exampleOptionName);
+		
+		// If the options don't exist, create them.
+		if ($this->exampleOptions === false)
+		{
+			$this->exampleOptions = $this->defaultInputOptions();
+			update_option($this->exampleOptionName, $this->exampleOptions);
+		}
+		
+		return $this->exampleOptions;
 	}
 
 	/**
@@ -416,11 +422,7 @@ class Settings
 	 */
 	public function getTextExample(): string
 	{
-		if(!isset($this->exampleOptions))
-		{
-			$this->exampleOptions = $this->getExampleOptions();
-		}
-		
+		$this->exampleOptions = $this->getExampleOptions();
 		return $this->exampleOptions['text-example' . self::TEXT_SUFFIX];
 	}
 
@@ -429,11 +431,7 @@ class Settings
 	 */
 	public function getTextareaExample(): string
 	{
-		if(!isset($this->exampleOptions))
-		{
-			$this->exampleOptions = $this->getExampleOptions();
-		}
-		
+		$this->exampleOptions = $this->getExampleOptions();
 		return $this->exampleOptions['textarea-example' . self::TEXTAREA_SUFFIX];
 	}
 
@@ -442,11 +440,7 @@ class Settings
 	 */
 	public function getCheckboxExample(): string
 	{
-		if(!isset($this->exampleOptions))
-		{
-			$this->exampleOptions = $this->getExampleOptions();
-		}
-		
+		$this->exampleOptions = $this->getExampleOptions();
 		return $this->exampleOptions['checkbox-example' . self::CHECKBOX_SUFFIX];
 	}
 
@@ -455,11 +449,7 @@ class Settings
 	 */
 	public function getRadioExample(): string
 	{
-		if(!isset($this->exampleOptions))
-		{
-			$this->exampleOptions = $this->getExampleOptions();
-		}
-		
+		$this->exampleOptions = $this->getExampleOptions();
 		return $this->exampleOptions['radio-example' . self::RADIO_SUFFIX];
 	}
 
@@ -468,11 +458,7 @@ class Settings
 	 */
 	public function getSelectExample(): string
 	{
-		if(!isset($this->exampleOptions))
-		{
-			$this->exampleOptions = $this->getExampleOptions();
-		}
-		
+		$this->exampleOptions = $this->getExampleOptions();
 		return $this->exampleOptions['select-example' . self::SELECT_SUFFIX];
 	}
 
