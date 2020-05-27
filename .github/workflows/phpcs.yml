@@ -15,5 +15,5 @@ jobs:
         GH_BOT_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
         SKIP_FOLDERS: "tests,.github"
       with:
-        args: "WordPress,WordPress-Core,WordPress-Docs,PSR1,PSR12"
+        args: "PSR1,PSR12"
         
