@@ -53,5 +53,4 @@ class i18n
             //exit('Textdomain could not be loaded from: ' . dirname(dirname(plugin_basename(__FILE__ ))) . '/Languages/');
         }
     }
-    
 }
