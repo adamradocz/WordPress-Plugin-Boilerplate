@@ -49,15 +49,6 @@ class Main
     protected $version;
     
     /**
-     * Collection of options.
-     *
-     * @since    1.0.0
-     * @access   private
-     * @var      array    $generalOptions    Options.
-     */
-    private $generalOptions;
-
-    /**
      * Define the core functionality of the plugin.
      *
      * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -73,53 +64,44 @@ class Main
     }
 
     /**
-     * Register all the hooks of the plugin.
+     * Create the objects and register all the hooks of the plugin.
      *
      * @since    1.0.0
      * @access   private
      */
     private function defineHooks(): void
     {
-        $defaultHookPriority = 10;
+        $isAdmin = is_admin();
         
         /**
-         * Includes hooks - Register all of the hooks related both to the admin area and to the public-facing functionality of the plugin.
+         * Includes objects - Register all of the hooks related both to the admin area and to the public-facing functionality of the plugin.
          */
-        
-        // Set the domain for this plugin for internationalization.
         $i18n = new i18n($this->pluginSlug);
-        add_action('plugins_loaded', array($i18n, 'loadPluginTextdomain'), $defaultHookPriority);
+        $i18n->initializeHooks();
         
         /**
-         * Admin hooks - Register all of the hooks related to the admin area functionality of the plugin.
+         * Admin objects - Register all of the hooks related to the admin area functionality of the plugin.
          */
-        if (is_admin())
+        if ($isAdmin)
         {
-            // Admin
             $admin = new Admin($this->pluginSlug, $this->version);
-            add_action('admin_enqueue_scripts', array($admin, 'enqueueStyles'), $defaultHookPriority);
-            add_action('admin_enqueue_scripts', array($admin, 'enqueueScripts'), $defaultHookPriority);
-            
-            // Settings
+            $admin->initializeHooks($isAdmin);
+
             $settings = new Settings($this->pluginSlug);
-            add_action('admin_menu', array($settings, 'setupSettingsMenu'), $defaultHookPriority);
-            add_action('admin_init', array($settings, 'initializeGeneralOptions'), $defaultHookPriority);
-            add_action('admin_init', array($settings, 'initializeInputExamples'), $defaultHookPriority);
+            $settings->initializeHooks($isAdmin);
         }
         /**
-         * Frontend hooks - Register all of the hooks related to the public-facing functionality of the plugin.
+         * Frontend objects - Register all of the hooks related to the public-facing functionality of the plugin.
          */
         else
         {
-            // Frontend
             $frontend = new Frontend($this->pluginSlug, $this->version);
-            add_action('wp_enqueue_scripts', array($frontend, 'enqueueStyles'), $defaultHookPriority);
-            add_action('wp_enqueue_scripts', array($frontend, 'enqueueScripts'), $defaultHookPriority);
+            $frontend->initializeHooks($isAdmin);
         }
     }
 
     /**
-     * Execute all of the hooks with WordPress.
+     * Run the plugin.
      *
      * @since    1.0.0
      */

@@ -54,6 +54,21 @@ class Frontend
     }
 
     /**
+     * Register all the hooks of this class.
+     *
+     * @since    1.0.0
+     * @param   $isAdmin    Whether the current request is for an administrative interface page.
+     */
+	public function initializeHooks(bool $isAdmin): void
+	{
+        if (!$isAdmin)
+        {
+            add_action('wp_enqueue_scripts', array($this, 'enqueueStyles'), 10);
+            add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'), 10);
+        }
+	}
+    
+    /**
      * Register the stylesheets for the frontend side of the site.
      *
      * @since    1.0.0
