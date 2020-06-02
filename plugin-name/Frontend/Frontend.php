@@ -73,7 +73,7 @@ class Frontend
          */
         $styleId = $this->pluginSlug . '-frontend';
         $styleUrl = plugin_dir_url(__FILE__) . 'css/plugin-name-frontend.css';
-        if(wp_register_style($styleId, $styleUrl, array(), $this->version, 'all') === false)
+        if (wp_register_style($styleId, $styleUrl, array(), $this->version, 'all') === false)
         {
             exit(__('Style could not be registered: ', 'communal-marketplace') . $styleUrl);
         }
@@ -105,7 +105,7 @@ class Frontend
          */
         $scriptId = $this->pluginSlug . '-frontend';
         $scriptUrl = plugin_dir_url(__FILE__) . 'js/plugin-name-frontend.js';
-        if(wp_register_script($scriptId, $scriptUrl, array('jquery'), $this->version, false) === false)
+        if (wp_register_script($scriptId, $scriptUrl, array('jquery'), $this->version, false) === false)
         {
             exit(__('Script could not be registered: ', 'plugin-name') . $scriptUrl);
         }

@@ -46,7 +46,7 @@ class Activator
     private static function ensureCreateOptions(string $configurationOptionName, array $configuration): void
     {
         // Save the configuration data if not exist.
-        if(get_option($configurationOptionName) === false)
+        if (get_option($configurationOptionName) === false)
         {
             update_option($configurationOptionName, $configuration);
         }

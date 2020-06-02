@@ -69,7 +69,7 @@ class Admin
          * https://codex.wordpress.org/Plugin_API/Action_Reference/admin_enqueue_scripts
          *
          * If you are unsure what the $hook name of the current admin page of which you want to conditionally load your script is, add this to your page:
-         *  $screen = get_current_screen(); 
+         *  $screen = get_current_screen();
          *  print_r($screen);
          *
          * The reason to register the style before enqueue it:
@@ -79,7 +79,7 @@ class Admin
          */
         $styleId = $this->pluginSlug . '-admin';
         $styleUrl = plugin_dir_url(__FILE__) . 'css/plugin-name-admin.css';
-        if(wp_register_style($styleId, $styleUrl, array(), $this->version, 'all') === false)
+        if (wp_register_style($styleId, $styleUrl, array(), $this->version, 'all') === false)
         {
             exit(__('Style could not be registered: ', 'communal-marketplace') . $styleUrl);
         }
@@ -117,7 +117,7 @@ class Admin
          */
         $scriptId = $this->pluginSlug . '-admin';
         $scriptUrl = plugin_dir_url(__FILE__) . 'js/plugin-name-admin.js';
-        if(wp_register_script($scriptId, $scriptUrl, array('jquery'), $this->version, false) === false)
+        if (wp_register_script($scriptId, $scriptUrl, array('jquery'), $this->version, false) === false)
         {
             exit(__('Script could not be registered: ', 'plugin-name') . $scriptUrl);
         }
