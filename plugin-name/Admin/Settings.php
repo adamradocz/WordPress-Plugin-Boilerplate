@@ -130,6 +130,7 @@ class Settings
      */
 	public function initializeHooks(bool $isAdmin): void
 	{
+        // Admin
         if ($isAdmin)
         {
             add_action('admin_menu', array($this, 'setupSettingsMenu'), 10);

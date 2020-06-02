@@ -62,6 +62,7 @@ class Admin
      */
 	public function initializeHooks(bool $isAdmin): void
 	{
+        // Admin
         if ($isAdmin)
         {
             add_action('admin_enqueue_scripts', array($this, 'enqueueStyles'), 10);

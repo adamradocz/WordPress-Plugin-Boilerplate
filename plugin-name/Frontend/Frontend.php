@@ -61,6 +61,7 @@ class Frontend
      */
 	public function initializeHooks(bool $isAdmin): void
 	{
+        // Frontend
         if (!$isAdmin)
         {
             add_action('wp_enqueue_scripts', array($this, 'enqueueStyles'), 10);
