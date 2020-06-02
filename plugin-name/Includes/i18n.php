@@ -40,7 +40,17 @@ class i18n
     {
         $this->domain = $domain;
     }
-
+    
+    /**
+     * Register all the hooks of this class.
+     *
+     * @since    1.0.0
+     */
+    public function initializeHooks(): void
+    {
+        add_action('plugins_loaded', array($this, 'loadPluginTextdomain'), 10);
+    }
+    
     /**
      * Load the plugin text domain for translation.
      *
