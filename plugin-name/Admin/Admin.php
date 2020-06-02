@@ -107,7 +107,7 @@ class Admin
          * https://codex.wordpress.org/Plugin_API/Action_Reference/admin_enqueue_scripts
          *
          * If you are unsure what the $hook name of the current admin page of which you want to conditionally load your script is, add this to your page:
-         *  $screen = get_current_screen(); 
+         *  $screen = get_current_screen();
          *  print_r($screen);
          *
          * The reason to register the script before enqueue it:

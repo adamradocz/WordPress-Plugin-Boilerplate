@@ -114,7 +114,7 @@ class Main
             // Frontend
             $frontend = new Frontend($this->pluginSlug, $this->version);
             add_action('wp_enqueue_scripts', array($frontend, 'enqueueStyles'), $defaultHookPriority);
-            add_action('wp_enqueue_scripts', array($frontend, 'enqueueScripts'), $defaultHookPriority);          
+            add_action('wp_enqueue_scripts', array($frontend, 'enqueueScripts'), $defaultHookPriority);
         }
     }
 

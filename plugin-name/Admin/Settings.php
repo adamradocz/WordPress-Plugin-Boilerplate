@@ -161,7 +161,7 @@ class Settings
             </h2>
 
             <form method="post" action="options.php">
-                <?php               
+                <?php
                 if ($activeTab === 'general_options')
                 {
                     settings_fields($this->generalOptionGroup);
@@ -482,7 +482,7 @@ class Settings
         $output = array();
 
         // Loop through each of the incoming options
-        foreach($input as $key => $value)
+        foreach ($input as $key => $value)
         {
             // Sanitize Checkbox. Input must be boolean.
             if ($this->endsWith($key, self::CHECKBOX_SUFFIX))
@@ -494,7 +494,7 @@ class Settings
             {
                 $output[$key] = isset($input[$key]) ? sanitize_key($input[$key]) : '';
             }
-            // Sanitize Select aka Dropdown. Input must be a slug: [a-z,0-9,-,_].   
+            // Sanitize Select aka Dropdown. Input must be a slug: [a-z,0-9,-,_].
             else if ($this->endsWith($key, self::SELECT_SUFFIX))
             {
                 $output[$key] = isset($input[$key]) ? sanitize_key($input[$key]) : '';

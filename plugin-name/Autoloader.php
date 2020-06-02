@@ -54,7 +54,7 @@ spl_autoload_register(function (string $className): void
         require_once $filePath;
     }
     else
-    {       
-       exit(esc_html("The file $className.php could not be found!"));
+    {
+        exit(esc_html("The file $className.php could not be found!"));
     }
 });
