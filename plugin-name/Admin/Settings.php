@@ -128,8 +128,8 @@ class Settings
      * @since    1.0.0
      * @param   $isAdmin    Whether the current request is for an administrative interface page.
      */
-	public function initializeHooks(bool $isAdmin): void
-	{
+    public function initializeHooks(bool $isAdmin): void
+    {
         // Admin
         if ($isAdmin)
         {
@@ -137,7 +137,7 @@ class Settings
             add_action('admin_init', array($this, 'initializeGeneralOptions'), 10);
             add_action('admin_init', array($this, 'initializeInputExamples'), 10);
         }
-	}
+    }
     
     /**
      * This function introduces the plugin options into the Main menu.

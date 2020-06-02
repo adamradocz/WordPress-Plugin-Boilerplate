@@ -46,10 +46,10 @@ class i18n
      *
      * @since    1.0.0
      */
-	public function initializeHooks(): void
-	{
+    public function initializeHooks(): void
+    {
         add_action('plugins_loaded', array($this, 'loadPluginTextdomain'), 10);
-	}
+    }
     
     /**
      * Load the plugin text domain for translation.
