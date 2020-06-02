@@ -21,40 +21,40 @@ if (!defined('ABSPATH')) exit;
  * @since             1.0.0
  * @package           PluginName
  *
- * @param	$className The fully-qualified class name.
+ * @param   $className The fully-qualified class name.
  * @return void
  */
 spl_autoload_register(function (string $className): void
 {
-	// Project-specific namespace prefix
-	$prefix = 'PluginName\\';
+    // Project-specific namespace prefix
+    $prefix = 'PluginName\\';
 
-	// Base directory for the namespace prefix
-	$baseDir = __DIR__ . '/';
+    // Base directory for the namespace prefix
+    $baseDir = __DIR__ . '/';
 
-	// Does the class use the namespace prefix?
-	$prefixLength = strlen($prefix);
-	if (strncmp($prefix, $className, $prefixLength) !== 0)
-	{
-		// No, move to the next registered autoloader
-		return;
-	}
+    // Does the class use the namespace prefix?
+    $prefixLength = strlen($prefix);
+    if (strncmp($prefix, $className, $prefixLength) !== 0)
+    {
+        // No, move to the next registered autoloader
+        return;
+    }
 
-	// Get the relative class name
-	$relativeClassName = substr($className, $prefixLength);
+    // Get the relative class name
+    $relativeClassName = substr($className, $prefixLength);
 
-	// Replace the namespace prefix with the base directory, replace namespace
-	// separators with directory separators in the relative class name, append
-	// with .php
-	$filePath = $baseDir . str_replace('\\', '/', $relativeClassName) . '.php';
+    // Replace the namespace prefix with the base directory, replace namespace
+    // separators with directory separators in the relative class name, append
+    // with .php
+    $filePath = $baseDir . str_replace('\\', '/', $relativeClassName) . '.php';
 
-	// If the file exists, require it
-	if (file_exists($filePath))
-	{
-		require_once $filePath;
-	}
-	else
-	{       
-	   exit(esc_html("The file $className.php could not be found!"));
-	}
+    // If the file exists, require it
+    if (file_exists($filePath))
+    {
+        require_once $filePath;
+    }
+    else
+    {
+        exit(esc_html("The file $className.php could not be found!"));
+    }
 });

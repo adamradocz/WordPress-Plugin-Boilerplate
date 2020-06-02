@@ -20,16 +20,15 @@ if (!defined('ABSPATH')) exit;
  */
 class Deactivator
 {
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function deactivate(): void
-	{
-		
-	}
-
+    /**
+     * Short Description. (use period)
+     *
+     * Long Description.
+     *
+     * @since    1.0.0
+     */
+    public static function deactivate(): void
+    {
+        
+    }
 }

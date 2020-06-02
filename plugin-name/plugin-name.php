@@ -55,19 +55,19 @@ define('PLUGIN_NAME_SLUG', 'plugin-name');
 
 /**
  * Configuration data
- *  - db-version:	Start with 0 and increment by 1. It should not be updated with every plugin update,
- *					only when database update is required.
+ *  - db-version:   Start with 0 and increment by 1. It should not be updated with every plugin update,
+ *                  only when database update is required.
  */
 $configuration = array(
-	'version'		=> PLUGIN_NAME_VERSION,
-	'db-version'	=> 0
+    'version'       => PLUGIN_NAME_VERSION,
+    'db-version'    => 0
 );
 
 /**
  * The ID for the configuration options in the database.
  */
 $configurationOptionName = PLUGIN_NAME_SLUG . '-configuration';
-	
+    
 /**
  * The code that runs during plugin activation.
  * This action is documented in Includes/Activator.php
@@ -97,7 +97,7 @@ add_action('plugins_loaded', function() use ($configuration, $configurationOptio
  */
 function runPlugin(): void
 {
-	$plugin = new Main();
-	$plugin->run();
+    $plugin = new Main();
+    $plugin->run();
 }
 runPlugin();
