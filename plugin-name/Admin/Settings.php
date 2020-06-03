@@ -183,6 +183,23 @@ class Settings
      */
     public function renderSettingsPageContent(string $activeTab = ''): void
     {
+        // Check user capabilities
+        if (!current_user_can('manage_options'))
+        {
+            return;
+        }
+
+        // Add error/update messages
+        // check if the user have submitted the settings. Wordpress will add the "settings-updated" $_GET parameter to the url
+        if (isset($_GET['settings-updated']))
+        {
+            // Add settings saved message with the class of "updated"
+            add_settings_error($this->pluginSlug, 'plugin-name-message', __('Settings saved.'), 'success');
+        }
+
+        // Show error/update messages
+        settings_errors($this->pluginSlug);
+
         ?>
         <!-- Create a header in the default WordPress 'wrap' container -->
         <div class="wrap">
@@ -563,6 +580,11 @@ class Settings
                 $output[$key] = isset($input[$key]) ? sanitize_text_field($input[$key]) : '';
             }
         }
+
+        /**
+         * Settings errors should be added inside the $sanitize_callback function.
+         * Example: add_settings_error($this->pluginSlug, 'plugin-name-message', __('Error.'), 'error');
+         */
 
         // Return the array processing any additional functions filtered by this action
         return $output;
