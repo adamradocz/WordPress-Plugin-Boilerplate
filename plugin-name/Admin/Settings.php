@@ -342,7 +342,7 @@ class Settings
 
         add_settings_field($this->checkboxExampleId, __('Checkbox Element', 'plugin-name'), array($this, 'checkboxElementCallback'), $this->examplePage, $this->exampleSettingsSectionId, array('label_for' => $this->checkboxExampleId));
 
-        add_settings_field($this->radioExampleId, __('Radio Button Elements', 'plugin-name'),array($this, 'radioElementCallback'), $this->examplePage, $this->exampleSettingsSectionId, array('label_for' => $this->radioExampleId));
+        add_settings_field($this->radioExampleId, __('Radio Button Elements', 'plugin-name'), array($this, 'radioElementCallback'), $this->examplePage, $this->exampleSettingsSectionId, array('label_for' => $this->radioExampleId));
 
         add_settings_field($this->selectExampleId, __('Select Element', 'plugin-name'), array($this, 'selectElementCallback'), $this->examplePage, $this->exampleSettingsSectionId, array('label_for' => $this->selectExampleId));
 
