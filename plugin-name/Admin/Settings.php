@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
@@ -17,13 +17,13 @@ if (!defined('ABSPATH')) exit;
  * @subpackage PluginName/Admin
  */
 class Settings
-{           
-    const TEXT_SUFFIX = '-tx';
-    const TEXTAREA_SUFFIX = '-ta';
-    const CHECKBOX_SUFFIX = '-cb';
-    const RADIO_SUFFIX = '-rb';
-    const SELECT_SUFFIX = '-sl';
-    
+{
+    private const TEXT_SUFFIX = '-tx';
+    private const TEXTAREA_SUFFIX = '-ta';
+    private const CHECKBOX_SUFFIX = '-cb';
+    private const RADIO_SUFFIX = '-rb';
+    private const SELECT_SUFFIX = '-sl';
+
     /**
      * The ID of this plugin.
      *
@@ -32,10 +32,10 @@ class Settings
      * @var      string    $pluginSlug    The ID of this plugin.
      */
     private $pluginSlug;
-    
+
     /**
      * The slug name for the menu.
-     * Should be unique for this menu page and only include 
+     * Should be unique for this menu page and only include
      * lowercase alphanumeric, dashes, and underscores characters to be compatible with sanitize_key().
      *
      * @since    1.0.0
@@ -43,7 +43,7 @@ class Settings
      * @var      string    $menuSlug    Slug name.
      */
     private $menuSlug;
-    
+
     /**
      * General settings' group name.
      *
@@ -53,17 +53,17 @@ class Settings
      */
     private $generalOptionGroup;
     private $exampleOptionGroup;
-    
+
     /**
      * General settings' section.
      *
      * @since    1.0.0
      * @access   private
-     * @var      string    $generalSettingsSection    The slug-name of the section of the settings page in which to show the box.
+     * @var      string    $generalSettingsSectionId    The slug-name of the section of the settings page in which to show the box.
      */
-    private $generalSettingsSection;
-    private $exampleSettingsSection;
-    
+    private $generalSettingsSectionId;
+    private $exampleSettingsSectionId;
+
     /**
      * General settings page.
      *
@@ -82,8 +82,8 @@ class Settings
      * @var      string    $generalOptionName    Option name. Expected to not be SQL-escaped.
      */
     private $generalOptionName;
-    private $gexampleOptionName;
-    
+    private $exampleOptionName;
+
     /**
      * Collection of options.
      *
@@ -93,7 +93,18 @@ class Settings
      */
     private $generalOptions;
     private $exampleOptions;
-    
+
+    /**
+     * Ids of setting fields.
+     */
+    private $debugId;
+
+    private $textExampleId;
+    private $textareaExampleId;
+    private $checkboxExampleId;
+    private $radioExampleId;
+    private $selectExampleId;
+
     /**
      * Initialize the class and set its properties.
      *
@@ -104,22 +115,30 @@ class Settings
     {
         $this->pluginSlug = $pluginSlug;
         $this->menuSlug = $this->pluginSlug;
-        
+
         /**
          * General
          */
         $this->generalOptionGroup = $pluginSlug . '-general-option-group';
-        $this->generalSettingsSection = $pluginSlug . '-general-section';
+        $this->generalSettingsSectionId = $pluginSlug . '-general-section';
         $this->generalPage = $pluginSlug . '-general';
         $this->generalOptionName = $pluginSlug . '-general';
-        
+
+        $this->debugId = 'debug' . self::CHECKBOX_SUFFIX;
+
         /**
          * Input example
          */
         $this->exampleOptionGroup = $pluginSlug . '-example-option-group';
-        $this->exampleSettingsSection = $pluginSlug . '-example-section';
+        $this->exampleSettingsSectionId = $pluginSlug . '-example-section';
         $this->examplePage = $pluginSlug . '-example';
         $this->exampleOptionName = $pluginSlug . '-example';
+
+        $this->textExampleId = 'text-example' . self::TEXT_SUFFIX;
+        $this->textareaExampleId = 'textarea-example' . self::TEXTAREA_SUFFIX;
+        $this->checkboxExampleId = 'checkbox-example' . self::CHECKBOX_SUFFIX;
+        $this->radioExampleId = 'radio-example' . self::RADIO_SUFFIX;
+        $this->selectExampleId = 'select-example' . self::SELECT_SUFFIX;
     }
 
     /**
@@ -138,7 +157,7 @@ class Settings
             add_action('admin_init', array($this, 'initializeInputExamples'), 10);
         }
     }
-    
+
     /**
      * This function introduces the plugin options into the Main menu.
      */
@@ -189,7 +208,7 @@ class Settings
                     settings_fields($this->exampleOptionGroup);
                     do_settings_sections($this->examplePage);
                 }
-                
+
                 submit_button();
                 ?>
             </form>
@@ -207,29 +226,38 @@ class Settings
      */
     public function initializeGeneralOptions(): void
     {
-        // Get the current option values.
-        $this->generalOptions = $this->getGeneralOptions();
-
+        // Add a new section to a settings page.
         add_settings_section(
-            $this->generalSettingsSection,              // ID used to identify this section and with which to register options
+            $this->generalSettingsSectionId,            // ID used to identify this section and with which to register options
             __('General', 'plugin-name'),               // Title to be displayed on the administration page
             array($this, 'generalOptionsCallback'),     // Callback used to render the description of the section
             $this->generalPage                          // Page on which to add this section of options
         );
-        
+
         // Next, we'll introduce the fields for toggling the visibility of content elements.
         add_settings_field(
-            'debug' . self::CHECKBOX_SUFFIX,            // ID used to identify the field throughout the theme
-            __('Debug', 'plugin-name'),                 // The label to the left of the option interface element
-            array($this, 'debugCallback'),              // The name of the function responsible for rendering the option interface
-            $this->generalPage,                         // The page on which this option will be displayed
-            $this->generalSettingsSection               // The name of the section to which this field belongs
+            $this->debugId,                        // ID used to identify the field throughout the theme.
+            __('Debug', 'plugin-name'),            // The label to the left of the option interface element.
+            array($this, 'debugCallback'),         // The name of the function responsible for rendering the option interface.
+            $this->generalPage,                    // The page on which this option will be displayed.
+            $this->generalSettingsSectionId,       // The name of the section to which this field belongs.
+            array('label_for' => $this->debugId)   // Extra arguments used when outputting the field. CSS Class can also be added to the <tr> element with the 'class' key.
         );
 
         // Finally, we register the fields with WordPress.
-        register_setting($this->generalOptionGroup, $this->generalOptionName, array($this, 'sanitizeOptionsCallback'));
-    }   
-    
+        /**
+         * If you want to use the setting in the REST API (wp-json/wp/v2/settings),
+         * you’ll need to call register_setting() on the rest_api_init action, in addition to the normal admin_init action.
+         */
+        $registerSettingArguments = array(
+            'type' => 'array',
+            'description' => '',
+            'sanitize_callback' => array($this, 'sanitizeOptionsCallback'),
+            'show_in_rest' => false
+        );
+        register_setting($this->generalOptionGroup, $this->generalOptionName, $registerSettingArguments);
+    }
+
     /**
      * Return the General options.
      */
@@ -239,19 +267,19 @@ class Settings
         {
             return $this->generalOptions;
         }
-        
+
         $this->generalOptions = get_option($this->generalOptionName);
-        
+
         // If options don't exist, create them.
         if ($this->generalOptions === false)
         {
             $this->generalOptions = $this->defaultGeneralOptions();
             update_option($this->generalOptionName, $this->generalOptions);
         }
-        
+
         return $this->generalOptions;
-    }   
-    
+    }
+
     /**
      * Provide default values for the General Options.
      *
@@ -260,7 +288,7 @@ class Settings
     private function defaultGeneralOptions(): array
     {
         return array(
-            'debug' . self::CHECKBOX_SUFFIX => false
+            $this->debugId => false
         );
     }
 
@@ -272,29 +300,32 @@ class Settings
      */
     public function generalOptionsCallback(): void
     {
+        // Display the settings data for easier examination. Delete it, if you don't need it.
+        echo '<p>Display the settings as stored in the database:</p>';
+        $this->generalOptions = $this->getGeneralOptions();
         var_dump($this->generalOptions);
+
         echo '<p>' . __('General options.', 'plugin-name') . '</p>';
     }
 
     public function debugCallback(): void
     {
-        $id = 'debug' . self::CHECKBOX_SUFFIX;
-        echo sprintf('<input type="checkbox" id="%s" name="%s[%s]" value="1" %s />', $id, $this->generalOptionName, $id, checked($this->generalOptions[$id], true, false));
-    }   
-    
+        printf('<input type="checkbox" id="%s" name="%s[%s]" value="1" %s />', $this->debugId, $this->generalOptionName, $this->debugId, checked($this->generalOptions[$this->debugId], true, false));
+    }
+
     /**
      * Get Debug option.
      */
     public function getDebug(): bool
     {
-        $this->generalOptions = $this->getGeneralOptions();     
-        return $this->generalOptions['debug' . self::CHECKBOX_SUFFIX];
+        $this->generalOptions = $this->getGeneralOptions();
+        return $this->generalOptions[$this->debugId];
     }
-    
+
 #endregion
-    
+
 #region INPUT EXAMPLES OPTIONS
-    
+
     /**
      * Initializes the plugins's input example by registering the Sections, Fields, and Settings.
      * This particular group of options is used to demonstration validation and sanitization.
@@ -303,26 +334,27 @@ class Settings
      */
     public function initializeInputExamples(): void
     {
-        // Get the current option values.
-        $this->exampleOptions = $this->getExampleOptions();
+        add_settings_section($this->exampleSettingsSectionId, __('Input Examples', 'plugin-name'), array($this, 'inputExamplesCallback'), $this->examplePage);
 
-        add_settings_section($this->exampleSettingsSection, __('Input Examples', 'plugin-name'), array($this, 'inputExamplesCallback'), $this->examplePage);
+        add_settings_field($this->textExampleId, __('Input Element', 'plugin-name'), array($this, 'inputElementCallback'), $this->examplePage, $this->exampleSettingsSectionId, array('label_for' => $this->textExampleId));
 
-        // Next, we'll introduce the fields for toggling the visibility of content elements.
-        add_settings_field('text-example' . self::TEXT_SUFFIX, __('Input Element', 'plugin-name'), array($this, 'inputElementCallback'), $this->examplePage, $this->exampleSettingsSection);
-        
-        add_settings_field('textarea-example' . self::TEXTAREA_SUFFIX, __('Textarea Element', 'plugin-name'), array($this, 'textareaElementCallback'), $this->examplePage, $this->exampleSettingsSection);
-        
-        add_settings_field('checkbox-example' . self::CHECKBOX_SUFFIX, __('Checkbox Element', 'plugin-name'), array($this, 'checkboxElementCallback'), $this->examplePage, $this->exampleSettingsSection);
-        
-        add_settings_field('radio-example' . self::RADIO_SUFFIX, __('Radio Button Elements', 'plugin-name'),array($this, 'radioElementCallback'), $this->examplePage, $this->exampleSettingsSection);
-        
-        add_settings_field('select-example' . self::SELECT_SUFFIX, __('Select Element', 'plugin-name'), array($this, 'selectElementCallback'), $this->examplePage, $this->exampleSettingsSection);
+        add_settings_field($this->textareaExampleId, __('Textarea Element', 'plugin-name'), array($this, 'textareaElementCallback'), $this->examplePage, $this->exampleSettingsSectionId, array('label_for' => $this->textareaExampleId));
 
-        // Finally, we register the fields with WordPress.
-        register_setting($this->exampleOptionGroup, $this->exampleOptionName, array($this, 'sanitizeOptionsCallback'));
+        add_settings_field($this->checkboxExampleId, __('Checkbox Element', 'plugin-name'), array($this, 'checkboxElementCallback'), $this->examplePage, $this->exampleSettingsSectionId, array('label_for' => $this->checkboxExampleId));
+
+        add_settings_field($this->radioExampleId, __('Radio Button Elements', 'plugin-name'), array($this, 'radioElementCallback'), $this->examplePage, $this->exampleSettingsSectionId, array('label_for' => $this->radioExampleId));
+
+        add_settings_field($this->selectExampleId, __('Select Element', 'plugin-name'), array($this, 'selectElementCallback'), $this->examplePage, $this->exampleSettingsSectionId, array('label_for' => $this->selectExampleId));
+
+        $registerSettingArguments = array(
+            'type' => 'array',
+            'description' => '',
+            'sanitize_callback' => array($this, 'sanitizeOptionsCallback'),
+            'show_in_rest' => false
+        );
+        register_setting($this->exampleOptionGroup, $this->exampleOptionName, $registerSettingArguments);
     }
-    
+
     /**
      * Return the Example options.
      */
@@ -332,16 +364,16 @@ class Settings
         {
             return $this->exampleOptions;
         }
-        
+
         $this->exampleOptions = get_option($this->exampleOptionName);
-        
+
         // If the options don't exist, create them.
         if ($this->exampleOptions === false)
         {
             $this->exampleOptions = $this->defaultInputOptions();
             update_option($this->exampleOptionName, $this->exampleOptions);
         }
-        
+
         return $this->exampleOptions;
     }
 
@@ -353,12 +385,12 @@ class Settings
     private function defaultInputOptions(): array
     {
         return array(
-            'text-example' . self::TEXT_SUFFIX          =>  'default input example',
-            'textarea-example' . self::TEXTAREA_SUFFIX  =>  '',
-            'checkbox-example' . self::CHECKBOX_SUFFIX  =>  '',
-            'radio-example' . self::RADIO_SUFFIX        =>  '2',
-            'select-example' . self::SELECT_SUFFIX      =>  'default'
-        );      
+            $this->textExampleId      => 'default input example',
+            $this->textareaExampleId  => '',
+            $this->checkboxExampleId  => '',
+            $this->radioExampleId     => '2',
+            $this->selectExampleId    => 'default'
+        );
     }
 
     /**
@@ -367,24 +399,21 @@ class Settings
     public function inputExamplesCallback(): void
     {
         // Display the settings data for easier examination. Delete it, if you don't need it.
+        $this->exampleOptions = $this->getExampleOptions();
         echo '<p>Display the settings as stored in the database:</p>';
         var_dump($this->exampleOptions);
-        
+
         echo '<p>' . __('Provides examples of the five basic element types.', 'plugin-name') . '</p>';
     }
 
     public function inputElementCallback(): void
     {
-        // Render the output
-        $id = 'text-example' . self::TEXT_SUFFIX;
-        echo sprintf('<input type="text" id="%s" name="%s[%s]" value="%s" />', $id, $this->exampleOptionName, $id, $this->exampleOptions[$id]);
+        printf('<input type="text" id="%s" name="%s[%s]" value="%s" />', $this->textExampleId, $this->exampleOptionName, $this->textExampleId, $this->exampleOptions[$this->textExampleId]);
     }
 
     public function textareaElementCallback(): void
     {
-        // Render the output
-        $id = 'textarea-example' . self::TEXTAREA_SUFFIX ;
-        echo sprintf('<textarea id="%s" name="%s[%s]" rows="5" cols="50">%s</textarea>', $id, $this->exampleOptionName, $id, $this->exampleOptions[$id]);
+        printf('<textarea id="%s" name="%s[%s]" rows="5" cols="50">%s</textarea>', $this->textareaExampleId, $this->exampleOptionName, $this->textareaExampleId, $this->exampleOptions[$this->textareaExampleId]);
     }
 
     /**
@@ -397,24 +426,22 @@ class Settings
     {
         // We update the name attribute to access this element's ID in the context of the display options array.
         // We also access the show_header element of the options collection in the call to the checked() helper function.
-        $id = 'checkbox-example' . self::CHECKBOX_SUFFIX;
-        $html = sprintf('<input type="checkbox" id="%s" name="%s[%s]" value="1" %s />', $id, $this->exampleOptionName, $id, checked($this->exampleOptions[$id], true, false));
+        $html = sprintf('<input type="checkbox" id="%s" name="%s[%s]" value="1" %s />', $this->checkboxExampleId, $this->exampleOptionName, $this->checkboxExampleId, checked($this->exampleOptions[$this->checkboxExampleId], true, false));
         $html .= '&nbsp;';
-        
+
         // Here, we'll take the first argument of the array and add it to a label next to the checkbox
-        $html .= sprintf('<label for="%s">This is an example of a checkbox</label>', $id);
+        $html .= sprintf('<label for="%s">This is an example of a checkbox</label>', $this->checkboxExampleId);
 
         echo $html;
     }
-    
+
     public function radioElementCallback(): void
     {
-        $id = 'radio-example' . self::RADIO_SUFFIX;
-        $html = sprintf('<input type="radio" id="radio-example-one" name="%s[%s]" value="1" %s />', $this->exampleOptionName, $id, checked($this->exampleOptions[$id], 1, false));
+        $html = sprintf('<input type="radio" id="radio-example-one" name="%s[%s]" value="1" %s />', $this->exampleOptionName, $this->radioExampleId, checked($this->exampleOptions[$this->radioExampleId], 1, false));
         $html .= '&nbsp;';
         $html .= '<label for="radio-example-one">Option One</label>';
         $html .= '&nbsp;';
-        $html .= sprintf('<input type="radio" id="radio-example-two" name="%s[%s]" value="2" %s />', $this->exampleOptionName, $id, checked($this->exampleOptions[$id], 2, false));
+        $html .= sprintf('<input type="radio" id="radio-example-two" name="%s[%s]" value="2" %s />', $this->exampleOptionName, $this->radioExampleId, checked($this->exampleOptions[$this->radioExampleId], 2, false));
         $html .= '&nbsp;';
         $html .= '<label for="radio-example-two">Option Two</label>';
 
@@ -423,24 +450,23 @@ class Settings
 
     public function selectElementCallback(): void
     {
-        $id = 'select-example . ' . self::SELECT_SUFFIX;
-        $html = sprintf('<select id="%s" name="%s[%s]">', $id, $this->exampleOptionName, $id);
+        $html = sprintf('<select id="%s" name="%s[%s]">', $this->selectExampleId, $this->exampleOptionName, $this->selectExampleId);
         $html .= '<option value="default">' . __('Select a time option...', 'plugin-name') . '</option>';
-        $html .= sprintf('<option value="never" %s >%s</option>', selected($this->exampleOptions[$id], 'never', false), __('Never', 'plugin-name'));
-        $html .= sprintf('<option value="sometimes" %s >%s</option>', selected($this->exampleOptions[$id], 'sometimes', false), __('Sometimes', 'plugin-name'));
-        $html .= sprintf('<option value="always" %s >%s</option>', selected($this->exampleOptions[$id], 'always', false), __('Always', 'plugin-name'));
+        $html .= sprintf('<option value="never" %s >%s</option>', selected($this->exampleOptions[$this->selectExampleId], 'never', false), __('Never', 'plugin-name'));
+        $html .= sprintf('<option value="sometimes" %s >%s</option>', selected($this->exampleOptions[$this->selectExampleId], 'sometimes', false), __('Sometimes', 'plugin-name'));
+        $html .= sprintf('<option value="always" %s >%s</option>', selected($this->exampleOptions[$this->selectExampleId], 'always', false), __('Always', 'plugin-name'));
         $html .= '</select>';
 
         echo $html;
-    }   
-    
+    }
+
     /**
      * Get Text Example option.
      */
     public function getTextExample(): string
     {
         $this->exampleOptions = $this->getExampleOptions();
-        return $this->exampleOptions['text-example' . self::TEXT_SUFFIX];
+        return $this->exampleOptions[$this->textExampleId];
     }
 
     /**
@@ -449,7 +475,7 @@ class Settings
     public function getTextareaExample(): string
     {
         $this->exampleOptions = $this->getExampleOptions();
-        return $this->exampleOptions['textarea-example' . self::TEXTAREA_SUFFIX];
+        return $this->exampleOptions[$this->textareaExampleId];
     }
 
     /**
@@ -458,7 +484,7 @@ class Settings
     public function getCheckboxExample(): string
     {
         $this->exampleOptions = $this->getExampleOptions();
-        return $this->exampleOptions['checkbox-example' . self::CHECKBOX_SUFFIX];
+        return $this->exampleOptions[$this->checkboxExampleId];
     }
 
     /**
@@ -467,7 +493,7 @@ class Settings
     public function getRadioExample(): string
     {
         $this->exampleOptions = $this->getExampleOptions();
-        return $this->exampleOptions['radio-example' . self::RADIO_SUFFIX];
+        return $this->exampleOptions[$this->radioExampleId];
     }
 
     /**
@@ -476,7 +502,7 @@ class Settings
     public function getSelectExample(): string
     {
         $this->exampleOptions = $this->getExampleOptions();
-        return $this->exampleOptions['select-example' . self::SELECT_SUFFIX];
+        return $this->exampleOptions[$this->selectExampleId];
     }
 
 #endregion
@@ -536,7 +562,7 @@ class Settings
         // Return the array processing any additional functions filtered by this action
         return $output;
     }
-    
+
     /**
      * Determine if a string ends with another string.
      *
@@ -551,12 +577,12 @@ class Settings
     {
         $haystackLenght = strlen($haystack);
         $needleLenght = strlen($needle);
-        
+
         if ($needleLenght > $haystackLenght)
         {
             return false;
         }
-        
+
         return substr_compare($haystack, $needle, -$needleLenght, $needleLenght) === 0;
     }
 }
