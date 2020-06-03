@@ -194,7 +194,7 @@ class Settings
         if (isset($_GET['settings-updated']))
         {
             // Add settings saved message with the class of "updated"
-            add_settings_error($this->pluginSlug, 'plugin-name-message', __('Settings saved.'), 'success');
+            add_settings_error($this->pluginSlug, $this->pluginSlug . '-message', __('Settings saved.'), 'success');
         }
 
         // Show error/update messages
@@ -583,7 +583,7 @@ class Settings
 
         /**
          * Settings errors should be added inside the $sanitize_callback function.
-         * Example: add_settings_error($this->pluginSlug, 'plugin-name-message', __('Error.'), 'error');
+         * Example: add_settings_error($this->pluginSlug, $this->pluginSlug . '-message', __('Error.'), 'error');
          */
 
         // Return the array processing any additional functions filtered by this action
