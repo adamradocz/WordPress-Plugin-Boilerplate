@@ -18,11 +18,11 @@ if (!defined('ABSPATH')) exit;
  */
 class Settings
 {
-    const TEXT_SUFFIX = '-tx';
-    const TEXTAREA_SUFFIX = '-ta';
-    const CHECKBOX_SUFFIX = '-cb';
-    const RADIO_SUFFIX = '-rb';
-    const SELECT_SUFFIX = '-sl';
+    private const TEXT_SUFFIX = '-tx';
+    private const TEXTAREA_SUFFIX = '-ta';
+    private const CHECKBOX_SUFFIX = '-cb';
+    private const RADIO_SUFFIX = '-rb';
+    private const SELECT_SUFFIX = '-sl';
 
     /**
      * The ID of this plugin.
