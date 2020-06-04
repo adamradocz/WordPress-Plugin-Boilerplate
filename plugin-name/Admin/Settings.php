@@ -204,13 +204,13 @@ class Settings
         <!-- Create a header in the default WordPress 'wrap' container -->
         <div class="wrap">
 
-            <h2><?php _e('Plugin Name Options', 'plugin-name'); ?></h2>
+            <h2><?php esc_html_e('Plugin Name Options', 'plugin-name'); ?></h2>
 
             <?php $activeTab = isset($_GET['tab']) ? $_GET['tab'] : 'general_options'; ?>
 
             <h2 class="nav-tab-wrapper">
-                <a href="?page=<?php echo $this->menuSlug; ?>&tab=general_options" class="nav-tab <?php echo $activeTab === 'general_options' ? 'nav-tab-active' : ''; ?>"><?php _e('General', 'plugin-name'); ?></a>
-                <a href="?page=<?php echo $this->menuSlug; ?>&tab=input_examples" class="nav-tab <?php echo $activeTab === 'input_examples' ? 'nav-tab-active' : ''; ?>"><?php _e('Input Examples', 'plugin-name'); ?></a>
+                <a href="?page=<?php echo $this->menuSlug; ?>&tab=general_options" class="nav-tab <?php echo $activeTab === 'general_options' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('General', 'plugin-name'); ?></a>
+                <a href="?page=<?php echo $this->menuSlug; ?>&tab=input_examples" class="nav-tab <?php echo $activeTab === 'input_examples' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Input Examples', 'plugin-name'); ?></a>
             </h2>
 
             <form method="post" action="options.php">
@@ -325,7 +325,7 @@ class Settings
         $this->generalOptions = $this->getGeneralOptions();
         var_dump($this->generalOptions);
 
-        echo '<p>' . __('General options.', 'plugin-name') . '</p>';
+        echo '<p>' . esc_html__('General options.', 'plugin-name') . '</p>';
     }
 
     public function debugCallback(): void
@@ -425,17 +425,17 @@ class Settings
         echo '<p>Display the settings as stored in the database:</p>';
         var_dump($this->exampleOptions);
 
-        echo '<p>' . __('Provides examples of the five basic element types.', 'plugin-name') . '</p>';
+        echo '<p>' . esc_html__('Provides examples of the five basic element types.', 'plugin-name') . '</p>';
     }
 
     public function inputElementCallback(): void
     {
-        printf('<input type="text" id="%s" name="%s[%s]" value="%s" />', $this->textExampleId, $this->exampleOptionName, $this->textExampleId, $this->exampleOptions[$this->textExampleId]);
+        printf('<input type="text" id="%s" name="%s[%s]" value="%s" />', $this->textExampleId, $this->exampleOptionName, $this->textExampleId, esc_attr($this->exampleOptions[$this->textExampleId]));
     }
 
     public function textareaElementCallback(): void
     {
-        printf('<textarea id="%s" name="%s[%s]" rows="5" cols="50">%s</textarea>', $this->textareaExampleId, $this->exampleOptionName, $this->textareaExampleId, $this->exampleOptions[$this->textareaExampleId]);
+        printf('<textarea id="%s" name="%s[%s]" rows="5" cols="50">%s</textarea>', $this->textareaExampleId, $this->exampleOptionName, $this->textareaExampleId, esc_textarea($this->exampleOptions[$this->textareaExampleId]));
     }
 
     /**
@@ -473,10 +473,10 @@ class Settings
     public function selectElementCallback(): void
     {
         $html = sprintf('<select id="%s" name="%s[%s]">', $this->selectExampleId, $this->exampleOptionName, $this->selectExampleId);
-        $html .= '<option value="default">' . __('Select a time option...', 'plugin-name') . '</option>';
-        $html .= sprintf('<option value="never" %s >%s</option>', selected($this->exampleOptions[$this->selectExampleId], 'never', false), __('Never', 'plugin-name'));
-        $html .= sprintf('<option value="sometimes" %s >%s</option>', selected($this->exampleOptions[$this->selectExampleId], 'sometimes', false), __('Sometimes', 'plugin-name'));
-        $html .= sprintf('<option value="always" %s >%s</option>', selected($this->exampleOptions[$this->selectExampleId], 'always', false), __('Always', 'plugin-name'));
+        $html .= '<option value="default">' . esc_html__('Select a time option...', 'plugin-name') . '</option>';
+        $html .= sprintf('<option value="never" %s >%s</option>', selected($this->exampleOptions[$this->selectExampleId], 'never', false), esc_html__('Never', 'plugin-name'));
+        $html .= sprintf('<option value="sometimes" %s >%s</option>', selected($this->exampleOptions[$this->selectExampleId], 'sometimes', false), esc_html__('Sometimes', 'plugin-name'));
+        $html .= sprintf('<option value="always" %s >%s</option>', selected($this->exampleOptions[$this->selectExampleId], 'always', false), esc_html__('Always', 'plugin-name'));
         $html .= '</select>';
 
         echo $html;
