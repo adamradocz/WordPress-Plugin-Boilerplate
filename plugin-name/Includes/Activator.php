@@ -34,13 +34,13 @@ class Activator
     public static function activate(array $configuration, string $configurationOptionName): void
     {
         // Permission check
-		if (!current_user_can('activate_plugins'))
-		{
-			deactivate_plugins(plugin_basename( __FILE__ ));
+        if (!current_user_can('activate_plugins'))
+        {
+            deactivate_plugins(plugin_basename( __FILE__ ));
 
             // Localization class hasn't been loaded yet.
-			wp_die('You don\'t have proper authorization to activate a plugin!');
-		}
+            wp_die('You don\'t have proper authorization to activate a plugin!');
+        }
         
         // Save the default configuration values
         self::ensureCreateOptions($configurationOptionName, $configuration);
