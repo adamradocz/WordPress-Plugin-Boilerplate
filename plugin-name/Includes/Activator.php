@@ -36,7 +36,7 @@ class Activator
         // Permission check
         if (!current_user_can('activate_plugins'))
         {
-            deactivate_plugins(plugin_basename( __FILE__ ));
+            deactivate_plugins(plugin_basename(__FILE__));
 
             // Localization class hasn't been loaded yet.
             wp_die('You don\'t have proper authorization to activate a plugin!');
