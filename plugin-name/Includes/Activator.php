@@ -66,7 +66,7 @@ class Activator
      *
      * @since      1.0.0
      */
-    private static function checkDependencies()
+    private static function checkDependencies(): void
     {
         foreach (self::REQUIRED_PLUGINS as $pluginName => $pluginFilePath)
         {
