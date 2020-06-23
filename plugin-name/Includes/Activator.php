@@ -23,16 +23,16 @@ if (!defined('ABSPATH')) exit;
 class Activator
 {
     /**
-	 * Define the plugins that our plugin requires to function.
-	 * The key is the plugin name, the value is the plugin file path.
+     * Define the plugins that our plugin requires to function.
+     * The key is the plugin name, the value is the plugin file path.
      *
-	 * @since 1.0.0
-	 * @var string[]
-	 */
+     * @since 1.0.0
+     * @var string[]
+     */
     private const REQUIRED_PLUGINS = array(
-		//'Hello Dolly' => 'hello-dolly/hello.php',
-		//'WooCommerce' => 'woocommerce/woocommerce.php',
-	);
+        //'Hello Dolly' => 'hello-dolly/hello.php',
+        //'WooCommerce' => 'woocommerce/woocommerce.php',
+    );
     
     /**
      * Short Description. (use period)
@@ -71,7 +71,7 @@ class Activator
         foreach (self::REQUIRED_PLUGINS as $pluginName => $pluginFilePath)
         {
             if (!is_plugin_active($pluginFilePath))
-            {			
+            {           
                 // Deactivate the plugin.
                 deactivate_plugins(plugin_basename(__FILE__));
                 
