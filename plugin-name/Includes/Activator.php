@@ -31,9 +31,9 @@ class Activator
      */
     private const REQUIRED_PLUGINS = array(
         //'Hello Dolly' => 'hello-dolly/hello.php',
-        //'WooCommerce' => 'woocommerce/woocommerce.php',
+        //'WooCommerce' => 'woocommerce/woocommerce.php'
     );
-    
+
     /**
      * Short Description. (use period)
      *
@@ -53,10 +53,10 @@ class Activator
             // Localization class hasn't been loaded yet.
             wp_die('You don\'t have proper authorization to activate a plugin!');
         }
-        
+
          // Check dependencies
         self::checkDependencies();
-        
+
         // Save the default configuration values
         self::ensureCreateOptions($configurationOptionName, $configuration);
     }
@@ -71,15 +71,15 @@ class Activator
         foreach (self::REQUIRED_PLUGINS as $pluginName => $pluginFilePath)
         {
             if (!is_plugin_active($pluginFilePath))
-            {           
+            {
                 // Deactivate the plugin.
                 deactivate_plugins(plugin_basename(__FILE__));
-                
+
                 wp_die("This plugin requires {$pluginName} plugin to be active!");
             }
         }
     }
-    
+
     /**
      * Initialize default option values
      *
