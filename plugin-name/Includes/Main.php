@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PluginName\Includes;
 
-use PluginName\Includes\i18n;
+use PluginName\Includes\I18n;
 use PluginName\Admin\Admin;
 use PluginName\Admin\Updater;
 use PluginName\Admin\Settings;
@@ -76,7 +76,7 @@ class Main
         /**
          * Includes objects - Register all of the hooks related both to the admin area and to the public-facing functionality of the plugin.
          */
-        $i18n = new i18n($this->pluginSlug);
+        $i18n = new I18n($this->pluginSlug);
         $i18n->initializeHooks();
         
         /**
