@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) exit;
  * @subpackage PluginName/Includes
  * @author     Your Name <email@example.com>
  */
-class i18n
+class I18n
 {
     /**
      * Unique identifier for retrieving translated strings.
