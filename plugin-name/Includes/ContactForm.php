@@ -63,27 +63,27 @@ class ContactForm
      * Producing the output directly will lead to unexpected results.
      *
      * @since   1.0.0
-     * @param	$attributes Attributes.
-     * @param	$content    The post content.
-     * @param	$tag        The name of the shortcode.
+     * @param   $attributes Attributes.
+     * @param   $content    The post content.
+     * @param   $tag        The name of the shortcode.
      */
-	public function formShortcode($attributes = null, $content = null, string $tag = ''): string
-	{
+    public function formShortcode($attributes = null, $content = null, string $tag = ''): string
+    {
         // Show the Form
-		$html = $this->getFormHtml();
-		$this->processFormData();
-		
-		return $html;
+        $html = $this->getFormHtml();
+        $this->processFormData();
+
+        return $html;
     }
 
     /**
      * Returns the Form's HTML code.
      * @since    1.0.0
      */
-	private function getFormHtml(): string
-	{
-		$html = '<div>
-					<form action="' . esc_url($_SERVER['REQUEST_URI']) . '" method="post">
+    private function getFormHtml(): string
+    {
+        $html = '<div>
+                    <form action="' . esc_url($_SERVER['REQUEST_URI']) . '" method="post">
                         <p>' . wp_nonce_field('getFormHtml', 'getFormHtml_nonce') . '</p>
                         <p>
                             <label for="email">' . esc_html__('E-mail', 'plugin-name') . '&nbsp;<span class="required">*</span></label>
@@ -94,39 +94,39 @@ class ContactForm
                             <input type="text" id="subject" name="subject" value="' . (isset($_POST["subject"]) ? esc_html($_POST["subject"]) : '') . '" required />
                         </p>
                         <p>
-							<label for="body">' . esc_html__('Body', 'plugin-name') . '&nbsp;<span class="required">*</span></label>
-							<textarea rows="5" id="body" name="body" required >' . (isset($_POST["body"]) ? esc_textarea($_POST["body"]) : '') . '</textarea>
-						</p>
-						<p><input type="submit" name="form-submitted" value="' . esc_html__('Submit', 'plugin-name') . '"/></p>
-					</form>
-				</div>';
-			
-		return $html;
-	}
-    
+                            <label for="body">' . esc_html__('Body', 'plugin-name') . '&nbsp;<span class="required">*</span></label>
+                            <textarea rows="5" id="body" name="body" required >' . (isset($_POST["body"]) ? esc_textarea($_POST["body"]) : '') . '</textarea>
+                        </p>
+                        <p><input type="submit" name="form-submitted" value="' . esc_html__('Submit', 'plugin-name') . '"/></p>
+                    </form>
+                </div>';
+
+        return $html;
+    }
+
     /**
      * Validates and process the submitted data.
      * @since    1.0.0
      */
-	private function processFormData(): void
-	{
-		// Check the Submit button is clicked
-		if(isset($_POST['form-submitted']))
-		{
-			// Verify Nonce
-			if (wp_verify_nonce($_POST['getFormHtml_nonce'], 'getFormHtml'))
-			{
+    private function processFormData(): void
+    {
+        // Check the Submit button is clicked
+        if(isset($_POST['form-submitted']))
+        {
+            // Verify Nonce
+            if (wp_verify_nonce($_POST['getFormHtml_nonce'], 'getFormHtml'))
+            {
                 $email = sanitize_email($_POST["email"]);
                 $subject = sanitize_text_field($_POST["subject"]);
                 $body = sanitize_text_field($_POST["body"]);
 
                 // Process the data.
                 var_dump($email, $subject, $body);
-			}
-			else
-			{
-				exit(esc_html__('Failed security check.', 'plugin-name'));
-			}
-		}
-	}
+            }
+            else
+            {
+                exit(esc_html__('Failed security check.', 'plugin-name'));
+            }
+        }
+    }
 }
