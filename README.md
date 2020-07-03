@@ -17,6 +17,7 @@ The WordPress Plugin Boilerplate includes the following files:
 * All classes, functions, and variables are documented so that you know what you need to change.
 * The Boilerplate uses a strict file organization scheme that similar to the WordPress Plugin Repository structure, and that makes it easy to organize the files that compose the plugin.
 * The project includes [a `.pot` file](https://github.com/fxbenard/Blank-WordPress-Pot) as a starting point for internationalization.
+* Contatains templates for [Admin menu](https://codex.wordpress.org/Adding_Administration_Menus), [Settings](https://codex.wordpress.org/Settings_API), [Shortcode](https://codex.wordpress.org/Shortcode_API) and Form.
 
 ## Installation
 
