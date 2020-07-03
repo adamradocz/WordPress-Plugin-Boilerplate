@@ -28,10 +28,8 @@ class Settings
      * The ID of this plugin.
      *
      * @since    1.0.0
-     * @access   private
-     * @var      string    $pluginSlug    The ID of this plugin.
      */
-    private $pluginSlug;
+    private string $pluginSlug;
 
     /**
      * The slug name for the menu.
@@ -39,71 +37,61 @@ class Settings
      * lowercase alphanumeric, dashes, and underscores characters to be compatible with sanitize_key().
      *
      * @since    1.0.0
-     * @access   private
-     * @var      string    $menuSlug    Slug name.
      */
-    private $menuSlug;
+    private string $menuSlug;
 
     /**
      * General settings' group name.
      *
      * @since    1.0.0
-     * @access   private
-     * @var      string    $generalOptionGroup    The settings group name of the general settings.
      */
-    private $generalOptionGroup;
-    private $exampleOptionGroup;
+    private string $generalOptionGroup;
+    private string $exampleOptionGroup;
 
     /**
-     * General settings' section.
+     * General settings' section. 
+     * The slug-name of the section of the settings page in which to show the box.
      *
-     * @since    1.0.0
-     * @access   private
-     * @var      string    $generalSettingsSectionId    The slug-name of the section of the settings page in which to show the box.
+     * @since    1.0.0  
      */
-    private $generalSettingsSectionId;
-    private $exampleSettingsSectionId;
+    private string $generalSettingsSectionId;
+    private string $exampleSettingsSectionId;
 
     /**
      * General settings page.
+     * The slug-name of the settings page on which to show the section.
      *
      * @since    1.0.0
-     * @access   private
-     * @var      string    $generalPage    The slug-name of the settings page on which to show the section.
      */
-    private $generalPage;
-    private $examplePage;
+    private string $generalPage;
+    private string $examplePage;
 
     /**
-     * Name of general options.
+     * Name of general options. Expected to not be SQL-escaped.
      *
      * @since    1.0.0
-     * @access   private
-     * @var      string    $generalOptionName    Option name. Expected to not be SQL-escaped.
      */
-    private $generalOptionName;
-    private $exampleOptionName;
+    private string $generalOptionName;
+    private string $exampleOptionName;
 
     /**
      * Collection of options.
      *
      * @since    1.0.0
-     * @access   private
-     * @var      array    $generalOptions    Options.
      */
-    private $generalOptions;
-    private $exampleOptions;
+    private array $generalOptions;
+    private array $exampleOptions;
 
     /**
      * Ids of setting fields.
      */
-    private $debugId;
+    private string $debugId;
 
-    private $textExampleId;
-    private $textareaExampleId;
-    private $checkboxExampleId;
-    private $radioExampleId;
-    private $selectExampleId;
+    private string $textExampleId;
+    private string $textareaExampleId;
+    private string $checkboxExampleId;
+    private string $radioExampleId;
+    private string $selectExampleId;
 
     /**
      * Initialize the class and set its properties.
@@ -288,10 +276,10 @@ class Settings
             return $this->generalOptions;
         }
 
-        $this->generalOptions = get_option($this->generalOptionName);
+        $this->generalOptions = get_option($this->generalOptionName, array());
 
         // If options don't exist, create them.
-        if ($this->generalOptions === false)
+        if ($this->generalOptions === array())
         {
             $this->generalOptions = $this->defaultGeneralOptions();
             update_option($this->generalOptionName, $this->generalOptions);
@@ -387,10 +375,10 @@ class Settings
             return $this->exampleOptions;
         }
 
-        $this->exampleOptions = get_option($this->exampleOptionName);
+        $this->exampleOptions = get_option($this->exampleOptionName, array());
 
         // If the options don't exist, create them.
-        if ($this->exampleOptions === false)
+        if ($this->exampleOptions === array())
         {
             $this->exampleOptions = $this->defaultInputOptions();
             update_option($this->exampleOptionName, $this->exampleOptions);

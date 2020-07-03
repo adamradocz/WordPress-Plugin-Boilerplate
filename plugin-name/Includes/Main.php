@@ -34,19 +34,15 @@ class Main
      * The unique identifier of this plugin.
      *
      * @since    1.0.0
-     * @access   protected
-     * @var      string    $pluginSlug    The string used to uniquely identify this plugin.
      */
-    protected $pluginSlug;
+    protected string $pluginSlug;
 
     /**
      * The current version of the plugin.
      *
      * @since    1.0.0
-     * @access   protected
-     * @var      string    $version    The current version of the plugin.
      */
-    protected $version;
+    protected string $version;
     
     /**
      * Define the core functionality of the plugin.
