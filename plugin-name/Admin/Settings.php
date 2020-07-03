@@ -49,10 +49,10 @@ class Settings
     private string $exampleOptionGroup;
 
     /**
-     * General settings' section. 
+     * General settings' section.
      * The slug-name of the section of the settings page in which to show the box.
      *
-     * @since    1.0.0  
+     * @since    1.0.0
      */
     private string $generalSettingsSectionId;
     private string $exampleSettingsSectionId;
@@ -233,7 +233,7 @@ class Settings
     {
         // Get the values of the setting we've registered with register_setting(). It used in the callback functions.
         $this->generalOptions = $this->getGeneralOptions();
-        
+
         // Add a new section to a settings page.
         add_settings_section(
             $this->generalSettingsSectionId,            // ID used to identify this section and with which to register options
@@ -343,7 +343,7 @@ class Settings
     public function initializeInputExamples(): void
     {
         $this->exampleOptions = $this->getExampleOptions();
-        
+
         add_settings_section($this->exampleSettingsSectionId, __('Input Examples', 'plugin-name'), array($this, 'inputExamplesCallback'), $this->examplePage);
 
         add_settings_field($this->textExampleId, __('Input Element', 'plugin-name'), array($this, 'inputElementCallback'), $this->examplePage, $this->exampleSettingsSectionId, array('label_for' => $this->textExampleId));
