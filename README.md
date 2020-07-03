@@ -103,16 +103,15 @@ namespace PluginName;
 if (!defined('ABSPATH')) exit;
 
 class User
-{ 
-	const DATE_REGISTERED = '2012-06-01';
+{
+    const DATE_REGISTERED = '2012-06-01';
     
     private int $id;
-	
-	public function updateAddress($id, $newAddress)
-	{
-		// Do something
-	}
-	
+    
+    public function updateAddress($id, $newAddress)
+    {
+        // Do something
+    }
 }
 ```
 
