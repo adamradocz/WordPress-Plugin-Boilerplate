@@ -34,5 +34,6 @@ if (!defined('WP_UNINSTALL_PLUGIN'))
 }
 
 // Delete the plugin's options from database
+delete_option('plugin-name-configuration');
 delete_option('plugin-name-general');
 delete_option('plugin-name-example');

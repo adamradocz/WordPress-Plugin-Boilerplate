@@ -25,10 +25,8 @@ class I18n
      * Unique identifier for retrieving translated strings.
      *
      * @since    1.0.0
-     * @access   protected
-     * @var      string    $domain    Unique identifier for retrieving translated strings.
      */
-    protected $domain;
+    protected string $domain;
 
     /**
      * Initialize the text domain for i18n.
