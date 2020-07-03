@@ -66,6 +66,7 @@ class ContactForm
      * @param   $attributes Attributes.
      * @param   $content    The post content.
      * @param   $tag        The name of the shortcode.
+     * @return  The text that is to be used to replace the shortcode.
      */
     public function formShortcode($attributes = null, $content = null, string $tag = ''): string
     {
@@ -77,8 +78,9 @@ class ContactForm
     }
 
     /**
-     * Returns the Form's HTML code.
+     * The Form's HTML code.
      * @since    1.0.0
+     * @return  The form's HTML code.
      */
     private function getFormHtml(): string
     {
