@@ -103,7 +103,7 @@ namespace PluginName;
 if (!defined('ABSPATH')) exit;
 
 class User
-{ 
+{
     const DATE_REGISTERED = '2012-06-01';
     
     private int $id;
@@ -112,7 +112,6 @@ class User
     {
         // Do something
     }
-    
 }
 ```
 
