@@ -73,6 +73,7 @@ The same is true of using tools like Grunt, Composer, etc. These are all fantast
 ## Coding standards
 
 - Every functions MUST declare [**parameter type**](https://www.php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration) and [**return type**](https://www.php.net/manual/en/functions.returning-values.php#functions.returning-values.type-declaration).
+- Every class properties MUST be [**typed**](https://www.php.net/manual/en/migration74.new-features.php#migration74.new-features.core.typed-properties).
 - Every PHP files MUST have [**strict type mode**](https://www.php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration.strict) enabled by starting with `declare(strict_types=1);`.
 - Every PHP files MUST contain `if (!defined('ABSPATH')) exit;` right after the `namespace` declaration.
 
@@ -104,6 +105,8 @@ if (!defined('ABSPATH')) exit;
 class User
 { 
 	const DATE_REGISTERED = '2012-06-01';
+    
+    private int $id;
 	
 	public function updateAddress($id, $newAddress)
 	{
