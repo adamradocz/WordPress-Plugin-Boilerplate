@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PluginName\Includes;
 
 use PluginName\Includes\I18n;
+use PluginName\Includes\ContactForm;
 use PluginName\Admin\Admin;
 use PluginName\Admin\Updater;
 use PluginName\Admin\Settings;
@@ -75,6 +76,10 @@ class Main
         $i18n = new I18n($this->pluginSlug);
         $i18n->initializeHooks();
         
+        // Contact form and shortcode template. Insert [add_form] shortcode to a page to see the result.
+        $contactForm = new ContactForm($this->pluginSlug);
+        $contactForm->initializeHooks($isAdmin);
+
         /**
          * Admin objects - Register all of the hooks related to the admin area functionality of the plugin.
          */
