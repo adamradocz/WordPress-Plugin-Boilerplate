@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PluginName\Includes;
+namespace PluginName\Frontend;
 
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) exit;
@@ -86,7 +86,7 @@ class ContactForm
     {
         $html = '<div>
                     <form action="' . esc_url($_SERVER['REQUEST_URI']) . '" method="post">
-                        <p>' . wp_nonce_field('getFormHtml', 'getFormHtml_nonce') . '</p>
+                        <p>' . wp_nonce_field('getFormHtml', 'getFormHtml_nonce', true, false) . '</p>
                         <p>
                             <label for="email">' . esc_html__('E-mail', 'plugin-name') . '&nbsp;<span class="required">*</span></label>
                             <input type="text" id="email" name="email" value="' . (isset($_POST["email"]) ? esc_html($_POST["email"]) : '') . '" required />
