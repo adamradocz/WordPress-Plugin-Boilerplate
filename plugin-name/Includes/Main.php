@@ -76,15 +76,16 @@ class Main
         $i18n = new I18n($this->pluginSlug);
         $i18n->initializeHooks();
         
+        $settings = new Settings($this->pluginSlug);
+
         /**
          * Admin objects - Register all of the hooks related to the admin area functionality of the plugin.
          */
         if ($isAdmin)
         {
-            $admin = new Admin($this->pluginSlug, $this->version);
+            $admin = new Admin($this->pluginSlug, $this->version, $settings);
             $admin->initializeHooks($isAdmin);
 
-            $settings = new Settings($this->pluginSlug);
             $settings->initializeHooks($isAdmin);
         }
         /**
@@ -92,7 +93,7 @@ class Main
          */
         else
         {
-            $frontend = new Frontend($this->pluginSlug, $this->version);
+            $frontend = new Frontend($this->pluginSlug, $this->version, $settings);
             $frontend->initializeHooks($isAdmin);
     
             // Contact form and shortcode template. Insert [add_form] shortcode to a page to see the result.

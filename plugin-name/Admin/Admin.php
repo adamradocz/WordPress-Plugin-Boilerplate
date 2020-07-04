@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PluginName\Admin;
 
+use PluginName\Admin\Settings;
+
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) exit;
 
@@ -38,16 +40,25 @@ class Admin
     private string $version;
 
     /**
+     * The settings of this plugin.
+     *
+     * @since    1.0.0
+     */
+    private Settings $settings;
+
+    /**
      * Initialize the class and set its properties.
      *
      * @since   1.0.0
      * @param   $pluginSlug     The name of this plugin.
      * @param   $version        The version of this plugin.
+     * @param   $settings       The Settings object.
      */
-    public function __construct(string $pluginSlug, string $version)
+    public function __construct(string $pluginSlug, string $version, Settings $settings)
     {
         $this->pluginSlug = $pluginSlug;
         $this->version = $version;
+        $this->settings = $settings;
     }
 
     /**
@@ -90,7 +101,8 @@ class Admin
          * - Dependency: The style can be used as dependency, so the style will be automatically loaded, if one style is depend on it.
          */
         $styleId = $this->pluginSlug . '-admin';
-        $styleUrl = plugin_dir_url(__FILE__) . 'css/plugin-name-admin.css';
+        $styleFileName = ($this->settings->getDebug() === false) ? 'plugin-name-admin.css' : 'plugin-name-admin.min.css';
+        $styleUrl = plugin_dir_url(__FILE__) . 'css/' . $styleFileName;
         if (wp_register_style($styleId, $styleUrl, array(), $this->version, 'all') === false)
         {
             exit(__('Style could not be registered: ', 'communal-marketplace') . $styleUrl);
@@ -128,7 +140,8 @@ class Admin
          * - Dependency: The script can be used as dependency, so the script will be automatically loaded, if one script is depend on it.
          */
         $scriptId = $this->pluginSlug . '-admin';
-        $scriptUrl = plugin_dir_url(__FILE__) . 'js/plugin-name-admin.js';
+        $scripFileName = ($this->settings->getDebug() === false) ? 'plugin-name-admin.js' : 'plugin-name-admin.min.js';
+        $scriptUrl = plugin_dir_url(__FILE__) . 'js/' . $scripFileName;
         if (wp_register_script($scriptId, $scriptUrl, array('jquery'), $this->version, false) === false)
         {
             exit(__('Script could not be registered: ', 'plugin-name') . $scriptUrl);
