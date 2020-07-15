@@ -101,7 +101,7 @@ class Admin
          * - Dependency: The style can be used as dependency, so the style will be automatically loaded, if one style is depend on it.
          */
         $styleId = $this->pluginSlug . '-admin';
-        $styleFileName = ($this->settings->getDebug() === false) ? 'plugin-name-admin.css' : 'plugin-name-admin.min.css';
+        $styleFileName = ($this->settings->getDebug() === true) ? 'plugin-name-admin.css' : 'plugin-name-admin.min.css';
         $styleUrl = plugin_dir_url(__FILE__) . 'css/' . $styleFileName;
         if (wp_register_style($styleId, $styleUrl, array(), $this->version, 'all') === false)
         {
@@ -140,7 +140,7 @@ class Admin
          * - Dependency: The script can be used as dependency, so the script will be automatically loaded, if one script is depend on it.
          */
         $scriptId = $this->pluginSlug . '-admin';
-        $scripFileName = ($this->settings->getDebug() === false) ? 'plugin-name-admin.js' : 'plugin-name-admin.min.js';
+        $scripFileName = ($this->settings->getDebug() === true) ? 'plugin-name-admin.js' : 'plugin-name-admin.min.js';
         $scriptUrl = plugin_dir_url(__FILE__) . 'js/' . $scripFileName;
         if (wp_register_script($scriptId, $scriptUrl, array('jquery'), $this->version, false) === false)
         {

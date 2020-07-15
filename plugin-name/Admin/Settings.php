@@ -327,7 +327,7 @@ class Settings
     public function getDebug(): bool
     {
         $this->generalOptions = $this->getGeneralOptions();
-        return $this->generalOptions[$this->debugId];
+        return (bool)$this->generalOptions[$this->debugId];
     }
 
 #endregion
@@ -494,7 +494,7 @@ class Settings
     public function getCheckboxExample(): string
     {
         $this->exampleOptions = $this->getExampleOptions();
-        return $this->exampleOptions[$this->checkboxExampleId];
+        return (bool)$this->exampleOptions[$this->checkboxExampleId];
     }
 
     /**
