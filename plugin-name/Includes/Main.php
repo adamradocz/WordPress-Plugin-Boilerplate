@@ -76,6 +76,7 @@ class Main
         $i18n = new I18n($this->pluginSlug);
         $i18n->initializeHooks();
         
+        // The Settings' hook initialization runs on Admin area only.
         $settings = new Settings($this->pluginSlug);
 
         /**

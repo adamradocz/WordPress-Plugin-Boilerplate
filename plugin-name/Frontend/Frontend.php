@@ -129,7 +129,7 @@ class Frontend
          */
         $scriptId = $this->pluginSlug . '-frontend';
         $scripFileName = ($this->settings->getDebug() === false) ? 'plugin-name-frontend.js' : 'plugin-name-frontend.min.js';
-        $scriptUrl = plugin_dir_url(__FILE__) . 'js/' . scripFileName;
+        $scriptUrl = plugin_dir_url(__FILE__) . 'js/' . $scripFileName;
         if (wp_register_script($scriptId, $scriptUrl, array('jquery'), $this->version, false) === false)
         {
             exit(__('Script could not be registered: ', 'plugin-name') . $scriptUrl);
