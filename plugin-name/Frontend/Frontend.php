@@ -75,7 +75,7 @@ class Frontend
             add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'), 10);
         }
     }
-    
+
     /**
      * Register the stylesheets for the frontend side of the site.
      *
@@ -101,7 +101,7 @@ class Frontend
         {
             exit(esc_html__('Style could not be registered: ', 'communal-marketplace') . $styleUrl);
         }
-        
+
         /**
          * If you enque the style here, it will be loaded on every page on the frontend.
          * To load only with a shortcode, move the wp_enqueue_style to the callback function of the add_shortcode.
@@ -134,12 +134,22 @@ class Frontend
         {
             exit(esc_html__('Script could not be registered: ', 'plugin-name') . $scriptUrl);
         }
-        
+
         /**
          * If you enque the script here, it will be loaded on every page on the frontend.
          * To load only with a shortcode, move the wp_enqueue_script to the callback function of the add_shortcode.
          * If you use the wp_localize_script function, you should place it under the wp_enqueue_script.
          */
         wp_enqueue_script($scriptId);
+
+        /**
+         * Register the Contact Form script which is used in the Contact Form shortcode.
+         */
+        $contactFormScripFileName = ($this->settings->getDebug() === true) ? 'plugin-name-contact-form.js' : 'plugin-name-contact-form.min.js';
+        $contactFormScriptUrl = plugin_dir_url(__FILE__) . 'js/' . $contactFormScripFileName;
+        if (wp_register_script($this->pluginSlug . 'contact-form', $contactFormScriptUrl, array('jquery'), $this->version, false) === false)
+        {
+            exit(esc_html__('Script could not be registered: ', 'plugin-name') . $contactFormScriptUrl);
+        }
     }
 }

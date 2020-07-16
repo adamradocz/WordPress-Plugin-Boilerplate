@@ -44,7 +44,7 @@ class Main
      * @since    1.0.0
      */
     protected string $version;
-    
+
     /**
      * Define the core functionality of the plugin.
      *
@@ -69,15 +69,19 @@ class Main
     private function defineHooks(): void
     {
         $isAdmin = is_admin();
-        
+
         /**
          * Includes objects - Register all of the hooks related both to the admin area and to the public-facing functionality of the plugin.
          */
         $i18n = new I18n($this->pluginSlug);
         $i18n->initializeHooks();
-        
+
         // The Settings' hook initialization runs on Admin area only.
         $settings = new Settings($this->pluginSlug);
+
+        // Contact form and shortcode template. Insert [add_form] shortcode to a page to see the result.
+        $contactForm = new ContactForm($this->pluginSlug);
+        $contactForm->initializeHooks($isAdmin);
 
         /**
          * Admin objects - Register all of the hooks related to the admin area functionality of the plugin.
@@ -96,10 +100,6 @@ class Main
         {
             $frontend = new Frontend($this->pluginSlug, $this->version, $settings);
             $frontend->initializeHooks($isAdmin);
-    
-            // Contact form and shortcode template. Insert [add_form] shortcode to a page to see the result.
-            $contactForm = new ContactForm($this->pluginSlug);
-            $contactForm->initializeHooks($isAdmin);
         }
     }
 
