@@ -20,7 +20,7 @@ The WordPress Plugin Boilerplate includes the following files:
 * Contatains templates for:
   * [Admin menu](https://codex.wordpress.org/Adding_Administration_Menus)
   * [Settings](https://codex.wordpress.org/Settings_API)
-  * [Shortcode](https://codex.wordpress.org/Shortcode_API) as a Form and how to pass data from a Javascript and retur data back.
+  * [Shortcode](https://codex.wordpress.org/Shortcode_API) as a Form and how to pass data from a Javascript and return data back.
 
 ## Installation
 
