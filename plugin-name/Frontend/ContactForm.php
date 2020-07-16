@@ -116,7 +116,7 @@ class ContactForm
         if(isset($_POST['form-submitted']))
         {
             // Verify Nonce
-            if (wp_verify_nonce($_POST['getFormHtml_nonce'], 'getFormHtml'))
+            if (wp_verify_nonce($_POST['getFormHtml_nonce'], 'getFormHtml') !== false)
             {
                 $email = sanitize_email($_POST["email"]);
                 $subject = sanitize_text_field($_POST["subject"]);
