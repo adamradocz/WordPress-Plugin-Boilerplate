@@ -45,6 +45,9 @@ class ContactForm
      */
     public function initializeHooks(bool $isAdmin): void
     {
+        // 'wp_ajax_' hook needs to be run on frontend and admin area too.
+        add_action('wp_ajax_capitalizeText', array($this, 'capitalizeText'), 10);
+
         // Frontend
         if (!$isAdmin)
         {
@@ -53,7 +56,7 @@ class ContactForm
     }
 
     /**
-     * Shortcode for "Add product" form.
+     * Contact form shortcode.
      *
      * @link https://developer.wordpress.org/reference/functions/add_shortcode/
      * Shortcode attribute names are always converted to lowercase before they are passed into the handler function. Values are untouched.
@@ -70,11 +73,49 @@ class ContactForm
      */
     public function formShortcode($attributes = null, $content = null, string $tag = ''): string
     {
+        // Enqueue scripts
+        wp_enqueue_script($this->pluginSlug . 'contact-form');
+
+        // Inline scripts. This is how we pass data to scripts
+        $script  = 'ajaxUrl = ' . json_encode(admin_url('admin-ajax.php')) . '; ';
+        $script .= 'nonce = ' . json_encode(wp_create_nonce('capitalizeText')) . '; ';
+        if (wp_add_inline_script($this->pluginSlug . 'contact-form', $script, 'before') === false)
+        {
+            // It throws error on the Post edit screen and I don't know why. It works on the frontend.
+            //exit('wp_add_inline_script() failed. Inlined script: ' . $script);
+        }
+
         // Show the Form
         $html = $this->getFormHtml();
         $this->processFormData();
 
         return $html;
+    }
+
+    /**
+     * This is a template how to receive data from a script, then return data back.
+     * In this case it returns a text in capitalized.
+     *
+     * @since   1.0.0
+     */
+    public function capitalizeText()
+    {
+        // Verifies the AJAX request
+        if (check_ajax_referer('capitalizeText', 'nonce', false) === false)
+        {
+            wp_send_json_error('Failed nonce', 403); // Sends json_encoded success=false.
+        }
+
+        // Sanitize values
+        $text = sanitize_text_field($_POST['text']);
+
+        // Generate response data
+        $responseData = array(
+            'capitalizedText' => strtoupper($text)
+        );
+
+        // Send a JSON response back to an AJAX request, and die().
+        wp_send_json($responseData, 200);
     }
 
     /**
@@ -85,6 +126,8 @@ class ContactForm
     private function getFormHtml(): string
     {
         $html = '<div>
+                    <label for="capitalized-subject">' . esc_html__('Capizalized subject (value is reveived from a PHP function)', 'plugin-name') . '</label>
+                    <p id="capitalized-subject"></p>
                     <form action="' . esc_url($_SERVER['REQUEST_URI']) . '" method="post">
                         <p>' . wp_nonce_field('getFormHtml', 'getFormHtml_nonce', true, false) . '</p>
                         <p>
