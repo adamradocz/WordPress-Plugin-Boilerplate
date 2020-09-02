@@ -72,13 +72,18 @@ $configurationOptionName = PLUGIN_NAME_SLUG . '-configuration';
  * The code that runs during plugin activation.
  * This action is documented in Includes/Activator.php
  */
-register_activation_hook(__FILE__, function() use($configuration, $configurationOptionName) {Activator::activate($configuration, $configurationOptionName);});
+register_activation_hook(__FILE__, function($networkWide) use($configuration, $configurationOptionName) {Activator::activate($networkWide, $configuration, $configurationOptionName);});
+
+/**
+ * Run the activation code when a new site is created.
+ */
+add_action('wpmu_new_blog', function($blogId) {Activator::activateNewSite($blogId);});
 
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in Includes/Deactivator.php
  */
-register_deactivation_hook(__FILE__, function() {Deactivator::deactivate();});
+register_deactivation_hook(__FILE__, function($networkWide) {Deactivator::deactivate($networkWide);});
 
 /**
  * Update the plugin.

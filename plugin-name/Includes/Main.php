@@ -8,6 +8,7 @@ use PluginName\Includes\I18n;
 use PluginName\Admin\Admin;
 use PluginName\Admin\Updater;
 use PluginName\Admin\Settings;
+use PluginName\Admin\NetworkSettings;
 use PluginName\Frontend\Frontend;
 use PluginName\Frontend\ContactForm;
 
@@ -69,6 +70,7 @@ class Main
     private function defineHooks(): void
     {
         $isAdmin = is_admin();
+        $isNetworkAdmin = is_network_admin();
 
         /**
          * Includes objects - Register all of the hooks related both to the admin area and to the public-facing functionality of the plugin.
@@ -82,6 +84,15 @@ class Main
         // Contact form and shortcode template. Insert [add_form] shortcode to a page to see the result.
         $contactForm = new ContactForm($this->pluginSlug);
         $contactForm->initializeHooks($isAdmin);
+
+        /**
+         * Network Admin objects - Register all of the hooks related to the network admin area functionality of the plugin.
+         */
+        if ($isNetworkAdmin)
+        {
+            $networkSettings = new NetworkSettings($this->pluginSlug);
+            $networkSettings->initializeHooks($isNetworkAdmin);
+        }
 
         /**
          * Admin objects - Register all of the hooks related to the admin area functionality of the plugin.

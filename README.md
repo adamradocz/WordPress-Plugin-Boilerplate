@@ -21,6 +21,8 @@ The WordPress Plugin Boilerplate includes the following files:
   * [Admin menu](https://codex.wordpress.org/Adding_Administration_Menus)
   * [Settings](https://codex.wordpress.org/Settings_API)
   * [Shortcode](https://codex.wordpress.org/Shortcode_API) as a Form and how to pass data from a Javascript and return data back.
+  * [Multisite support](https://wordpress.org/support/article/create-a-network/)
+  * [Network Settings](https://codex.wordpress.org/Plugin_API/Action_Reference/network_admin_menu)
 
 ## Installation
 
@@ -63,6 +65,13 @@ Note that if you include your own classes, or third-party libraries, there are t
 * `plugin-name/Includes` is where functionality shared between the admin area and the public-facing parts of the site reside
 * `plugin-name/Admin` is for all admin-specific functionality
 * `plugin-name/Frontend` is for all public-facing functionality
+
+### Multisite development
+
+The plugin is multisite ready out of the box.
+Highly recommended articles:
+* [Site Metadata](https://make.wordpress.org/core/2019/01/28/multisite-support-for-site-metadata-in-5-1/)
+* [Super Admin capabilities](https://wordpress.org/support/article/roles-and-capabilities/#super-admin)
 
 ### What About Other Features?
 
