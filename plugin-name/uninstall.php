@@ -33,7 +33,62 @@ if (!defined('WP_UNINSTALL_PLUGIN'))
     exit;
 }
 
-// Delete the plugin's options from database
-delete_option('plugin-name-configuration');
-delete_option('plugin-name-general');
-delete_option('plugin-name-example');
+// If Multisite is enabled, then uninstall the plugin on every site.
+if (function_exists('is_multisite') && is_multisite())
+{
+    // Permission check
+    if (!current_user_can('setup_network'))
+    {
+        wp_die('You don\'t have proper authorization to delete a plugin!');
+    }
+
+    /**
+     * Delete the global options
+     */
+    deleteGlobalOptions();
+
+    /**
+     * Delete the site specific options
+     */
+    foreach (get_sites(['fields'=>'ids']) as $blogId)
+    {
+        switch_to_blog($blogId);
+        
+        // Site specific uninstall code starts here...
+        deleteOptions();
+
+        restore_current_blog();
+    }
+}
+else
+{
+    // Permission check
+    if (!current_user_can('activate_plugins'))
+    {
+        wp_die('You don\'t have proper authorization to delete a plugin!');
+    }
+
+    deleteGlobalOptions();
+    deleteOptions();
+}
+
+/**
+ * Delete the plugin's global options.
+ *
+ * @since    1.0.0
+ */
+function deleteGlobalOptions(): void
+{
+    delete_option('plugin-name-configuration');
+}
+
+/**
+ * Delete the plugin's options.
+ *
+ * @since    1.0.0
+ */
+function deleteOptions(): void
+{
+    delete_option('plugin-name-general');
+    delete_option('plugin-name-example');
+}

@@ -39,34 +39,102 @@ class Activator
      *
      * Long Description.
      *
+     * @param   $networkWide                Plugin is network-wide activated or not.
      * @param   $configuration              The plugin's configuration data.
      * @param   $configurationOptionName    The ID for the configuration options in the database.
      * @since    1.0.0
      */
-    public static function activate(array $configuration, string $configurationOptionName): void
+    public static function activate(bool $networkWide, array $configuration, string $configurationOptionName): void
     {
-        // Permission check
-        if (!current_user_can('activate_plugins'))
+        $configuration['network-wide'] = $networkWide;
+
+        // Network-wide activation
+        if ($networkWide)
         {
-            deactivate_plugins(plugin_basename(__FILE__));
+            // Permission check
+            if (!current_user_can('manage_network_plugins'))
+            {
+                deactivate_plugins(plugin_basename(__FILE__));
 
-            // Localization class hasn't been loaded yet.
-            wp_die('You don\'t have proper authorization to activate a plugin!');
+                // Localization class hasn't been loaded yet.
+                wp_die('You don\'t have proper authorization to activate a plugin!');
+            }
+            
+            /**
+             * Global setup
+             */
+
+            // Save the default configuration values
+            self::ensureCreateConfig($configurationOptionName, $configuration);
+
+            /**
+             * Site specific setup
+             */
+
+            // Loop through the sites
+            foreach (get_sites(['fields'=>'ids']) as $blogId)
+            {
+                switch_to_blog($blogId);
+                self::checkDependencies(true, $blogId);
+                self::onActivation();
+                restore_current_blog();
+            }
         }
+        else // Single site activation
+        {
+            // Permission check
+            if (!current_user_can('activate_plugins'))
+            {
+                deactivate_plugins(plugin_basename(__FILE__));
 
-         // Check dependencies
-        self::checkDependencies();
+                // Localization class hasn't been loaded yet.
+                wp_die('You don\'t have proper authorization to activate a plugin!');
+            }
 
-        // Save the default configuration values
-        self::ensureCreateOptions($configurationOptionName, $configuration);
+            // If Multisite is enabled, save the global settings in the main site database
+            if (function_exists('is_multisite') && is_multisite())
+            {
+                switch_to_blog(get_main_site_id());
+                // Save the default configuration values
+                self::ensureCreateConfig($configurationOptionName, $configuration);
+                restore_current_blog();
+            }
+            else
+            {
+                // Save the default configuration values
+                self::ensureCreateConfig($configurationOptionName, $configuration);
+            }
+
+            self::checkDependencies();
+            self::onActivation();
+        }
+    }
+
+    /**
+     * Activate the newly creatied site if the plugin was network-wide activated.
+     *
+     * @param   $blogId                ID of the newly creatied site.
+     * @since    1.0.0
+     */
+    public static function activateNewSite(int $blogId): void
+    {
+        if (is_plugin_active_for_network('plugin-name/plugin-name.php'))
+        {
+            switch_to_blog($blogId);
+            self::checkDependencies(true, $blogId);
+            self::onActivation();
+            restore_current_blog();
+        }
     }
 
     /**
      * Check whether the required plugins are active.
-     *
+     * 
+     * @param   $networkWideActivation  Network wide activation.
+     * @param   $blogId                 On Multisite context: ID of the currently checking site.
      * @since      1.0.0
      */
-    private static function checkDependencies(): void
+    private static function checkDependencies(bool $networkWideActivation = false, int $blogId = 0): void
     {
         foreach (self::REQUIRED_PLUGINS as $pluginName => $pluginFilePath)
         {
@@ -74,25 +142,43 @@ class Activator
             {
                 // Deactivate the plugin.
                 deactivate_plugins(plugin_basename(__FILE__));
-
-                wp_die("This plugin requires {$pluginName} plugin to be active!");
+                
+                if ($multisite)
+                {
+                    wp_die("This plugin requires {$pluginName} plugin to be active on site: " . $blogId);
+                }
+                else
+                {
+                    wp_die("This plugin requires {$pluginName} plugin to be active!");
+                }
             }
         }
     }
 
     /**
-     * Initialize default option values
+     * Initialize default configuration
      *
      * @param   $configurationOptionName    The ID for getting and setting the configuration options from the database.
      * @param   $configuration              The plugin's configuration data.
      * @since      1.0.0
      */
-    private static function ensureCreateOptions(string $configurationOptionName, array $configuration): void
+    private static function ensureCreateConfig(string $configurationOptionName, array $configuration): void
     {
         // Save the configuration data if not exist.
         if (get_option($configurationOptionName) === false)
         {
             update_option($configurationOptionName, $configuration);
         }
+    }
+    
+    /**
+	 * The actual tasks performed during activation of a plugin.
+	 * Should handle only stuff that happens during a single site activation,
+	 * as the process will repeated for each site on a Multisite/Network installation
+	 * if the plugin is activated network wide.
+	 */
+	public static function onActivation()
+	{
+		
     }
 }
