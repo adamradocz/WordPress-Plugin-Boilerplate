@@ -33,19 +33,22 @@ if (!defined('WP_UNINSTALL_PLUGIN'))
     exit;
 }
 
+$currentNetworkId = get_current_network_id();
+deleteConfigOptions($currentNetworkId);
+
 // If Multisite is enabled, then uninstall the plugin on every site.
-if (function_exists('is_multisite') && is_multisite())
+if (is_multisite())
 {
     // Permission check
-    if (!current_user_can('setup_network'))
+    if (!current_user_can('manage_network_plugins'))
     {
         wp_die('You don\'t have proper authorization to delete a plugin!');
     }
 
     /**
-     * Delete the global options
+     * Delete the Network options
      */
-    deleteGlobalOptions();
+    deleteNetworkOptions($currentNetworkId);
 
     /**
      * Delete the site specific options
@@ -53,10 +56,8 @@ if (function_exists('is_multisite') && is_multisite())
     foreach (get_sites(['fields'=>'ids']) as $blogId)
     {
         switch_to_blog($blogId);
-        
         // Site specific uninstall code starts here...
         deleteOptions();
-
         restore_current_blog();
     }
 }
@@ -68,18 +69,27 @@ else
         wp_die('You don\'t have proper authorization to delete a plugin!');
     }
 
-    deleteGlobalOptions();
     deleteOptions();
 }
 
 /**
- * Delete the plugin's global options.
+ * Delete the plugin's configuration data.
  *
  * @since    1.0.0
  */
-function deleteGlobalOptions(): void
+function deleteConfigOptions(int $currentNetworkId): void
 {
-    delete_option('plugin-name-configuration');
+    delete_network_option($currentNetworkId, 'plugin-name-configuration');
+}
+
+/**
+ * Delete the plugin's network options.
+ *
+ * @since    1.0.0
+ */
+function deleteNetworkOptions(int $currentNetworkId): void
+{
+    delete_network_option($currentNetworkId, 'plugin-name-network-general');
 }
 
 /**

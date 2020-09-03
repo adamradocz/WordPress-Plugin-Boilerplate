@@ -111,8 +111,8 @@ class NetworkSettings extends SettingsBase
         // Network Admin
         if ($isNetworkAdmin)
         {
-            add_action('network_admin_menu', array($this, 'setupNetworkSettingsMenu'), 10);
-            add_action('admin_init', array($this, 'initializeNetworkGeneralOptions'), 10);
+            add_action('network_admin_menu', array($this, 'setupNetworkSettingsMenu'));
+            add_action('network_admin_edit_plugin_name_update_network_options', array($this, 'plugin_name_update_network_options'));
         }
     }
 
@@ -123,14 +123,37 @@ class NetworkSettings extends SettingsBase
     {
         //Add the menu item to the Main menu
         add_menu_page(
-            'Plugin Name Network Options',              // Page title: The title to be displayed in the browser window for this page.
-            'Plugin Name',                              // Menu title: The text to be used for the menu.
-            'manage_network_options',                   // Capability: The capability required for this menu to be displayed to the user.
-            $this->menuSlug,                            // Menu slug: The slug name to refer to this menu by. Should be unique for this menu page.
-            array($this, 'renderNetworkSettingsPageContent'),  // Callback: The name of the function to call when rendering this menu's page
-            'dashicons-smiley',                         // Icon
-            81                                          // Position: The position in the menu order this item should appear.
+            'Plugin Name Network Options',                      // Page title: The title to be displayed in the browser window for this page.
+            'Plugin Name',                                      // Menu title: The text to be used for the menu.
+            'manage_network_options',                           // Capability: The capability required for this menu to be displayed to the user.
+            $this->menuSlug,                                    // Menu slug: The slug name to refer to this menu by. Should be unique for this menu page.
+            array($this, 'renderNetworkSettingsPageContent'),   // Callback: The name of the function to call when rendering this menu's page
+            'dashicons-smiley',                                 // Icon
+            81                                                  // Position: The position in the menu order this item should appear.
         );
+
+        // Get the values of the setting we've registered with register_setting(). It used in the callback functions.
+        $this->networkGeneralOptions = $this->getNetworkGeneralOptions();
+
+        // Add a new section to a settings page.
+        add_settings_section(
+            $this->generalSettingsSectionId,                // ID used to identify this section and with which to register options
+            __('Network General', 'plugin-name'),           // Title to be displayed on the administration page
+            array($this, 'networkGeneralOptionsCallback'),  // Callback used to render the description of the section
+            $this->generalPage                              // Page on which to add this section of options
+        );
+
+        // Next, we'll introduce the fields for toggling the visibility of content elements.
+        add_settings_field(
+            $this->debugId,                        // ID used to identify the field throughout the theme.
+            __('Debug', 'plugin-name'),            // The label to the left of the option interface element.
+            array($this, 'debugCallback'),         // The name of the function responsible for rendering the option interface.
+            $this->generalPage,                    // The page on which this option will be displayed.
+            $this->generalSettingsSectionId,       // The name of the section to which this field belongs.
+            array('label_for' => $this->debugId)   // Extra arguments used when outputting the field. CSS Class can also be added to the <tr> element with the 'class' key.
+        );
+
+        // 'register_setting()' is useless in the Network Admin area.
     }
 
     /**
@@ -147,9 +170,9 @@ class NetworkSettings extends SettingsBase
             return;
         }
 
-        // Add error/update messages
-        // check if the user have submitted the settings. Wordpress will add the "settings-updated" $_GET parameter to the url
-        if (isset($_GET['settings-updated']))
+        // Add error/update messages.
+        // Check if the user have submitted the settings. Wordpress will add the "updated" $_GET parameter to the url
+        if (isset($_GET['updated']))
         {
             // Add settings saved message with the class of "updated"
             add_settings_error($this->pluginSlug, $this->pluginSlug . '-message', __('Settings saved.'), 'success');
@@ -171,7 +194,7 @@ class NetworkSettings extends SettingsBase
                 <a href="?page=<?php echo $this->menuSlug; ?>&tab=examples" class="nav-tab <?php echo $activeTab === 'examples' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Examples', 'plugin-name'); ?></a>
             </h2>
 
-            <form method="post" action="options.php">
+            <form method="post" action="edit.php?action=plugin_name_update_network_options">
                 <?php
                 if ($activeTab === 'general_options')
                 {
@@ -191,49 +214,35 @@ class NetworkSettings extends SettingsBase
         <?php
     }
 
-#region GENERAL OPTIONS
-
     /**
-     * Initializes the Network General Options by registering the Sections, Fields, and Settings.
-     *
-     * This function is registered with the 'admin_init' hook.
+     * This function here is hooked up to a special action and necessary to process
+     * the saving of the options. This is the big difference with a normal options page.
      */
-    public function initializeNetworkGeneralOptions(): void
+    public function plugin_name_update_network_options()
     {
-        // Get the values of the setting we've registered with register_setting(). It used in the callback functions.
-        $this->networkGeneralOptions = $this->getNetworkGeneralOptions();
+        // Security check.
+        // On the settings page we used the '$this->generalOptionGroup' slug when calling 'settings_fields'
+        // but we must add the '-options' postfix when we check the nonce.
+        if (wp_verify_nonce($_POST[_wpnonce], $this->generalOptionGroup . '-options') === false)
+        {
+            wp_die(__('Failed security check.', 'plugin-name'));
+        }
 
-        // Add a new section to a settings page.
-        add_settings_section(
-            $this->generalSettingsSectionId,            // ID used to identify this section and with which to register options
-            __('Network General', 'plugin-name'),               // Title to be displayed on the administration page
-            array($this, 'networkGeneralOptionsCallback'),     // Callback used to render the description of the section
-            $this->generalPage                          // Page on which to add this section of options
-        );
+        // Get the options.
+        $options = $_POST[$this->networkGeneralOptionName];
 
-        // Next, we'll introduce the fields for toggling the visibility of content elements.
-        add_settings_field(
-            $this->debugId,                        // ID used to identify the field throughout the theme.
-            __('Debug', 'plugin-name'),            // The label to the left of the option interface element.
-            array($this, 'debugCallback'),         // The name of the function responsible for rendering the option interface.
-            $this->generalPage,                    // The page on which this option will be displayed.
-            $this->generalSettingsSectionId,       // The name of the section to which this field belongs.
-            array('label_for' => $this->debugId)   // Extra arguments used when outputting the field. CSS Class can also be added to the <tr> element with the 'class' key.
-        );
+        // Sanitize the option values
+        $sanitizedOptions = $this->sanitizeOptionsCallback($options);
 
-        // Finally, we register the fields with WordPress.
-        /**
-         * If you want to use the setting in the REST API (wp-json/wp/v2/settings),
-         * you’ll need to call register_setting() on the rest_api_init action, in addition to the normal admin_init action.
-         */
-        $registerSettingArguments = array(
-            'type' => 'array',
-            'description' => '',
-            'sanitize_callback' => array($this, 'sanitizeOptionsCallback'),
-            'show_in_rest' => false
-        );
-        register_setting($this->generalOptionGroup, $this->networkGeneralOptionName, $registerSettingArguments);
+        // Update the options
+        update_network_option(get_current_network_id(), $this->networkGeneralOptionName, $sanitizedOptions);
+
+        // At last we redirect back to our options page.
+        wp_redirect(add_query_arg(array('page' => $this->menuSlug, 'updated' => 'true'), network_admin_url('settings.php')));
+        exit;
     }
+
+#region GENERAL OPTIONS
 
     /**
      * Return the General options.
@@ -245,13 +254,14 @@ class NetworkSettings extends SettingsBase
             return $this->networkGeneralOptions;
         }
 
-        $this->networkGeneralOptions = get_option($this->networkGeneralOptionName, array());
+        $currentNetworkId = get_current_network_id();
+        $this->networkGeneralOptions = get_network_option($currentNetworkId, $this->networkGeneralOptionName, array());
 
         // If options don't exist, create them.
         if ($this->networkGeneralOptions === array())
         {
             $this->networkGeneralOptions = $this->defaultNetworkGeneralOptions();
-            update_option($this->networkGeneralOptionName, $this->networkGeneralOptions);
+            update_network_option($currentNetworkId, $this->networkGeneralOptionName, $this->networkGeneralOptions);
         }
 
         return $this->networkGeneralOptions;
