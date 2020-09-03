@@ -49,7 +49,7 @@ class Activator
         $configuration['network-wide'] = $networkWide;
 
         // Initialize default configuration values. If exist doesn't do anyting.
-        // It doesn't matter whether single site or multisite it is saved as sitemeta.
+        // If single site, it is saved in the option table. If multisite, it is saved in the sitemeta table.
         add_network_option(get_current_network_id(), $configurationOptionName, $configuration);
 
         // If Multisite is enabled, the configuration data is saved as network option.
