@@ -46,7 +46,7 @@ if (is_multisite())
     }
 
     /**
-     * Delete the global options
+     * Delete the Network options
      */
     deleteNetworkOptions($currentNetworkId);
 
