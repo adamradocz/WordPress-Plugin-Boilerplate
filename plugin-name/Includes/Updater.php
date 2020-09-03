@@ -32,28 +32,13 @@ class Updater
      */
     public static function update(int $currentDatabaseVersion, string $configurationOptionName): void
     {
-        $multisite = false;
-        if (function_exists('is_multisite') && is_multisite())
-        {
-            $multisite = true;
-        }
-
-        // If Multisite is enabled, the global settings is saved in the main site database
-        if ($multisite)
-        {
-            switch_to_blog(get_main_site_id());
-
-            $configuration = get_option($configurationOptionName);
-
-            restore_current_blog();
-        }
-        else
-        {
-            $configuration = get_option($configurationOptionName);
-        }
-
-        $installedDatabaseVersion = $configuration['db-version'];
+        $multisite = is_multisite();
         
+        // Get the configuration data
+        $currentNetworkId = get_current_network_id();
+        $configuration = get_network_option($currentNetworkId, $configurationOptionName);
+
+        $installedDatabaseVersion = $configuration['db-version'];        
         if ($installedDatabaseVersion < $currentDatabaseVersion)
         {
             // No PHP timeout for running updates
@@ -76,29 +61,18 @@ class Updater
                         foreach (get_sites(['fields'=>'ids']) as $blogId)
                         {
                             switch_to_blog($blogId);
-                            
                             call_user_func(array(self, $updateRoutineFunctionName));
-
                             restore_current_blog();
                         }
-
-                        // The global settings is saved in the main site database
-                        switch_to_blog(get_main_site_id());
-
-                        // Update the configuration option in the database, so that this process can always pick up where it left off
-                        $configuration['db-version'] = $installedDatabaseVersion;
-                        update_option($configurationOptionName, $configuration);
-
-                        restore_current_blog();
                     }
                     else
                     {
                         call_user_func(array(self, $updateRoutineFunctionName));
-
-                        // Update the configuration option in the database, so that this process can always pick up where it left off
-                        $configuration['db-version'] = $installedDatabaseVersion;
-                        update_option($configurationOptionName, $configuration);
                     }
+                    
+                    // Update the configuration option in the database, so that this process can always pick up where it left off
+                    $configuration['db-version'] = $installedDatabaseVersion;
+                    update_network_option($currentNetworkId, $configurationOptionName, $configuration);
                 }
                 else
                 {
