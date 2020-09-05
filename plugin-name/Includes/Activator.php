@@ -46,8 +46,6 @@ class Activator
      */
     public static function activate(bool $networkWide, array $configuration, string $configurationOptionName): void
     {
-        $configuration['network-wide'] = $networkWide;
-
         // Initialize default configuration values. If exist doesn't do anyting.
         // If single site, it is saved in the option table. If multisite, it is saved in the sitemeta table.
         add_network_option(get_current_network_id(), $configurationOptionName, $configuration);
