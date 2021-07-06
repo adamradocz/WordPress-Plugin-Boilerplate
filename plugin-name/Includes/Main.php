@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PluginName\Includes;
 
 use PluginName\Includes\I18n;
+use PluginName\Includes\Api;
 use PluginName\Admin\Admin;
 use PluginName\Admin\Updater;
 use PluginName\Admin\Settings;
@@ -77,6 +78,10 @@ class Main
          */
         $i18n = new I18n($this->pluginSlug);
         $i18n->initializeHooks();
+
+        // Register the API endpoints of the plugin
+        $api = new Api($this->pluginSlug);
+        $api->initializeHooks();
 
         // The Settings' hook initialization runs on Admin area only.
         $settings = new Settings($this->pluginSlug);
